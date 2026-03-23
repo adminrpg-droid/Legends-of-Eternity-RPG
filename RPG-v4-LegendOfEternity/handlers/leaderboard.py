@@ -1,7 +1,3 @@
-# ═══════════════════════════════════════════════════════════════
-#  LEGENDS OF ETERNITY — Leaderboard Handler
-#  FIX: Admin masuk leaderboard (is_admin tidak difilter)
-# ═══════════════════════════════════════════════════════════════
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
