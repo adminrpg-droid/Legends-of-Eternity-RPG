@@ -1,7 +1,3 @@
-# ═══════════════════════════════════════════════════════════════
-#  LEGENDS OF ETERNITY — Profile Handler
-#  FIX: Pemain bisa cek profil admin di grup
-# ═══════════════════════════════════════════════════════════════
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from models.database import get_player, save_player, check_vip_expiry, is_admin
