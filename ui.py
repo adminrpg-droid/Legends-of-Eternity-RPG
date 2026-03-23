@@ -1,7 +1,3 @@
-# ═══════════════════════════════════════════════════════════════
-#  LEGENDS OF ETERNITY — UI Utilities
-#  UPDATE: format_profile support viewer_id (untuk lihat profil orang lain)
-# ═══════════════════════════════════════════════════════════════
 import time
 from data.items import get_item, RARITY_STARS
 
