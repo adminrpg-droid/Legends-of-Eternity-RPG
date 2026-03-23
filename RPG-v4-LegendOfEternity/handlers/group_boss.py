@@ -1,8 +1,3 @@
-# ═══════════════════════════════════════════════════════════════
-#  LEGENDS OF ETERNITY — Group Boss Battle Handler
-#  FITUR BARU: Bot di grup untuk perang bos bersama (max 5 pemain)
-#  Mode: Auto-battle, info mati, hadiah khusus pembunuh bos
-# ═══════════════════════════════════════════════════════════════
 import random
 import time
 import asyncio
