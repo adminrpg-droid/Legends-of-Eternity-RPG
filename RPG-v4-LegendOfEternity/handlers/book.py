@@ -1,6 +1,3 @@
-# ═══════════════════════════════════════════════════════════════
-#  LEGENDS OF ETERNITY — Book / Encyclopedia Handler
-# ═══════════════════════════════════════════════════════════════
 import json, os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
