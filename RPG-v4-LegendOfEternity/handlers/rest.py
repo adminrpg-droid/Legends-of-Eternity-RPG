@@ -1,7 +1,3 @@
-# ═══════════════════════════════════════════════════════════════
-#  LEGENDS OF ETERNITY — Rest / Sleep Handler
-#  FITUR BARU: /rest — Tidur untuk regenerasi HP & MP lebih cepat
-# ═══════════════════════════════════════════════════════════════
 import time
 import asyncio
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
