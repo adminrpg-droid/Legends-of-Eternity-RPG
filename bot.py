@@ -33,7 +33,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
+BOT_TOKEN = os.environ.get("BOT_TOKEN","8656505461:AAGwzpxBdkzpquDA3Pz4aRExxVpOu9vBNYo")
 if not BOT_TOKEN:
     raise ValueError("BOT_TOKEN belum diset! Tambahkan ke environment variable.")
 
