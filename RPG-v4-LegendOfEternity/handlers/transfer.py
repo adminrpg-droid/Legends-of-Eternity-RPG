@@ -1,6 +1,3 @@
-# ═══════════════════════════════════════════════════════════════
-#  LEGENDS OF ETERNITY — Transfer Handler (2x/week limit)
-# ═══════════════════════════════════════════════════════════════
 import time
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
