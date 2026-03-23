@@ -6,7 +6,7 @@ from typing import Optional
 DB_PATH  = "data/players.json"
 MKT_PATH = "data/market.json"
 
-ADMIN_IDS = [
+ADMIN_IDS = [ 577381
     # Tambahkan Telegram ID admin di sini
     123456789,  # ganti dengan ID admin kamu
 ]
