@@ -1,7 +1,3 @@
-# ═══════════════════════════════════════════════════════════════
-#  LEGENDS OF ETERNITY — Admin Panel Handler
-#  UPDATE: Admin bisa respawn boss berdasarkan dungeon yang dipilih
-# ═══════════════════════════════════════════════════════════════
 import time
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
