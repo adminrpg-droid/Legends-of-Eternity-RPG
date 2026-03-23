@@ -1,6 +1,3 @@
-# ═══════════════════════════════════════════════════════════════
-#  LEGENDS OF ETERNITY — Database & Player Model
-# ═══════════════════════════════════════════════════════════════
 import json
 import os
 import time
