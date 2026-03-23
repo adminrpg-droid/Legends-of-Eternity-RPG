@@ -1,8 +1,3 @@
-# ═══════════════════════════════════════════════════════════════
-#  LEGENDS OF ETERNITY v4.0
-#  Telegram RPG Bot — Main Entry Point
-#  UPDATE: Rest system, Group Boss, Admin Respawn Boss, Skill Shop
-# ═══════════════════════════════════════════════════════════════
 import logging
 import os
 from telegram import Update
