@@ -2,10 +2,10 @@ import random
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
-from models.database import get_player, save_player, level_up
-from data.monsters import DUNGEONS, get_dungeon_monsters, get_boss
-from data.items import BOSS_DROPS, get_item
-from utils.ui import hp_bar
+from database import get_player, save_player, level_up
+from monster import DUNGEONS, get_dungeon_monsters, get_boss
+from items import BOSS_DROPS, get_item
+from ui import hp_bar
 
 
 def _ds(ctx, uid):  return ctx.user_data.get(f"dg_{uid}", {})
@@ -340,7 +340,7 @@ async def _process_dg_action(query, player: dict, dstate: dict, action: str, con
                 if drop_item:
                     equip = player.setdefault("equipment", {})
                     old   = equip.get(drop_item["type"])
-                    from data.items import ALL_ITEMS
+                    from items import ALL_ITEMS
                     if old:
                         old_i = ALL_ITEMS.get(old, {})
                         for s, v in old_i.get("stats", {}).items():
