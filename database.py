@@ -1,6 +1,3 @@
-"""
-database.py — Model & CRUD untuk Legends of Eternity v5
-"""
 import json
 import os
 import time
