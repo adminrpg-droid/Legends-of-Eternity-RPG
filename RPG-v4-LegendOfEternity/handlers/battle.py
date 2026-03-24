@@ -2,9 +2,9 @@ import random
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
-from models.database import get_player, save_player, level_up
-from data.monsters import get_random_monster
-from utils.ui import hp_bar
+from database import get_player, save_player, level_up
+from monster import get_random_monster
+from ui import hp_bar
 
 
 def _bs(ctx, uid):  return ctx.user_data.get(f"b_{uid}", {})
@@ -14,6 +14,10 @@ def _cbs(ctx, uid): ctx.user_data.pop(f"b_{uid}", None)
 
 async def battle_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user   = update.effective_user
+    from database import is_banned
+    if is_banned(user.id):
+        await update.message.reply_text("🚫 Akunmu di-ban! Hubungi admin.")
+        return
     player = get_player(user.id)
     if not player:
         await update.message.reply_text("❌ Ketik /start dulu!")
