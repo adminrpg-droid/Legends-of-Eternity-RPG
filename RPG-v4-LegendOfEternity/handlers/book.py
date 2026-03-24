@@ -2,8 +2,8 @@ import json, os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
-from models.database import get_player
-from data.monsters import MONSTERS, BOSSES, DUNGEONS
+from database import get_player
+from monster import MONSTERS, BOSSES, DUNGEONS
 
 
 def _load_media() -> dict:
@@ -229,7 +229,7 @@ async def _show_dungeon_detail(query, did: int):
     img   = media.get(f"dungeon:{did}")
 
     boss_id   = dg.get("boss","")
-    from data.monsters import BOSSES
+    from monster import BOSSES
     boss_data = BOSSES.get(boss_id, {})
     monsters_str = ", ".join(dg.get("monsters", []))
 
