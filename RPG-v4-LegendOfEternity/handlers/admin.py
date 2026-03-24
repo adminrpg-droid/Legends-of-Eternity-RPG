@@ -1,370 +1,326 @@
+"""admin.py — Panel Admin lengkap: ban, unban, addadmin, adminhelp, dll."""
 import time
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
-from models.database import get_player, save_player, get_all_players, is_admin, apply_vip
-from data.monsters import MONSTERS, BOSSES, DUNGEONS, get_boss
-from data.items import VIP_PACKAGES
+from database import (
+    get_player, save_player, get_all_players,
+    is_admin, is_super_admin,
+    apply_vip,
+    add_admin, remove_admin, get_all_admins,
+    ban_player, unban_player, is_banned, _load_bans,
+)
+from items import VIP_PACKAGES
+
+try:
+    from monster import DUNGEONS, BOSSES
+except ImportError:
+    DUNGEONS, BOSSES = {}, {}
 
 
+# ════════════════════════════════════════════════════════════════
+#  ENTRY POINTS
+# ════════════════════════════════════════════════════════════════
 async def admin_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.effective_user
-    if not is_admin(user.id):
-        await update.message.reply_text("❌ Akses ditolak!")
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text("❌ *Akses Ditolak!*", parse_mode="Markdown")
         return
-    await _show_admin_panel(update.message, is_msg=True)
+    await _panel(update.message, is_msg=True)
 
 
 async def admin_action_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query  = update.callback_query
+    query = update.callback_query
     await query.answer()
-    action = query.data
-    user   = query.from_user
-
+    user  = query.from_user
     if not is_admin(user.id):
         await query.answer("❌ Bukan admin!", show_alert=True)
         return
+    data = query.data
 
-    if action == "admin_panel":
-        await _show_admin_panel(query)
+    routes = {
+        "admin_panel":         lambda: _panel(query),
+        "admin_players":       lambda: _all_players(query),
+        "admin_give_vip":      lambda: _give_vip_menu(query),
+        "admin_add_coin":      lambda: _coin_info(query),
+        "admin_add_diamond":   lambda: _diamond_info(query),
+        "admin_book":          lambda: _book_info(query),
+        "admin_respawn_boss":  lambda: _respawn_menu(query),
+        "admin_ban_list":      lambda: _ban_list(query),
+        "admin_manage_admins": lambda: _manage_admins(query, user.id),
+    }
+    if data in routes:
+        await routes[data]()
         return
 
-    if action == "admin_players":
-        await _show_all_players(query)
+    if data.startswith("admin_setvip_"):
+        parts  = data.replace("admin_setvip_", "").split("_uid_")
+        await _do_give_vip(query, int(parts[1]), parts[0])
         return
-
-    if action == "admin_give_vip":
-        await _show_give_vip(query, context)
+    if data.startswith("admin_rb_dungeon_"):
+        await _do_respawn(query, context, user.id, int(data.replace("admin_rb_dungeon_", "")))
         return
-
-    if action == "admin_add_coin":
-        await _show_add_coin(query, context)
+    if data.startswith("admin_unban_"):
+        uid = int(data.replace("admin_unban_", ""))
+        unban_player(uid)
+        await query.answer(f"✅ Pemain {uid} di-unban!", show_alert=True)
+        await _ban_list(query)
         return
-
-    if action == "admin_add_diamond":
-        await _show_add_diamond(query, context)
-        return
-
-    if action.startswith("admin_setvip_"):
-        parts  = action.replace("admin_setvip_", "").split("_uid_")
-        vip_id = parts[0]
-        uid    = int(parts[1])
-        await _give_vip(query, uid, vip_id)
-        return
-
-    if action == "admin_book":
-        await _show_book_editor(query)
-        return
-
-    # ── Respawn Boss ─────────────────────────────────────────────
-    if action == "admin_respawn_boss":
-        await _show_respawn_boss_menu(query)
-        return
-
-    if action.startswith("admin_rb_dungeon_"):
-        did = int(action.replace("admin_rb_dungeon_", ""))
-        await _respawn_boss_for_dungeon(query, context, user.id, did)
+    if data.startswith("admin_removeadmin_"):
+        uid = int(data.replace("admin_removeadmin_", ""))
+        if not is_super_admin(user.id):
+            await query.answer("❌ Hanya Super Admin!", show_alert=True)
+            return
+        remove_admin(uid)
+        await query.answer(f"✅ Admin {uid} dihapus!", show_alert=True)
+        await _manage_admins(query, user.id)
         return
 
 
-async def _show_admin_panel(target, is_msg=False):
+# ════════════════════════════════════════════════════════════════
+#  PANEL
+# ════════════════════════════════════════════════════════════════
+async def _panel(target, is_msg=False):
     players = get_all_players()
+    bans    = _load_bans()
     text = (
         f"╔══════════════════════════════════╗\n"
         f"║     👑  *ADMIN PANEL*            ║\n"
         f"╠══════════════════════════════════╣\n"
-        f"║  👥 Total Pemain: {len(players)}\n"
-        f"╚══════════════════════════════════╝\n\n"
-        f"Pilih aksi admin:"
+        f"║  👥 Total Pemain : {len(players)}\n"
+        f"║  🚫 Total Banned : {len(bans)}\n"
+        f"╚══════════════════════════════════╝\n\nPilih aksi:"
     )
-    keyboard = [
-        [InlineKeyboardButton("👥 Lihat Semua Pemain", callback_data="admin_players")],
+    kb = [
+        [InlineKeyboardButton("👥 Semua Pemain",      callback_data="admin_players")],
         [
-            InlineKeyboardButton("🏅 Beri VIP",     callback_data="admin_give_vip"),
-            InlineKeyboardButton("💰 Beri Coin",     callback_data="admin_add_coin"),
+            InlineKeyboardButton("🏅 Beri VIP",       callback_data="admin_give_vip"),
+            InlineKeyboardButton("💰 Beri Coin",       callback_data="admin_add_coin"),
         ],
-        [InlineKeyboardButton("💎 Beri Diamond",   callback_data="admin_add_diamond")],
-        [InlineKeyboardButton("📖 Edit Book/Media", callback_data="admin_book")],
-        [InlineKeyboardButton("👹 Respawn Boss",    callback_data="admin_respawn_boss")],
-        [InlineKeyboardButton("🏠 Menu", callback_data="menu")],
+        [InlineKeyboardButton("💎 Beri Diamond",      callback_data="admin_add_diamond")],
+        [
+            InlineKeyboardButton("🚫 Daftar Ban",      callback_data="admin_ban_list"),
+            InlineKeyboardButton("👑 Kelola Admin",     callback_data="admin_manage_admins"),
+        ],
+        [InlineKeyboardButton("📖 Edit Media",         callback_data="admin_book")],
+        [InlineKeyboardButton("👹 Respawn Boss",        callback_data="admin_respawn_boss")],
+        [InlineKeyboardButton("🏠 Menu",               callback_data="menu")],
     ]
-    markup = InlineKeyboardMarkup(keyboard)
+    markup = InlineKeyboardMarkup(kb)
     if is_msg:
         await target.reply_text(text, parse_mode="Markdown", reply_markup=markup)
     else:
         await target.edit_message_text(text, parse_mode="Markdown", reply_markup=markup)
 
 
-async def _show_all_players(query):
+async def _all_players(query):
     players = get_all_players()
-    text    = f"╔══ 👥 *SEMUA PEMAIN* ══╗\n\n"
+    text = "╔══ 👥 *SEMUA PEMAIN* ══╗\n\n"
     for uid, p in list(players.items())[:20]:
-        vip = "💎" if p.get("vip", {}).get("active") else ""
-        text += (
-            f"{p['emoji']} *{p['name']}* {vip}\n"
-            f"   ID: `{uid}` | Lv.{p['level']} | {p['class']}\n"
-            f"   💰{p.get('coin',0)} | 💎{p.get('diamond',0)}\n\n"
-        )
-    await query.edit_message_text(
-        text, parse_mode="Markdown",
-        reply_markup=InlineKeyboardMarkup([[
-            InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")
-        ]])
-    )
-
-
-async def _show_give_vip(query, context):
-    players = get_all_players()
-    text    = "🏅 *Pilih pemain untuk diberi VIP:*\n"
-    buttons = []
-    for uid, p in list(players.items())[:10]:
-        buttons.append([InlineKeyboardButton(
-            f"{p['name']} (ID:{uid})",
-            callback_data=f"admin_vip_select_{uid}"
-        )])
-    buttons.append([InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")])
+        vip    = "💎" if p.get("vip", {}).get("active") else ""
+        banned = "🚫" if is_banned(int(uid)) else ""
+        adm    = "👑" if is_admin(int(uid)) else ""
+        text  += f"{p['emoji']} *{p['name']}* {vip}{adm}{banned}\n   ID:`{uid}` Lv.{p['level']} 💰{p.get('coin',0)}\n\n"
     await query.edit_message_text(text, parse_mode="Markdown",
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")]]))
+
+
+async def _give_vip_menu(query):
+    players = get_all_players()
+    buttons = [[InlineKeyboardButton(f"{p['name']} (ID:{uid})", callback_data=f"admin_vip_select_{uid}")]
+               for uid, p in list(players.items())[:10]]
+    buttons.append([InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")])
+    await query.edit_message_text("🏅 *Pilih pemain untuk diberi VIP:*", parse_mode="Markdown",
                                   reply_markup=InlineKeyboardMarkup(buttons))
 
 
-async def _give_vip(query, uid: int, vip_id: str):
-    player = get_player(uid)
-    if not player:
-        await query.answer("Pemain tidak ditemukan!", show_alert=True)
-        return
+async def _do_give_vip(query, uid: int, vip_id: str):
+    player  = get_player(uid)
     vip_pkg = VIP_PACKAGES.get(vip_id)
-    if not vip_pkg:
-        await query.answer("VIP tidak valid!", show_alert=True)
+    if not player or not vip_pkg:
+        await query.answer("Data tidak valid!", show_alert=True)
         return
-
     player = apply_vip(player, vip_id, vip_pkg["effects"], vip_pkg["duration_days"])
     save_player(uid, player)
     await query.edit_message_text(
-        f"✅ VIP *{vip_pkg['name']}* diberikan kepada *{player['name']}*!",
+        f"✅ VIP *{vip_pkg['name']}* diberikan ke *{player['name']}*!",
         parse_mode="Markdown",
-        reply_markup=InlineKeyboardMarkup([[
-            InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")
-        ]])
-    )
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")]]))
 
 
-async def _show_add_coin(query, context):
-    text = (
-        "💰 *Tambah Coin ke Pemain*\n\n"
-        "Gunakan command:\n"
-        "`/addcoin <user_id> <jumlah>`\n\n"
-        "Contoh: `/addcoin 123456789 1000`"
-    )
-    await query.edit_message_text(text, parse_mode="Markdown",
-                                  reply_markup=InlineKeyboardMarkup([[
-                                      InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")
-                                  ]]))
+async def _coin_info(query):
+    await query.edit_message_text(
+        "💰 *Tambah Coin*\n\n`/addcoin <user_id> <jumlah>`\n\nContoh: `/addcoin 123456789 1000`",
+        parse_mode="Markdown",
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")]]))
 
 
-async def _show_add_diamond(query, context):
-    text = (
-        "💎 *Tambah Diamond ke Pemain*\n\n"
-        "Gunakan command:\n"
-        "`/adddiamond <user_id> <jumlah>`\n\n"
-        "Contoh: `/adddiamond 123456789 100`"
-    )
-    await query.edit_message_text(text, parse_mode="Markdown",
-                                  reply_markup=InlineKeyboardMarkup([[
-                                      InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")
-                                  ]]))
+async def _diamond_info(query):
+    await query.edit_message_text(
+        "💎 *Tambah Diamond*\n\n`/adddiamond <user_id> <jumlah>`\n\nContoh: `/adddiamond 123456789 100`",
+        parse_mode="Markdown",
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")]]))
 
 
-async def _show_book_editor(query):
-    text = (
-        "📖 *EDITOR BOOK & MEDIA*\n\n"
-        "Gunakan command berikut untuk mengatur gambar/gif:\n\n"
-        "`/setmedia monster <nama_monster> <url/gif>`\n"
-        "`/setmedia boss <boss_id> <url/gif>`\n"
-        "`/setmedia dungeon <dungeon_id> <url/gif>`\n"
-        "`/setmedia item <item_id> <url/gif>`\n\n"
-        "Contoh:\n"
-        "`/setmedia monster Goblin https://example.com/goblin.gif`"
-    )
-    await query.edit_message_text(text, parse_mode="Markdown",
-                                  reply_markup=InlineKeyboardMarkup([[
-                                      InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")
-                                  ]]))
+async def _book_info(query):
+    await query.edit_message_text(
+        "📖 *EDITOR MEDIA*\n\n"
+        "`/setmedia monster <nama> <url>`\n"
+        "`/setmedia boss <id> <url>`\n"
+        "`/setmedia dungeon <id> <url>`\n"
+        "`/setmedia item <id> <url>`",
+        parse_mode="Markdown",
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")]]))
 
 
-# ─── RESPAWN BOSS ────────────────────────────────────────────────
-async def _show_respawn_boss_menu(query):
-    """Tampilkan pilihan dungeon untuk respawn boss."""
-    text = (
-        "👹 *RESPAWN BOSS*\n\n"
-        "Pilih dungeon untuk respawn boss-nya:\n"
-        "_(Boss akan di-reset dan siap dilawan kembali di dungeon tersebut)_"
-    )
+async def _ban_list(query):
+    bans = _load_bans()
+    text = "🚫 *DAFTAR BANNED*\n\n" + ("_Tidak ada._" if not bans else "")
     buttons = []
-    for did, dg in DUNGEONS.items():
-        boss_data = BOSSES.get(dg["boss"], {})
-        buttons.append([InlineKeyboardButton(
-            f"{dg['emoji']} {dg['name']} → 👹 {boss_data.get('name','Boss')}",
-            callback_data=f"admin_rb_dungeon_{did}"
-        )])
+    for uid, info in list(bans.items())[:15]:
+        p    = get_player(int(uid))
+        name = p["name"] if p else f"ID:{uid}"
+        text += f"• *{name}* (`{uid}`)\n  📝 {info.get('reason','?')}\n\n"
+        buttons.append([InlineKeyboardButton(f"✅ Unban {name}", callback_data=f"admin_unban_{uid}")])
     buttons.append([InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")])
-    await query.edit_message_text(text, parse_mode="Markdown",
-                                  reply_markup=InlineKeyboardMarkup(buttons))
+    await query.edit_message_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(buttons))
 
 
-async def _respawn_boss_for_dungeon(query, context, admin_id: int, dungeon_id: int):
-    """Respawn boss untuk dungeon tertentu — kirim notif ke grup jika ada."""
+async def _manage_admins(query, viewer_id: int):
+    admins  = get_all_admins()
+    text    = "👑 *DAFTAR ADMIN*\n\n"
+    buttons = []
+    for aid in admins:
+        p    = get_player(aid)
+        name = p["name"] if p else f"ID:{aid}"
+        sup  = " ⭐SUPER" if is_super_admin(aid) else ""
+        text += f"• *{name}* (`{aid}`){sup}\n"
+        if not is_super_admin(aid) and is_super_admin(viewer_id):
+            buttons.append([InlineKeyboardButton(f"❌ Hapus {name}", callback_data=f"admin_removeadmin_{aid}")])
+    text += "\n\n`/addadmin <id>` — Tambah admin\n`/removeadmin <id>` — Hapus admin"
+    buttons.append([InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")])
+    await query.edit_message_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(buttons))
+
+
+# ── Respawn Boss ─────────────────────────────────────────────────
+async def _respawn_menu(query):
+    text    = "👹 *RESPAWN BOSS*\n\nPilih dungeon:"
+    buttons = [
+        [InlineKeyboardButton(f"{dg['emoji']} {dg['name']} → {BOSSES.get(dg['boss'],{}).get('name','Boss')}",
+                              callback_data=f"admin_rb_dungeon_{did}")]
+        for did, dg in DUNGEONS.items()
+    ]
+    buttons.append([InlineKeyboardButton("⬅️ Kembali", callback_data="admin_panel")])
+    await query.edit_message_text(text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(buttons))
+
+
+async def _do_respawn(query, context, admin_id: int, dungeon_id: int):
     dg = DUNGEONS.get(dungeon_id)
     if not dg:
         await query.answer("Dungeon tidak valid!", show_alert=True)
         return
-
-    boss_id   = dg["boss"]
-    boss_data = BOSSES.get(boss_id, {})
-
-    # Simpan info boss yang di-respawn ke context agar dungeon handler bisa cek
-    if not hasattr(context, "bot_data"):
-        context.bot_data = {}
+    boss_data = BOSSES.get(dg["boss"], {})
     context.bot_data[f"boss_respawn_{dungeon_id}"] = {
-        "boss_id":    boss_id,
-        "respawn_at": time.time(),
-        "by_admin":   admin_id,
+        "boss_id": dg["boss"], "respawn_at": time.time(), "by_admin": admin_id
     }
-
     await query.edit_message_text(
-        f"✅ *Boss Respawn Berhasil!*\n\n"
-        f"🏰 Dungeon: *{dg['name']}*\n"
-        f"👹 Boss: *{boss_data.get('name','?')}* {boss_data.get('emoji','')}\n\n"
-        f"_Boss kini siap dilawan kembali di dungeon ini._\n"
-        f"_Pemain dapat masuk dungeon dan melawan boss seperti biasa._",
+        f"✅ *Boss Respawn Berhasil!*\n🏰 {dg['name']}\n👹 {boss_data.get('name','?')} {boss_data.get('emoji','')}",
         parse_mode="Markdown",
         reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton("👹 Respawn Boss Lain", callback_data="admin_respawn_boss")],
-            [InlineKeyboardButton("⬅️ Admin Panel",       callback_data="admin_panel")],
-        ])
-    )
-
-    # Broadcast notifikasi ke semua pemain yang online (kirim ke saved message admin saja)
-    # Di implementasi nyata bisa kirim ke channel grup
+            [InlineKeyboardButton("👹 Respawn Lagi", callback_data="admin_respawn_boss")],
+            [InlineKeyboardButton("⬅️ Admin Panel",  callback_data="admin_panel")],
+        ]))
     try:
-        await context.bot.send_message(
-            chat_id=admin_id,
-            text=(
-                f"📢 *BOSS TELAH DI-RESPAWN!*\n\n"
-                f"🏰 Dungeon: *{dg['name']}*\n"
-                f"👹 Boss: *{boss_data.get('name','?')}* {boss_data.get('emoji','')}\n\n"
-                f"_Pemain bisa masuk dungeon dan melawan boss sekarang!_"
-            ),
-            parse_mode="Markdown"
-        )
+        await context.bot.send_message(admin_id,
+            f"📢 *Boss di-respawn!*\n🏰 {dg['name']}\n👹 {boss_data.get('name','?')}", parse_mode="Markdown")
     except Exception:
         pass
 
 
-# ─── Admin Commands ──────────────────────────────────────────────
+# ════════════════════════════════════════════════════════════════
+#  COMMAND HANDLERS
+# ════════════════════════════════════════════════════════════════
 async def addcoin_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.effective_user
-    if not is_admin(user.id):
+    if not is_admin(update.effective_user.id):
         await update.message.reply_text("❌ Akses ditolak!")
         return
     args = context.args
     if len(args) < 2:
-        await update.message.reply_text("Usage: /addcoin <user_id> <amount>")
+        await update.message.reply_text("Usage: `/addcoin <user_id> <jumlah>`", parse_mode="Markdown")
         return
     try:
-        uid    = int(args[0])
-        amount = int(args[1])
+        uid, amount = int(args[0]), int(args[1])
     except ValueError:
         await update.message.reply_text("❌ Format salah!")
         return
     player = get_player(uid)
     if not player:
-        await update.message.reply_text(f"❌ Pemain ID {uid} tidak ditemukan!")
+        await update.message.reply_text(f"❌ Pemain ID `{uid}` tidak ditemukan!", parse_mode="Markdown")
         return
     player["coin"] = player.get("coin", 0) + amount
     save_player(uid, player)
     await update.message.reply_text(
-        f"✅ +{amount} Coin diberikan ke *{player['name']}*\n"
-        f"Total Coin: {player['coin']}",
-        parse_mode="Markdown"
-    )
+        f"✅ +{amount:,} Coin → *{player['name']}*\nTotal: {player['coin']:,} Coin", parse_mode="Markdown")
 
 
 async def adddiamond_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.effective_user
-    if not is_admin(user.id):
+    if not is_admin(update.effective_user.id):
         await update.message.reply_text("❌ Akses ditolak!")
         return
     args = context.args
     if len(args) < 2:
-        await update.message.reply_text("Usage: /adddiamond <user_id> <amount>")
+        await update.message.reply_text("Usage: `/adddiamond <user_id> <jumlah>`", parse_mode="Markdown")
         return
     try:
-        uid    = int(args[0])
-        amount = int(args[1])
+        uid, amount = int(args[0]), int(args[1])
     except ValueError:
         await update.message.reply_text("❌ Format salah!")
         return
     player = get_player(uid)
     if not player:
-        await update.message.reply_text(f"❌ Pemain ID {uid} tidak ditemukan!")
+        await update.message.reply_text(f"❌ Pemain ID `{uid}` tidak ditemukan!", parse_mode="Markdown")
         return
     player["diamond"] = player.get("diamond", 0) + amount
     save_player(uid, player)
     await update.message.reply_text(
-        f"✅ +{amount} Diamond diberikan ke *{player['name']}*\n"
-        f"Total Diamond: {player['diamond']}",
-        parse_mode="Markdown"
-    )
+        f"✅ +{amount:,} Diamond → *{player['name']}*\nTotal: {player['diamond']:,} Diamond", parse_mode="Markdown")
 
 
 async def setvip_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.effective_user
-    if not is_admin(user.id):
+    if not is_admin(update.effective_user.id):
         await update.message.reply_text("❌ Akses ditolak!")
         return
     args = context.args
     if len(args) < 2:
-        await update.message.reply_text(
-            "Usage: /setvip <user_id> <silver|gold|diamond>"
-        )
+        await update.message.reply_text("Usage: `/setvip <user_id> <silver|gold|diamond>`", parse_mode="Markdown")
         return
     try:
         uid = int(args[0])
     except ValueError:
         await update.message.reply_text("❌ Format salah!")
         return
-    tier_map = {"silver": "vip_silver", "gold": "vip_gold", "diamond": "vip_diamond"}
-    vip_id   = tier_map.get(args[1].lower())
+    vip_id = {"silver": "vip_silver", "gold": "vip_gold", "diamond": "vip_diamond"}.get(args[1].lower())
     if not vip_id:
-        await update.message.reply_text("❌ Tier VIP tidak valid!")
+        await update.message.reply_text("❌ Tier tidak valid! Gunakan: silver/gold/diamond")
         return
-    player  = get_player(uid)
+    player = get_player(uid)
+    if not player:
+        await update.message.reply_text(f"❌ Pemain `{uid}` tidak ditemukan!", parse_mode="Markdown")
+        return
     vip_pkg = VIP_PACKAGES[vip_id]
     player  = apply_vip(player, vip_id, vip_pkg["effects"], vip_pkg["duration_days"])
     save_player(uid, player)
     await update.message.reply_text(
-        f"✅ VIP {vip_pkg['name']} aktif untuk {player['name']}!",
-        parse_mode="Markdown"
-    )
+        f"✅ VIP *{vip_pkg['name']}* aktif untuk *{player['name']}*!", parse_mode="Markdown")
 
 
 async def setmedia_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Admin: Set image/gif for game entity."""
-    user = update.effective_user
-    if not is_admin(user.id):
+    if not is_admin(update.effective_user.id):
         return
     args = context.args
     if len(args) < 3:
         await update.message.reply_text(
-            "Usage: /setmedia <type> <id> <url>\n"
-            "Types: monster, boss, dungeon, item"
-        )
+            "Usage: `/setmedia <type> <id> <url>`\nTypes: monster, boss, dungeon, item", parse_mode="Markdown")
         return
-
-    entity_type = args[0].lower()
-    entity_id   = args[1]
-    url         = args[2]
-
     import json, os
     media_file = "data/media.json"
     os.makedirs("data", exist_ok=True)
@@ -372,13 +328,140 @@ async def setmedia_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if os.path.exists(media_file):
         with open(media_file) as f:
             media = json.load(f)
-
-    key = f"{entity_type}:{entity_id}"
-    media[key] = url
+    key        = f"{args[0].lower()}:{args[1]}"
+    media[key] = args[2]
     with open(media_file, "w") as f:
         json.dump(media, f, indent=2)
+    await update.message.reply_text(f"✅ Media *{key}* diset!", parse_mode="Markdown")
 
-    await update.message.reply_text(
-        f"✅ Media untuk *{entity_type}:{entity_id}* berhasil diset!",
-        parse_mode="Markdown"
+
+async def addadmin_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Tambah admin baru — hanya Super Admin."""
+    user = update.effective_user
+    if not is_super_admin(user.id):
+        await update.message.reply_text("❌ Hanya Super Admin yang bisa menambah admin!")
+        return
+    if not context.args:
+        await update.message.reply_text("Usage: `/addadmin <user_id>`", parse_mode="Markdown")
+        return
+    try:
+        uid = int(context.args[0])
+    except ValueError:
+        await update.message.reply_text("❌ Format salah!")
+        return
+    ok = add_admin(uid)
+    if ok:
+        p    = get_player(uid)
+        name = p["name"] if p else f"ID:{uid}"
+        await update.message.reply_text(
+            f"✅ *{name}* (`{uid}`) ditambahkan sebagai Admin!\n"
+            f"Mereka kini punya akses penuh ke panel admin.",
+            parse_mode="Markdown")
+    else:
+        await update.message.reply_text(f"⚠️ ID `{uid}` sudah menjadi admin.", parse_mode="Markdown")
+
+
+async def removeadmin_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Hapus admin — hanya Super Admin."""
+    user = update.effective_user
+    if not is_super_admin(user.id):
+        await update.message.reply_text("❌ Hanya Super Admin yang bisa menghapus admin!")
+        return
+    if not context.args:
+        await update.message.reply_text("Usage: `/removeadmin <user_id>`", parse_mode="Markdown")
+        return
+    try:
+        uid = int(context.args[0])
+    except ValueError:
+        await update.message.reply_text("❌ Format salah!")
+        return
+    ok = remove_admin(uid)
+    if ok:
+        await update.message.reply_text(f"✅ Admin `{uid}` berhasil dihapus.", parse_mode="Markdown")
+    else:
+        await update.message.reply_text(
+            f"⚠️ ID `{uid}` bukan admin atau adalah Super Admin (tidak bisa dihapus).", parse_mode="Markdown")
+
+
+async def ban_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """/ban <user_id> [alasan]"""
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text("❌ Akses ditolak!")
+        return
+    if not context.args:
+        await update.message.reply_text(
+            "Usage: `/ban <user_id> [alasan]`\nContoh: `/ban 123456789 Cheating`", parse_mode="Markdown")
+        return
+    try:
+        uid = int(context.args[0])
+    except ValueError:
+        await update.message.reply_text("❌ Format salah!")
+        return
+    reason = " ".join(context.args[1:]) if len(context.args) > 1 else "Melanggar aturan"
+    ok     = ban_player(uid, reason, banned_by=update.effective_user.id)
+    if ok:
+        p    = get_player(uid)
+        name = p["name"] if p else f"ID:{uid}"
+        await update.message.reply_text(
+            f"🚫 *{name}* (`{uid}`) di-ban!\n📝 Alasan: {reason}", parse_mode="Markdown")
+    else:
+        await update.message.reply_text(
+            f"❌ Tidak bisa mem-ban ID `{uid}`.\n_(Admin tidak bisa di-ban)_", parse_mode="Markdown")
+
+
+async def unban_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """/unban <user_id>"""
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text("❌ Akses ditolak!")
+        return
+    if not context.args:
+        await update.message.reply_text("Usage: `/unban <user_id>`", parse_mode="Markdown")
+        return
+    try:
+        uid = int(context.args[0])
+    except ValueError:
+        await update.message.reply_text("❌ Format salah!")
+        return
+    ok = unban_player(uid)
+    if ok:
+        p    = get_player(uid)
+        name = p["name"] if p else f"ID:{uid}"
+        await update.message.reply_text(
+            f"✅ *{name}* (`{uid}`) di-unban! Mereka bisa bermain kembali.", parse_mode="Markdown")
+    else:
+        await update.message.reply_text(f"⚠️ ID `{uid}` tidak ada dalam daftar ban.", parse_mode="Markdown")
+
+
+async def adminhelp_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """/adminhelp — Panduan khusus admin."""
+    if not is_admin(update.effective_user.id):
+        await update.message.reply_text("❌ Akses ditolak!")
+        return
+    text = (
+        "╔══════════════════════════════════╗\n"
+        "║   👑  *PANDUAN ADMIN v5*         ║\n"
+        "╚══════════════════════════════════╝\n\n"
+        "⚙️ *PANEL & INFO*\n"
+        "/admin — Buka panel admin\n"
+        "/adminhelp — Panduan ini\n\n"
+        "👥 *MANAJEMEN PEMAIN*\n"
+        "`/addcoin <id> <jml>` — Tambah Coin\n"
+        "`/adddiamond <id> <jml>` — Tambah Diamond\n"
+        "`/setvip <id> <silver|gold|diamond>` — Beri VIP\n\n"
+        "🚫 *BAN & UNBAN*\n"
+        "`/ban <id> [alasan]` — Ban pemain\n"
+        "`/unban <id>` — Unban pemain\n\n"
+        "👑 *MANAJEMEN ADMIN* _(Super Admin Only)_\n"
+        "`/addadmin <id>` — Tambah admin baru\n"
+        "`/removeadmin <id>` — Hapus admin\n\n"
+        "🎮 *GAME*\n"
+        "`/groupboss` — Spawn boss raid di grup\n"
+        "`/setmedia <type> <id> <url>` — Set media\n\n"
+        "📌 *KETENTUAN ADMIN:*\n"
+        "• Admin gratis semua item & tidak kena biaya\n"
+        "• Admin tidak tampil di Leaderboard\n"
+        "• Profil admin tidak bisa dilihat pemain biasa\n"
+        "• Admin tidak bisa di-ban\n"
+        "• Super Admin tidak bisa dihapus"
     )
+    await update.message.reply_text(text, parse_mode="Markdown")
