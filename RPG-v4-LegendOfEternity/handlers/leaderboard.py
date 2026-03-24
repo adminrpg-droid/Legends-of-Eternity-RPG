@@ -1,4 +1,3 @@
-"""leaderboard.py — Papan peringkat dengan filter admin, weekly & monthly"""
 import time
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
