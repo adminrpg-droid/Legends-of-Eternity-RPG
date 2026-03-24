@@ -1,7 +1,7 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes, ConversationHandler, MessageHandler, filters
 
-from models.database import get_player, create_player, save_player, CLASS_STATS, is_admin
+from database import get_player, create_player, save_player, CLASS_STATS, is_admin
 
 CHOOSING_GENDER = 1
 CHOOSING_CLASS  = 2
@@ -13,6 +13,11 @@ OFFICIAL_CHANNEL = "https://t.me/your_channel"  # Ganti dengan link channel
 
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user   = update.effective_user
+    from database import is_banned
+    if is_banned(user.id):
+        await update.message.reply_text("🚫 *Akunmu telah di-ban!*\nHubungi admin untuk informasi lebih lanjut.", parse_mode="Markdown")
+        return
+
     player = get_player(user.id)
 
     if player:
@@ -188,7 +193,7 @@ async def show_main_menu(update_or_query, context):
             await update_or_query.edit_message_text(text)
         return
 
-    from models.database import check_vip_expiry
+    from database import check_vip_expiry
     player = check_vip_expiry(player)
     save_player(user.id, player)
 
@@ -200,37 +205,47 @@ async def show_main_menu(update_or_query, context):
 
     g_icon = "♀️" if player.get("gender") == "female" else "♂️"
 
+    hp_pct  = int(player['hp']/max(1,player['max_hp'])*100)
+    mp_pct  = int(player['mp']/max(1,player['max_mp'])*100)
+    hp_bar_ = "█" * (hp_pct//10) + "░" * (10 - hp_pct//10)
+    mp_bar_ = "█" * (mp_pct//10) + "░" * (10 - mp_pct//10)
     text = (
         f"╔══════════════════════════════════╗\n"
-        f"║  🏰 *LEGENDS OF ETERNITY*  🏰   ║\n"
+        f"║  🏰 *LEGENDS OF ETERNITY v5*  🏰 ║\n"
         f"╠══════════════════════════════════╣\n"
         f"║  {player['emoji']} *{player['name']}* {g_icon} Lv.{player['level']}{vip_str}\n"
-        f"║  ❤️ {player['hp']}/{player['max_hp']}  💙 {player['mp']}/{player['max_mp']}\n"
-        f"║  💰 {player.get('coin',0)} Coin  💎 {player.get('diamond',0)} Diamond\n"
+        f"║  ❤️ `{hp_bar_}` {player['hp']}/{player['max_hp']}\n"
+        f"║  💙 `{mp_bar_}` {player['mp']}/{player['max_mp']}\n"
+        f"║  💰 {player.get('coin',0):,} Coin  💎 {player.get('diamond',0):,} Diamond\n"
         f"╚══════════════════════════════════╝\n\n"
-        f"🌟 Mau ngapain hari ini, petualang?\n\n"
-        f"📌 *Menu Cepat:*\n"
-        f"⚔️ /battle   🏰 /dungeon   🛒 /shop\n"
-        f"🎒 /inventory   📜 /profile   🏪 /market\n"
-        f"📅 /daily   🏆 /leaderboard   ❓ /help"
+        f"🌟 Selamat datang, petualang!\n"
+        f"Pilih aksi dari tombol menu di bawah:"
     )
 
     keyboard = [
         [
-            InlineKeyboardButton("⚔️ Battle",    callback_data="menu"),
-            InlineKeyboardButton("🏰 Dungeon",   callback_data="menu"),
+            InlineKeyboardButton("⚔️ Battle",      callback_data="menu_battle"),
+            InlineKeyboardButton("🏰 Dungeon",     callback_data="menu_dungeon"),
+            InlineKeyboardButton("🛒 Shop",        callback_data="menu_shop"),
         ],
         [
-            InlineKeyboardButton("🛒 Shop",      callback_data="menu"),
-            InlineKeyboardButton("🎒 Inventory", callback_data="menu"),
+            InlineKeyboardButton("🎒 Inventory",   callback_data="menu_inventory"),
+            InlineKeyboardButton("🏪 Market",      callback_data="menu_market"),
+            InlineKeyboardButton("📦 Transfer",    callback_data="menu_transfer"),
         ],
         [
-            InlineKeyboardButton("📜 Profile",   callback_data="profile"),
-            InlineKeyboardButton("🏪 Market",    callback_data="menu"),
+            InlineKeyboardButton("📜 Profile",     callback_data="profile"),
+            InlineKeyboardButton("🏆 Ranking",     callback_data="lb_level_all"),
+            InlineKeyboardButton("😴 Rest",        callback_data="menu_rest"),
         ],
         [
-            InlineKeyboardButton("💬 Grup Official",   url=OFFICIAL_GROUP),
-            InlineKeyboardButton("📢 Channel Official", url=OFFICIAL_CHANNEL),
+            InlineKeyboardButton("📅 Daily",       callback_data="menu_daily"),
+            InlineKeyboardButton("📖 Book",        callback_data="menu_book"),
+            InlineKeyboardButton("❓ Help",        callback_data="menu_help"),
+        ],
+        [
+            InlineKeyboardButton("💬 Grup Official",    url=OFFICIAL_GROUP),
+            InlineKeyboardButton("📢 Channel Official",  url=OFFICIAL_CHANNEL),
         ],
     ]
 
