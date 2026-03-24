@@ -3,34 +3,34 @@ import random
 # ─── REGULAR MONSTERS ───────────────────────────────────────────
 MONSTERS = {
     # Tier 1 (Lv 1-5)
-    "Slime":          {"emoji":"🟢","hp":50, "atk":8,  "def":3,  "exp":12,"gold":(4,9),   "tier":1,"image":None},
-    "Goblin":         {"emoji":"👺","hp":70, "atk":12, "def":5,  "exp":18,"gold":(6,14),  "tier":1,"image":None},
-    "Bat":            {"emoji":"🦇","hp":45, "atk":10, "def":2,  "exp":10,"gold":(3,8),   "tier":1,"image":None},
-    "Giant Rat":      {"emoji":"🐀","hp":60, "atk":9,  "def":4,  "exp":14,"gold":(4,10),  "tier":1,"image":None},
-    "Forest Spider":  {"emoji":"🕷️","hp":55, "atk":11, "def":3,  "exp":16,"gold":(5,12),  "tier":1,"image":None},
-    "Kobold":         {"emoji":"🦎","hp":65, "atk":10, "def":4,  "exp":15,"gold":(5,11),  "tier":1,"image":None},
+    "Slime":          {"emoji":"🟢","hp":90,  "atk":14, "def":6,  "exp":12,"gold":(4,9),   "tier":1,"image":None},
+    "Goblin":         {"emoji":"👺","hp":130, "atk":20, "def":10, "exp":18,"gold":(6,14),  "tier":1,"image":None},
+    "Bat":            {"emoji":"🦇","hp":80,  "atk":18, "def":5,  "exp":10,"gold":(3,8),   "tier":1,"image":None},
+    "Giant Rat":      {"emoji":"🐀","hp":110, "atk":16, "def":8,  "exp":14,"gold":(4,10),  "tier":1,"image":None},
+    "Forest Spider":  {"emoji":"🕷️","hp":100, "atk":19, "def":7,  "exp":16,"gold":(5,12),  "tier":1,"image":None},
+    "Kobold":         {"emoji":"🦎","hp":120, "atk":18, "def":9,  "exp":15,"gold":(5,11),  "tier":1,"image":None},
 
     # Tier 2 (Lv 6-14)
-    "Orc Warrior":    {"emoji":"👹","hp":130,"atk":20, "def":12, "exp":45,"gold":(15,30),  "tier":2,"image":None},
-    "Skeleton":       {"emoji":"💀","hp":110,"atk":18, "def":8,  "exp":38,"gold":(12,25),  "tier":2,"image":None},
-    "Dark Elf":       {"emoji":"🧝","hp":120,"atk":22, "def":9,  "exp":48,"gold":(18,32),  "tier":2,"image":None},
-    "Troll":          {"emoji":"🧌","hp":160,"atk":21, "def":15, "exp":55,"gold":(20,38),  "tier":2,"image":None},
-    "Harpy":          {"emoji":"🦅","hp":100,"atk":24, "def":7,  "exp":50,"gold":(16,30),  "tier":2,"image":None},
-    "Minotaur":       {"emoji":"🐂","hp":180,"atk":26, "def":14, "exp":65,"gold":(22,40),  "tier":2,"image":None},
+    "Orc Warrior":    {"emoji":"👹","hp":260, "atk":38, "def":24, "exp":45,"gold":(15,30),  "tier":2,"image":None},
+    "Skeleton":       {"emoji":"💀","hp":220, "atk":34, "def":16, "exp":38,"gold":(12,25),  "tier":2,"image":None},
+    "Dark Elf":       {"emoji":"🧝","hp":240, "atk":42, "def":18, "exp":48,"gold":(18,32),  "tier":2,"image":None},
+    "Troll":          {"emoji":"🧌","hp":320, "atk":40, "def":30, "exp":55,"gold":(20,38),  "tier":2,"image":None},
+    "Harpy":          {"emoji":"🦅","hp":200, "atk":46, "def":14, "exp":50,"gold":(16,30),  "tier":2,"image":None},
+    "Minotaur":       {"emoji":"🐂","hp":360, "atk":50, "def":28, "exp":65,"gold":(22,40),  "tier":2,"image":None},
 
     # Tier 3 (Lv 15-25)
-    "Werewolf":       {"emoji":"🐺","hp":220,"atk":32, "def":16, "exp":90,"gold":(30,55),  "tier":3,"image":None},
-    "Vampire Lord":   {"emoji":"🧛","hp":200,"atk":36, "def":14, "exp":95,"gold":(35,60),  "tier":3,"image":None},
-    "Demon Knight":   {"emoji":"😈","hp":250,"atk":38, "def":20, "exp":105,"gold":(40,70), "tier":3,"image":None},
-    "Ice Golem":      {"emoji":"🧊","hp":280,"atk":30, "def":28, "exp":110,"gold":(42,72), "tier":3,"image":None},
-    "Shadow Beast":   {"emoji":"🌑","hp":210,"atk":40, "def":12, "exp":100,"gold":(38,65), "tier":3,"image":None},
-    "Basilisk":       {"emoji":"🐍","hp":260,"atk":34, "def":22, "exp":108,"gold":(40,68), "tier":3,"image":None},
+    "Werewolf":       {"emoji":"🐺","hp":440, "atk":62, "def":32, "exp":90,"gold":(30,55),  "tier":3,"image":None},
+    "Vampire Lord":   {"emoji":"🧛","hp":400, "atk":70, "def":28, "exp":95,"gold":(35,60),  "tier":3,"image":None},
+    "Demon Knight":   {"emoji":"😈","hp":500, "atk":74, "def":40, "exp":105,"gold":(40,70), "tier":3,"image":None},
+    "Ice Golem":      {"emoji":"🧊","hp":560, "atk":58, "def":56, "exp":110,"gold":(42,72), "tier":3,"image":None},
+    "Shadow Beast":   {"emoji":"🌑","hp":420, "atk":78, "def":24, "exp":100,"gold":(38,65), "tier":3,"image":None},
+    "Basilisk":       {"emoji":"🐍","hp":520, "atk":66, "def":44, "exp":108,"gold":(40,68), "tier":3,"image":None},
 
     # Tier 4 (Lv 26+)
-    "Ancient Wyvern": {"emoji":"🐲","hp":380,"atk":52, "def":30, "exp":160,"gold":(60,100),"tier":4,"image":None},
-    "Death Knight":   {"emoji":"⚔️","hp":420,"atk":55, "def":34, "exp":175,"gold":(65,110),"tier":4,"image":None},
-    "Abyssal Demon":  {"emoji":"🌀","hp":400,"atk":58, "def":28, "exp":180,"gold":(70,120),"tier":4,"image":None},
-    "Chimera":        {"emoji":"🦁","hp":460,"atk":50, "def":36, "exp":185,"gold":(72,125),"tier":4,"image":None},
+    "Ancient Wyvern": {"emoji":"🐲","hp":760, "atk":100,"def":60, "exp":160,"gold":(60,100),"tier":4,"image":None},
+    "Death Knight":   {"emoji":"⚔️","hp":840, "atk":108,"def":68, "exp":175,"gold":(65,110),"tier":4,"image":None},
+    "Abyssal Demon":  {"emoji":"🌀","hp":800, "atk":114,"def":56, "exp":180,"gold":(70,120),"tier":4,"image":None},
+    "Chimera":        {"emoji":"🦁","hp":920, "atk":98, "def":72, "exp":185,"gold":(72,125),"tier":4,"image":None},
 }
 
 # ─── DUNGEON DEFINITIONS ─────────────────────────────────────────
@@ -92,9 +92,9 @@ BOSSES = {
     "goblin_king": {
         "name": "Goblin King",
         "emoji": "👑",
-        "hp": 800,
-        "atk": 35,
-        "def": 18,
+        "hp": 2000,
+        "atk": 70,
+        "def": 38,
         "exp": 400,
         "gold": (150, 280),
         "image": None,
@@ -104,9 +104,9 @@ BOSSES = {
     "forest_witch": {
         "name": "Forest Witch",
         "emoji": "🧙",
-        "hp": 950,
-        "atk": 45,
-        "def": 22,
+        "hp": 2800,
+        "atk": 90,
+        "def": 48,
         "exp": 520,
         "gold": (200, 350),
         "image": None,
@@ -116,9 +116,9 @@ BOSSES = {
     "dark_lord": {
         "name": "Dark Lord Malachar",
         "emoji": "👿",
-        "hp": 1200,
-        "atk": 58,
-        "def": 30,
+        "hp": 3800,
+        "atk": 115,
+        "def": 62,
         "exp": 700,
         "gold": (280, 450),
         "image": None,
@@ -128,9 +128,9 @@ BOSSES = {
     "labyrinth_guardian": {
         "name": "Labyrinth Guardian",
         "emoji": "🏺",
-        "hp": 1500,
-        "atk": 70,
-        "def": 38,
+        "hp": 5000,
+        "atk": 140,
+        "def": 78,
         "exp": 900,
         "gold": (350, 550),
         "image": None,
@@ -140,9 +140,9 @@ BOSSES = {
     "elder_dragon": {
         "name": "Elder Dragon Ignaroth",
         "emoji": "🐉",
-        "hp": 2000,
-        "atk": 88,
-        "def": 45,
+        "hp": 7000,
+        "atk": 175,
+        "def": 95,
         "exp": 1400,
         "gold": (500, 800),
         "image": None,
@@ -153,9 +153,9 @@ BOSSES = {
     "world_boss_lich": {
         "name": "Lich King Zarthorak",
         "emoji": "☠️",
-        "hp": 5000,
-        "atk": 120,
-        "def": 60,
+        "hp": 15000,
+        "atk": 240,
+        "def": 120,
         "exp": 3000,
         "gold": (1000, 2000),
         "image": None,
@@ -166,9 +166,9 @@ BOSSES = {
     "world_boss_demon_god": {
         "name": "Demon God Bael",
         "emoji": "🔴",
-        "hp": 6000,
-        "atk": 140,
-        "def": 70,
+        "hp": 20000,
+        "atk": 280,
+        "def": 140,
         "exp": 4000,
         "gold": (1500, 2500),
         "image": None,
@@ -197,7 +197,8 @@ def get_random_monster(player_level: int) -> dict:
     m = pool[name].copy()
     m["name"] = name
 
-    scale = 1 + (player_level - 1) * 0.06
+    # Scaling lebih agresif: 0.10 per level (sebelumnya 0.06)
+    scale = 1 + (player_level - 1) * 0.10
     m["hp"]  = int(m["hp"] * scale)
     m["atk"] = int(m["atk"] * scale)
     m["def"] = int(m["def"] * scale)
@@ -216,7 +217,8 @@ def get_dungeon_monsters(dungeon_id: int, player_level: int) -> list:
     m = pool[name].copy()
     m["name"] = name
 
-    scale = 1 + (player_level - 1) * 0.06
+    # Scaling lebih agresif untuk dungeon
+    scale = 1 + (player_level - 1) * 0.10
     m["hp"]  = int(m["hp"] * scale)
     m["atk"] = int(m["atk"] * scale)
     m["def"] = int(m["def"] * scale)
@@ -227,7 +229,8 @@ def get_dungeon_monsters(dungeon_id: int, player_level: int) -> list:
 def get_boss(boss_id: str, scale_level: int = 1) -> dict:
     boss = BOSSES.get(boss_id, BOSSES["goblin_king"]).copy()
     boss["boss_id"] = boss_id
-    scale = 1 + (scale_level - 1) * 0.08
+    # Scaling boss lebih keras: 0.12 per level (sebelumnya 0.08)
+    scale = 1 + (scale_level - 1) * 0.12
     boss["hp"]  = int(boss["hp"] * scale)
     boss["atk"] = int(boss["atk"] * scale)
     boss["def"] = int(boss["def"] * scale)
