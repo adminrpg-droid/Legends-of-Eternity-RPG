@@ -1,8 +1,8 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
-from models.database import get_player, save_player, apply_vip, is_admin
-from data.items import (
+from database import get_player, save_player, apply_vip, is_admin
+from items import (
     CONSUMABLES, get_class_weapons, get_class_armors,
     VIP_PACKAGES, COIN_PACKAGES, DIAMOND_PACKAGES, get_item, RARITY_STARS,
     SHOP_SKILLS, get_class_skills
@@ -310,7 +310,7 @@ async def _show_diamond_packages(query, player: dict):
 
 # ─── BUY LOGIC ──────────────────────────────────────────────────
 async def _buy_consumable(query, player: dict, user_id: int, item_id: str):
-    from data.items import CONSUMABLES
+    from items import CONSUMABLES
     item = CONSUMABLES.get(item_id)
     if not item:
         await query.answer("Item tidak ditemukan!", show_alert=True)
@@ -338,7 +338,7 @@ async def _buy_consumable(query, player: dict, user_id: int, item_id: str):
 
 
 async def _buy_equipment(query, player: dict, user_id: int, item_id: str, eq_type: str):
-    from data.items import ALL_ITEMS
+    from items import ALL_ITEMS
     item = ALL_ITEMS.get(item_id)
     if not item:
         await query.answer("Item tidak ditemukan!", show_alert=True)
@@ -424,7 +424,7 @@ async def _show_skills(query, player: dict):
 
 
 async def _buy_skill(query, player: dict, user_id: int, skill_id: str):
-    from data.items import SHOP_SKILLS
+    from items import SHOP_SKILLS
     skill = SHOP_SKILLS.get(skill_id)
     if not skill:
         await query.answer("Skill tidak ditemukan!", show_alert=True)
