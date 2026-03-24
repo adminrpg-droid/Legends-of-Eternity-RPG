@@ -1,4 +1,3 @@
-"""profile.py — Profil pemain; blokir lihat profil admin dari grup"""
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from database import get_player, save_player, check_vip_expiry, is_admin
