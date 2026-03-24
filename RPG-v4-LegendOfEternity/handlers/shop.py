@@ -279,7 +279,7 @@ async def _show_coin_packages(query, player: dict):
         text += f"*{pkg['name']}* — Rp {pkg['price_idr']:,}\n"
     text += (
         f"\n💳 *Cara Topup:*\n"
-        f"Transfer ke 🏦 BCA `1234567890` A/N Legends of Eternity\n"
+        f"Transfer ke 🏦 SEABANK `901919719088` Erik Martin"
         f"Kirim bukti + ID kamu: `{query.from_user.id}` ke admin"
     )
     buttons = [[InlineKeyboardButton("⬅️ Kembali", callback_data="shop_main")]]
@@ -300,7 +300,7 @@ async def _show_diamond_packages(query, player: dict):
         text += f"*{pkg['name']}* — Rp {pkg['price_idr']:,}\n"
     text += (
         f"\n💳 *Cara Topup:*\n"
-        f"Transfer ke 🏦 BCA `1234567890` A/N Legends of Eternity\n"
+        f"Transfer ke 🏦 SEABANK `901919719088` Erik Martin"
         f"Kirim bukti + ID kamu: `{query.from_user.id}` ke admin"
     )
     buttons = [[InlineKeyboardButton("⬅️ Kembali", callback_data="shop_main")]]
