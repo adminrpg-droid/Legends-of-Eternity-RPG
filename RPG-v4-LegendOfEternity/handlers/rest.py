@@ -3,7 +3,7 @@ import asyncio
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
-from models.database import get_player, save_player
+from database import get_player, save_player
 
 # Konfigurasi regen saat istirahat
 REST_TICK_SECONDS = 10       # regen tiap 10 detik
