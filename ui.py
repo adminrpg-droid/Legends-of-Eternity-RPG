@@ -1,4 +1,3 @@
-"""ui.py — Helper tampilan untuk Legends of Eternity v5"""
 import time
 from items import get_item, RARITY_STARS
 
