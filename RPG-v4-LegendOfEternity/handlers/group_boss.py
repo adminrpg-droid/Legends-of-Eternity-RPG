@@ -4,9 +4,9 @@ import asyncio
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
-from models.database import get_player, save_player, level_up, is_admin
-from data.monsters import DUNGEONS, get_boss, BOSSES
-from data.items import BOSS_DROPS, get_item, ALL_ITEMS
+from database import get_player, save_player, level_up, is_admin
+from monster import DUNGEONS, get_boss, BOSSES
+from items import BOSS_DROPS, get_item, ALL_ITEMS
 
 # Penyimpanan sesi boss di grup (per chat_id)
 # Format: {chat_id: {dungeon_id, boss, players, status, log, ...}}
@@ -369,7 +369,7 @@ async def _run_raid(context, chat_id: int, msg_id: int):
 def _build_battle_text(sess: dict, round_num: int) -> str:
     boss   = sess["boss"]
     dg     = sess["dungeon"]
-    from utils.ui import hp_bar
+    from ui import hp_bar
 
     # Boss HP bar
     b_bar  = hp_bar(max(0, boss["current_hp"]), boss["max_hp"], 10)
