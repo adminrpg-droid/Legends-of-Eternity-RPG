@@ -2,8 +2,8 @@ import time
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
-from models.database import get_player, save_player, get_all_players
-from data.items import get_item, ALL_ITEMS
+from database import get_player, save_player, get_all_players
+from items import get_item, ALL_ITEMS
 
 
 TRANSFER_LIMIT = 2      # max per week
