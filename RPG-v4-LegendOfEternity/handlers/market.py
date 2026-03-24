@@ -2,8 +2,8 @@ import time
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
-from models.database import get_player, save_player, get_market, add_market_listing, remove_market_listing
-from data.items import get_item, RARITY_STARS
+from database import get_player, save_player, get_market, add_market_listing, remove_market_listing
+from items import get_item, RARITY_STARS
 
 
 async def market_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -165,7 +165,7 @@ async def _ask_sell_price(query, item_id: str):
 
 
 async def _confirm_sell(query, player: dict, user_id: int, item_id: str, price: int):
-    from data.items import ALL_ITEMS
+    from items import ALL_ITEMS
     item = get_item(item_id)
     if not item:
         await query.answer("Item tidak valid!", show_alert=True)
@@ -257,7 +257,7 @@ async def _buy_listing(query, player: dict, user_id: int, listing_id: str):
     player["coin"] -= price
 
     # Give item to buyer
-    from data.items import ALL_ITEMS
+    from items import ALL_ITEMS
     equip = player.setdefault("equipment", {})
     slot  = item["type"]
     old   = equip.get(slot)
@@ -324,7 +324,7 @@ async def _cancel_listing(query, player: dict, user_id: int, listing_id: str):
 
     # Give item back
     if item:
-        from data.items import ALL_ITEMS
+        from items import ALL_ITEMS
         equip = player.setdefault("equipment", {})
         slot  = item["type"]
         equip[slot] = listing["item_id"]
