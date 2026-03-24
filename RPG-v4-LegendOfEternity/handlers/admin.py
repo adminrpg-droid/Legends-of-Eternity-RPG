@@ -1,4 +1,3 @@
-"""admin.py — Panel Admin lengkap: ban, unban, addadmin, adminhelp, dll."""
 import time
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
