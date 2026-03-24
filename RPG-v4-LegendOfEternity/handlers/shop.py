@@ -10,7 +10,7 @@ from items import (
 
 
 def _coin_line(player: dict) -> str:
-    return f"💰 Coin: *{player.get('coin',0)}*  💎 Diamond: *{player.get('diamond',0)}*"
+    return f"💰 Coin: *{player.get('coin',0):,}*  💎 Diamond: *{player.get('diamond',0)}*"
 
 
 def _shop_main_keyboard(player: dict) -> InlineKeyboardMarkup:
@@ -41,12 +41,12 @@ async def shop_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     text = (
-        f"╔══════════════════════════════════╗\n"
-        f"║       🛒  *TOKO ETERNITY*        ║\n"
-        f"╠══════════════════════════════════╣\n"
+        "╔══════════════════════════════════╗\n"
+        "║       🛒  *TOKO ETERNITY*        ║\n"
+        "╠══════════════════════════════════╣\n"
         f"║  {_coin_line(player)}\n"
-        f"╚══════════════════════════════════╝\n\n"
-        f"🛍️ Pilih kategori item:"
+        "╚══════════════════════════════════╝\n\n"
+        "🛍️ Pilih kategori item:"
     )
     await update.message.reply_text(text, parse_mode="Markdown",
                                     reply_markup=_shop_main_keyboard(player))
@@ -63,94 +63,62 @@ async def shop_action_handler(update: Update, context: ContextTypes.DEFAULT_TYPE
         await query.answer("❌ Ketik /start!", show_alert=True)
         return
 
-    # ── Category views ──────────────────────────────────────────
     if action in ("shop_cat_consumable", "shop_cat_weapon", "shop_cat_armor",
                   "shop_cat_vip", "shop_cat_skill", "shop_main"):
         text = (
-            f"╔══════════════════════════════════╗\n"
-            f"║       🛒  *TOKO ETERNITY*        ║\n"
-            f"╠══════════════════════════════════╣\n"
+            "╔══════════════════════════════════╗\n"
+            "║       🛒  *TOKO ETERNITY*        ║\n"
+            "╠══════════════════════════════════╣\n"
             f"║  {_coin_line(player)}\n"
-            f"╚══════════════════════════════════╝\n\n"
-            f"🛍️ Pilih kategori item:"
+            "╚══════════════════════════════════╝\n\n"
+            "🛍️ Pilih kategori item:"
         )
         await query.edit_message_text(text, parse_mode="Markdown",
                                       reply_markup=_shop_main_keyboard(player))
         return
 
     if action == "shop_view_consumable":
-        await _show_consumables(query, player)
-        return
-
+        await _show_consumables(query, player); return
     if action == "shop_view_weapon":
-        await _show_weapons(query, player)
-        return
-
+        await _show_weapons(query, player); return
     if action == "shop_view_armor":
-        await _show_armors(query, player)
-        return
-
+        await _show_armors(query, player); return
     if action == "shop_view_vip":
-        await _show_vip(query, player)
-        return
-
+        await _show_vip(query, player); return
     if action == "shop_view_coin":
-        await _show_coin_packages(query, player)
-        return
-
+        await _show_coin_packages(query, player); return
     if action == "shop_view_diamond":
-        await _show_diamond_packages(query, player)
-        return
-
+        await _show_diamond_packages(query, player); return
     if action == "shop_view_skill":
-        await _show_skills(query, player)
-        return
+        await _show_skills(query, player); return
 
     if action.startswith("shop_buy_skill_"):
-        skill_id = action.replace("shop_buy_skill_", "")
-        await _buy_skill(query, player, user.id, skill_id)
-        return
-
-    # ── Buy consumable ──────────────────────────────────────────
+        await _buy_skill(query, player, user.id, action.replace("shop_buy_skill_", "")); return
     if action.startswith("shop_buy_cons_"):
-        item_id = action.replace("shop_buy_cons_", "")
-        await _buy_consumable(query, player, user.id, item_id)
-        return
-
-    # ── Buy weapon ──────────────────────────────────────────────
+        await _buy_consumable(query, player, user.id, action.replace("shop_buy_cons_", "")); return
     if action.startswith("shop_buy_wpn_"):
-        item_id = action.replace("shop_buy_wpn_", "")
-        await _buy_equipment(query, player, user.id, item_id, "weapon")
-        return
-
-    # ── Buy armor ───────────────────────────────────────────────
+        await _buy_equipment(query, player, user.id, action.replace("shop_buy_wpn_", ""), "weapon"); return
     if action.startswith("shop_buy_arm_"):
-        item_id = action.replace("shop_buy_arm_", "")
-        await _buy_equipment(query, player, user.id, item_id, "armor")
-        return
-
-    # ── VIP info ────────────────────────────────────────────────
+        await _buy_equipment(query, player, user.id, action.replace("shop_buy_arm_", ""), "armor"); return
     if action.startswith("shop_vip_info_"):
-        vip_id = action.replace("shop_vip_info_", "")
-        await _show_vip_info(query, player, vip_id)
-        return
+        await _show_vip_info(query, player, action.replace("shop_vip_info_", "")); return
 
 
 # ─── VIEWS ──────────────────────────────────────────────────────
 async def _show_consumables(query, player: dict):
     text = (
-        f"╔══════════════════════════════════╗\n"
-        f"║    🧪  *KONSUMABLE*              ║\n"
-        f"╠══════════════════════════════════╣\n"
+        "╔══════════════════════════════════╗\n"
+        "║    🧪  *KONSUMABLE*              ║\n"
+        "╠══════════════════════════════════╣\n"
         f"║  {_coin_line(player)}\n"
-        f"╚══════════════════════════════════╝\n\n"
-        f"Beli item untuk membantu di pertempuran:"
+        "╚══════════════════════════════════╝\n\n"
+        "Beli item untuk membantu di pertempuran:"
     )
     buttons = []
     for iid, item in CONSUMABLES.items():
         price = item["price"]
         owned = player.get("inventory", {}).get(iid, 0)
-        label = f"{item['name']} — {price}💰 (punya:{owned})"
+        label = f"{item['name']} — {price:,}💰 (punya:{owned})"
         buttons.append([InlineKeyboardButton(label, callback_data=f"shop_buy_cons_{iid}")])
     buttons.append([InlineKeyboardButton("⬅️ Kembali", callback_data="shop_main")])
     await query.edit_message_text(text, parse_mode="Markdown",
@@ -164,19 +132,19 @@ async def _show_weapons(query, player: dict):
 
     text = (
         f"╔══════════════════════════════════╗\n"
-        f"║    ⚔️  *SENJATA {char_class.upper()}*           ║\n"
-        f"╠══════════════════════════════════╣\n"
+        f"║  ⚔️ *SENJATA {char_class.upper()}*\n"
+        "╠══════════════════════════════════╣\n"
         f"║  {_coin_line(player)}\n"
-        f"╚══════════════════════════════════╝\n\n"
-        f"Senjata yang tersedia untuk kelasmu:"
+        "╚══════════════════════════════════╝\n\n"
+        "Senjata yang tersedia untuk kelasmu:"
     )
     buttons = []
     for iid, item in weapons.items():
-        stars   = RARITY_STARS.get(item.get("rarity","common"), "⭐")
-        price   = item["price"]
+        stars    = RARITY_STARS.get(item.get("rarity", "common"), "⭐")
+        price    = item["price"]
         equipped = " ✅" if equip_wpn == iid else ""
-        affordable = "✓" if player.get("coin", 0) >= price else "✗"
-        label = f"{item['name']} {stars} — {price}💰 {affordable}{equipped}"
+        mark     = "✓" if player.get("coin", 0) >= price else "✗"
+        label = f"{item['name']} {stars} — {price:,}💰 {mark}{equipped}"
         buttons.append([InlineKeyboardButton(label, callback_data=f"shop_buy_wpn_{iid}")])
     buttons.append([InlineKeyboardButton("⬅️ Kembali", callback_data="shop_main")])
     await query.edit_message_text(text, parse_mode="Markdown",
@@ -190,19 +158,19 @@ async def _show_armors(query, player: dict):
 
     text = (
         f"╔══════════════════════════════════╗\n"
-        f"║    🛡️  *ARMOR {char_class.upper()}*              ║\n"
-        f"╠══════════════════════════════════╣\n"
+        f"║  🛡️ *ARMOR {char_class.upper()}*\n"
+        "╠══════════════════════════════════╣\n"
         f"║  {_coin_line(player)}\n"
-        f"╚══════════════════════════════════╝\n\n"
-        f"Armor yang tersedia untuk kelasmu:"
+        "╚══════════════════════════════════╝\n\n"
+        "Armor yang tersedia untuk kelasmu:"
     )
     buttons = []
     for iid, item in armors.items():
-        stars    = RARITY_STARS.get(item.get("rarity","common"), "⭐")
+        stars    = RARITY_STARS.get(item.get("rarity", "common"), "⭐")
         price    = item["price"]
         equipped = " ✅" if equip_arm == iid else ""
-        affordable = "✓" if player.get("coin", 0) >= price else "✗"
-        label = f"{item['name']} {stars} — {price}💰 {affordable}{equipped}"
+        mark     = "✓" if player.get("coin", 0) >= price else "✗"
+        label = f"{item['name']} {stars} — {price:,}💰 {mark}{equipped}"
         buttons.append([InlineKeyboardButton(label, callback_data=f"shop_buy_arm_{iid}")])
     buttons.append([InlineKeyboardButton("⬅️ Kembali", callback_data="shop_main")])
     await query.edit_message_text(text, parse_mode="Markdown",
@@ -213,19 +181,19 @@ async def _show_vip(query, player: dict):
     vip_active = player.get("vip", {}).get("active", False)
     vip_status = "✅ VIP AKTIF" if vip_active else "❌ Tidak ada VIP"
     text = (
-        f"╔══════════════════════════════════╗\n"
-        f"║      🏅  *PAKET VIP*             ║\n"
-        f"╠══════════════════════════════════╣\n"
+        "╔══════════════════════════════════╗\n"
+        "║      🏅  *PAKET VIP*             ║\n"
+        "╠══════════════════════════════════╣\n"
         f"║  Status VIP: {vip_status}\n"
-        f"╚══════════════════════════════════╝\n\n"
-        f"🌟 VIP memberikan keuntungan ekstra dalam pertempuran!\n\n"
-        f"🥈 *VIP Silver* — Rp 15.000/bulan\n"
-        f"Crit +10%, HP +50, MP +30, ATK +8\n\n"
-        f"🥇 *VIP Gold* — Rp 30.000/bulan\n"
-        f"Crit +20%, HP +100, MP +60, ATK +18\n\n"
-        f"💎 *VIP Diamond* — Rp 75.000/bulan\n"
-        f"Crit +35%, HP +200, MP +120, ATK +35\n\n"
-        f"_Pembelian melalui transfer bank. Tap untuk detail._"
+        "╚══════════════════════════════════╝\n\n"
+        "🌟 VIP memberikan keuntungan ekstra dalam pertempuran!\n\n"
+        "🥈 *VIP Silver* — Rp 15.000/bulan\n"
+        "Crit +4%, HP +20, MP +15, ATK +3\n\n"
+        "🥇 *VIP Gold* — Rp 30.000/bulan\n"
+        "Crit +8%, HP +45, MP +30, ATK +7\n\n"
+        "💎 *VIP Diamond* — Rp 75.000/bulan\n"
+        "Crit +14%, HP +85, MP +55, ATK +13\n\n"
+        "_Pembelian melalui transfer bank. Tap untuk detail._"
     )
     buttons = [
         [InlineKeyboardButton("🥈 Beli VIP Silver",  callback_data="shop_vip_info_vip_silver")],
@@ -238,24 +206,25 @@ async def _show_vip(query, player: dict):
 
 
 async def _show_vip_info(query, player: dict, vip_id: str):
+    # FIX: gunakan key yang benar dari VIP_PACKAGES dict
     vip = VIP_PACKAGES.get(vip_id)
     if not vip:
         await query.answer("VIP tidak ditemukan!", show_alert=True)
         return
     text = (
         f"╔══════════════════════════════════╗\n"
-        f"║  {vip['name']} — Detail          ║\n"
-        f"╚══════════════════════════════════╝\n\n"
+        f"║  {vip['name']} — Detail\n"
+        "╚══════════════════════════════════╝\n\n"
         f"💡 *{vip['desc']}*\n\n"
-        f"💳 *Cara Pembelian:*\n"
-        f"1. Transfer ke rekening berikut:\n"
-        f"   🏦 Bank: {vip['SEABANK']}\n"
-        f"   📋 Nomor: `{vip['901919719088']}`\n"
-        f"   👤 A/N: {vip['Erik Martin']}\n"
+        "💳 *Cara Pembelian:*\n"
+        "1. Transfer ke rekening berikut:\n"
+        f"   🏦 Bank: *{vip['bank']}*\n"
+        f"   📋 Nomor: `{vip['account']}`\n"
+        f"   👤 A/N: *{vip['account_name']}*\n"
         f"   💰 Nominal: Rp {vip['price_idr']:,}\n\n"
-        f"2. Kirim bukti transfer ke admin\n"
+        "2. Kirim bukti transfer ke admin\n"
         f"   beserta *ID Telegram* kamu: `{query.from_user.id}`\n\n"
-        f"3. Admin akan aktifkan VIP dalam 1x24 jam\n\n"
+        "3. Admin akan aktifkan VIP dalam 1x24 jam\n\n"
         f"_Aktif selama {vip['duration_days']} hari setelah konfirmasi._"
     )
     buttons = [
@@ -268,18 +237,20 @@ async def _show_vip_info(query, player: dict, vip_id: str):
 
 async def _show_coin_packages(query, player: dict):
     text = (
-        f"╔══════════════════════════════════╗\n"
-        f"║    💰  *TOPUP COIN*              ║\n"
-        f"╠══════════════════════════════════╣\n"
+        "╔══════════════════════════════════╗\n"
+        "║    💰  *TOPUP COIN*              ║\n"
+        "╠══════════════════════════════════╣\n"
         f"║  {_coin_line(player)}\n"
-        f"╚══════════════════════════════════╝\n\n"
-        f"💰 Beli coin untuk berbelanja di toko!\n\n"
+        "╚══════════════════════════════════╝\n\n"
+        "💰 Beli coin untuk berbelanja di toko!\n\n"
     )
     for pid, pkg in COIN_PACKAGES.items():
         text += f"*{pkg['name']}* — Rp {pkg['price_idr']:,}\n"
     text += (
-        f"\n💳 *Cara Topup:*\n"
-        f"Transfer ke 🏦 SEABANK `901919719088` Erik Martin"
+        "\n💳 *Cara Topup:*\n"
+        f"Transfer ke 🏦 {COIN_PACKAGES['coins_small']['bank']} "
+        f"`{COIN_PACKAGES['coins_small']['account']}` "
+        f"{COIN_PACKAGES['coins_small']['account_name']}\n"
         f"Kirim bukti + ID kamu: `{query.from_user.id}` ke admin"
     )
     buttons = [[InlineKeyboardButton("⬅️ Kembali", callback_data="shop_main")]]
@@ -289,18 +260,20 @@ async def _show_coin_packages(query, player: dict):
 
 async def _show_diamond_packages(query, player: dict):
     text = (
-        f"╔══════════════════════════════════╗\n"
-        f"║    💎  *TOPUP DIAMOND*           ║\n"
-        f"╠══════════════════════════════════╣\n"
+        "╔══════════════════════════════════╗\n"
+        "║    💎  *TOPUP DIAMOND*           ║\n"
+        "╠══════════════════════════════════╣\n"
         f"║  {_coin_line(player)}\n"
-        f"╚══════════════════════════════════╝\n\n"
-        f"💎 Diamond untuk item premium!\n\n"
+        "╚══════════════════════════════════╝\n\n"
+        "💎 Diamond untuk item premium!\n\n"
     )
     for pid, pkg in DIAMOND_PACKAGES.items():
         text += f"*{pkg['name']}* — Rp {pkg['price_idr']:,}\n"
     text += (
-        f"\n💳 *Cara Topup:*\n"
-        f"Transfer ke 🏦 SEABANK `901919719088` Erik Martin"
+        "\n💳 *Cara Topup:*\n"
+        f"Transfer ke 🏦 {DIAMOND_PACKAGES['diamond_small']['bank']} "
+        f"`{DIAMOND_PACKAGES['diamond_small']['account']}` "
+        f"{DIAMOND_PACKAGES['diamond_small']['account_name']}\n"
         f"Kirim bukti + ID kamu: `{query.from_user.id}` ke admin"
     )
     buttons = [[InlineKeyboardButton("⬅️ Kembali", callback_data="shop_main")]]
@@ -310,7 +283,6 @@ async def _show_diamond_packages(query, player: dict):
 
 # ─── BUY LOGIC ──────────────────────────────────────────────────
 async def _buy_consumable(query, player: dict, user_id: int, item_id: str):
-    from items import CONSUMABLES
     item = CONSUMABLES.get(item_id)
     if not item:
         await query.answer("Item tidak ditemukan!", show_alert=True)
@@ -321,7 +293,7 @@ async def _buy_consumable(query, player: dict, user_id: int, item_id: str):
 
     if not admin and player.get("coin", 0) < price:
         await query.answer(
-            f"❌ Coin tidak cukup! Butuh {price}, punya {player.get('coin',0)}",
+            f"❌ Coin tidak cukup! Butuh {price:,}, punya {player.get('coin',0):,}",
             show_alert=True
         )
         return
@@ -344,7 +316,6 @@ async def _buy_equipment(query, player: dict, user_id: int, item_id: str, eq_typ
         await query.answer("Item tidak ditemukan!", show_alert=True)
         return
 
-    # Class check
     item_class = item.get("class")
     if item_class and item_class != player.get("class") and not is_admin(user_id):
         await query.answer("❌ Item ini bukan untuk kelasmu!", show_alert=True)
@@ -355,7 +326,7 @@ async def _buy_equipment(query, player: dict, user_id: int, item_id: str, eq_typ
 
     if not admin and player.get("coin", 0) < price:
         await query.answer(
-            f"❌ Coin tidak cukup! Butuh {price}💰, punya {player.get('coin',0)}💰",
+            f"❌ Coin tidak cukup! Butuh {price:,}💰, punya {player.get('coin',0):,}💰",
             show_alert=True
         )
         return
@@ -363,26 +334,26 @@ async def _buy_equipment(query, player: dict, user_id: int, item_id: str, eq_typ
     if not admin:
         player["coin"] -= price
 
-    equip = player.setdefault("equipment", {})
+    equip  = player.setdefault("equipment", {})
     old_id = equip.get(eq_type)
 
-    # Remove old stats
+    # Lepas item lama
     if old_id:
         old_item = ALL_ITEMS.get(old_id, {})
         for stat, val in old_item.get("stats", {}).items():
             player[stat] = max(1, player.get(stat, 0) - val)
 
-    # Apply new stats
+    # Pasang item baru
     equip[eq_type] = item_id
     for stat, val in item.get("stats", {}).items():
         player[stat] = player.get(stat, 0) + val
         if stat == "max_hp":
-            player["hp"] = min(player["hp"] + val, player["max_hp"])
+            player["hp"] = min(player.get("hp", 1) + val, player["max_hp"])
         if stat == "max_mp":
-            player["mp"] = min(player["mp"] + val, player["max_mp"])
+            player["mp"] = min(player.get("mp", 0) + val, player["max_mp"])
 
     save_player(user_id, player)
-    old_name = ALL_ITEMS.get(old_id, {}).get("name", "")
+    old_name = ALL_ITEMS.get(old_id, {}).get("name", "") if old_id else ""
     old_txt  = f"\n♻️ {old_name} dilepas." if old_name else ""
     await query.answer(f"✅ {item['name']} terpasang!{old_txt}", show_alert=True)
 
@@ -399,23 +370,23 @@ async def _show_skills(query, player: dict):
     bought     = {s["id"] for s in player.get("bought_skills", [])}
 
     text = (
-        f"╔══════════════════════════════════╗\n"
-        f"║     🔮  *SKILL SHOP*             ║\n"
-        f"╠══════════════════════════════════╣\n"
+        "╔══════════════════════════════════╗\n"
+        "║     🔮  *SKILL SHOP*             ║\n"
+        "╠══════════════════════════════════╣\n"
         f"║  {_coin_line(player)}\n"
         f"║  Kelas: *{char_class.capitalize()}*\n"
-        f"╚══════════════════════════════════╝\n\n"
-        f"🔮 Pilih skill untuk dibeli:\n"
-        f"_(Skill dapat dipakai saat battle sebagai pengganti skill utama)_\n\n"
+        "╚══════════════════════════════════╝\n\n"
+        "🔮 Pilih skill untuk dibeli:\n"
+        "_(Skill dapat dipakai saat battle sebagai pengganti skill utama)_\n\n"
     )
 
     buttons = []
     for sid, sk in skills.items():
-        stars     = RARITY_STARS.get(sk.get("rarity", "rare"), "⭐⭐⭐")
-        price     = sk["price"]
-        owned     = " ✅ Dimiliki" if sid in bought else ""
-        affordable = "✓" if player.get("coin", 0) >= price or owned else "✗"
-        label = f"{sk['name']} {stars} — {price:,}💰 {affordable}{owned}"
+        stars  = RARITY_STARS.get(sk.get("rarity", "rare"), "⭐⭐⭐")
+        price  = sk["price"]
+        owned  = " ✅ Dimiliki" if sid in bought else ""
+        mark   = "✓" if (player.get("coin", 0) >= price or sid in bought) else "✗"
+        label  = f"{sk['name']} {stars} — {price:,}💰 {mark}{owned}"
         buttons.append([InlineKeyboardButton(label, callback_data=f"shop_buy_skill_{sid}")])
 
     buttons.append([InlineKeyboardButton("⬅️ Kembali", callback_data="shop_main")])
@@ -424,7 +395,6 @@ async def _show_skills(query, player: dict):
 
 
 async def _buy_skill(query, player: dict, user_id: int, skill_id: str):
-    from items import SHOP_SKILLS
     skill = SHOP_SKILLS.get(skill_id)
     if not skill:
         await query.answer("Skill tidak ditemukan!", show_alert=True)
@@ -435,7 +405,7 @@ async def _buy_skill(query, player: dict, user_id: int, skill_id: str):
         await query.answer("❌ Skill ini bukan untuk kelasmu!", show_alert=True)
         return
 
-    bought = player.setdefault("bought_skills", [])
+    bought    = player.setdefault("bought_skills", [])
     owned_ids = [s["id"] for s in bought]
     if skill_id in owned_ids:
         await query.answer("✅ Skill sudah dimiliki!", show_alert=True)
@@ -453,7 +423,6 @@ async def _buy_skill(query, player: dict, user_id: int, skill_id: str):
     if not admin:
         player["coin"] -= price
 
-    # Simpan skill yang dibeli
     bought.append({
         "id":     skill_id,
         "name":   skill["name"],
