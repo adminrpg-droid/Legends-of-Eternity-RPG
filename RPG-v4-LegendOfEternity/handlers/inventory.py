@@ -1,8 +1,8 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
-from models.database import get_player, save_player
-from data.items import get_item, RARITY_STARS, ALL_ITEMS
+from database import get_player, save_player
+from items import get_item, RARITY_STARS, ALL_ITEMS
 
 
 async def inventory_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
