@@ -2,7 +2,7 @@ import time
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 
-from models.database import get_player, save_player
+from database import get_player, save_player
 
 DAILY_REWARDS = [
     {"coin": 50,  "hp_pot": 2, "mp_pot": 1,               "day": 1},
@@ -17,6 +17,10 @@ DAILY_REWARDS = [
 
 async def daily_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user   = update.effective_user
+    from database import is_banned
+    if is_banned(user.id):
+        await update.message.reply_text("🚫 Akunmu di-ban!")
+        return
     player = get_player(user.id)
     if not player:
         await update.message.reply_text("❌ Ketik /start dulu!")
