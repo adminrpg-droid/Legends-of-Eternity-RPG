@@ -34,6 +34,9 @@ from handlers.admin      import (
     adminhelp_handler,
 )
 
+# ── Buat folder data sebelum logging ────────────────────────────
+os.makedirs("data", exist_ok=True)
+
 logging.basicConfig(
     format="%(asctime)s | %(name)s | %(levelname)s | %(message)s",
     level=logging.INFO,
@@ -44,13 +47,15 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# FIX: Token dibaca dari env var saja; jangan hardcode di kode
 BOT_TOKEN = os.environ.get("BOT_TOKEN","8656505461:AAGwzpxBdkzpquDA3Pz4aRExxVpOu9vBNYo")
 if not BOT_TOKEN:
-    raise ValueError("❌ BOT_TOKEN belum diset! Tambahkan ke environment variable.")
+    logger.critical("❌ BOT_TOKEN belum diset! Set environment variable BOT_TOKEN.")
+    sys.exit(1)
 
 
 # ════════════════════════════════════════════════════════════════
-#  /help — Pemain (tanpa perintah admin)
+#  /help
 # ════════════════════════════════════════════════════════════════
 async def help_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = (
@@ -78,17 +83,16 @@ async def help_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "• Cooldown 60 detik setelah berhenti\n"
         "• Maks durasi: 5 menit per sesi\n\n"
         "🔮 *SKILL SHOP (/shop → Skill)*\n"
-        "• Skill eksklusif per kelas\n"
+        "• 5 skill eksklusif per kelas (2 baru!)\n"
         "• Skill tersimpan permanen di karakter\n"
-        "• Gunakan saat battle sebagai pengganti skill utama\n\n"
+        "• Gunakan saat battle dengan tombol Skill\n\n"
         "🏆 *LEADERBOARD (/leaderboard)*\n"
         "• Tab 🏆 Semua Waktu | 📅 Mingguan | 📆 Bulanan\n"
         "• Diurutkan: Level, Kills, Boss Kills\n\n"
         "💎 *SISTEM VIP*\n"
         "• 🥈 Silver — Bonus stat ringan, 30 hari\n"
         "• 🥇 Gold — Bonus stat sedang, 30 hari\n"
-        "• 💎 Diamond — Bonus stat tinggi, 30 hari\n"
-        "• VIP memberi bonus Crit, HP, MP, ATK\n\n"
+        "• 💎 Diamond — Bonus stat tinggi, 30 hari\n\n"
         "🎯 *TIPS BERMAIN*\n"
         "• Klaim /daily setiap hari untuk streak bonus\n"
         "• Senjata & armor harus sesuai kelasmu\n"
@@ -115,7 +119,7 @@ async def menu_cb_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # ════════════════════════════════════════════════════════════════
-#  BOT COMMANDS (menu yang muncul di Telegram)
+#  BOT COMMANDS (menu Telegram)
 # ════════════════════════════════════════════════════════════════
 PLAYER_COMMANDS = [
     BotCommand("start",       "🏠 Mulai & Menu Utama"),
@@ -136,18 +140,13 @@ PLAYER_COMMANDS = [
 
 
 # ════════════════════════════════════════════════════════════════
-#  Menu action callbacks (tombol pintas dari menu utama)
+#  Menu action callbacks
 # ════════════════════════════════════════════════════════════════
 async def menu_action_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle tombol menu cepat yang trigger command tertentu."""
     query = update.callback_query
     await query.answer()
-    action = query.data  # e.g. menu_battle, menu_shop, etc.
+    action = query.data
 
-    # Mapping: callback_data → fungsi handler yang dipanggil
-    from telegram import Message
-    # Simulasikan pesan biasa agar handler bisa dipanggil
-    # Cara: edit pesan jadi teks instruksi + kirim notif
     instructions = {
         "menu_battle":    "⚔️ Ketik /battle untuk mulai bertarung!",
         "menu_dungeon":   "🏰 Ketik /dungeon untuk masuki dungeon!",
@@ -165,7 +164,6 @@ async def menu_action_handler(update: Update, context: ContextTypes.DEFAULT_TYPE
 
 
 def main():
-    import os
     os.makedirs("data", exist_ok=True)
 
     app = Application.builder().token(BOT_TOKEN).build()
@@ -215,19 +213,19 @@ def main():
     app.add_handler(CallbackQueryHandler(group_boss_action_handler, pattern=r"^gb_"))
     app.add_handler(CallbackQueryHandler(profile_handler,           pattern=r"^profile$"))
     app.add_handler(CallbackQueryHandler(menu_cb_handler,           pattern=r"^menu$"))
-    app.add_handler(CallbackQueryHandler(menu_action_handler,        pattern=r"^menu_"))
+    app.add_handler(CallbackQueryHandler(menu_action_handler,       pattern=r"^menu_"))
 
     # ── Text input (nama karakter) ────────────────────────────────
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, name_input_handler))
 
-    # ── Set bot commands (menu Telegram) ─────────────────────────
+    # ── Set bot commands ──────────────────────────────────────────
     async def post_init(application):
         await application.bot.set_my_commands(PLAYER_COMMANDS)
         logger.info("✅ Bot commands registered.")
 
     app.post_init = post_init
 
-    logger.info("⚔️  Legends of Eternity v5.0 is running!")
+    logger.info("⚔️  Legends of Eternity v5.0 — READY!")
     app.run_polling(allowed_updates=Update.ALL_TYPES, drop_pending_updates=True)
 
 
