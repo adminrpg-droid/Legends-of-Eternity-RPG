@@ -1,8 +1,3 @@
-"""
-Keep-alive server untuk Replit.
-Replit menidurkan app jika tidak ada request HTTP.
-Gunakan UptimeRobot atau cron-job.org untuk ping /health setiap 5 menit.
-"""
 from flask import Flask
 from threading import Thread
 import logging
