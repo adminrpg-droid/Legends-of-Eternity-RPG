@@ -1,4 +1,4 @@
-# ⚔️ Legends of Eternity v11.0 — Telegram RPG Bot
+# ⚔️ Legends of Eternity — Telegram RPG Bot
 
 > Bot RPG Telegram berbahasa Indonesia dengan sistem battle, dungeon, market, book, leaderboard, VIP, dan panel admin lengkap.
 
