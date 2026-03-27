@@ -106,7 +106,38 @@ def get_ban_info(user_id: int) -> Optional[dict]:
 #  PLAYER CRUD
 # ════════════════════════════════════════════════════════════════
 def get_player(user_id: int) -> Optional[dict]:
-    return _load().get(str(user_id))
+    player = _load().get(str(user_id))
+    if player is not None:
+        # BUG FIX: reset weekly/monthly stats otomatis setiap kali player diambil
+        # Inline reset agar tidak ada forward reference ke refresh_periods
+        import datetime as _dt, time as _time
+        def _wk():
+            today = _dt.date.today()
+            mon = today - _dt.timedelta(days=today.weekday())
+            return float(_dt.datetime(mon.year, mon.month, mon.day).timestamp())
+        def _mo():
+            t = _time.gmtime()
+            return _time.mktime(_time.struct_time((t.tm_year, t.tm_mon, 1, 0, 0, 0, 0, 0, -1)))
+        changed = False
+        week = _wk()
+        if player.get("weekly_reset", 0) < week:
+            player["weekly_kills"]       = 0
+            player["weekly_boss_kills"]  = 0
+            player["weekly_coin_earned"] = 0
+            player["weekly_reset"]       = week
+            changed = True
+        month = _mo()
+        if player.get("monthly_reset", 0) < month:
+            player["monthly_kills"]       = 0
+            player["monthly_boss_kills"]  = 0
+            player["monthly_coin_earned"] = 0
+            player["monthly_reset"]       = month
+            changed = True
+        if changed:
+            data = _load()
+            data[str(user_id)] = player
+            _save(data)
+    return player
 
 def save_player(user_id: int, player: dict):
     data = _load()
@@ -124,12 +155,10 @@ def get_all_players() -> dict:
 #  WEEKLY / MONTHLY TRACKING
 # ════════════════════════════════════════════════════════════════
 def _get_week_start() -> float:
-    t = time.gmtime()
-    monday = time.mktime(time.struct_time((
-        t.tm_year, t.tm_mon, t.tm_mday - t.tm_wday,
-        0, 0, 0, 0, 0, -1
-    )))
-    return monday
+    import datetime
+    today = datetime.date.today()
+    monday = today - datetime.timedelta(days=today.weekday())
+    return float(datetime.datetime(monday.year, monday.month, monday.day, 0, 0, 0).timestamp())
 
 def _get_month_start() -> float:
     t = time.gmtime()
@@ -200,22 +229,26 @@ CLASS_STATS = {
         "lore": "Pembunuh siluman yang selalu menyerang dari kegelapan"
     },
     "assassin": {
-        "hp": 130, "max_hp": 130, "mp": 85,  "max_mp": 85,
-        "atk": 36, "def": 9, "spd": 28, "crit": 30,
-        "skill": "💀 Death Mark",
-        "skill_desc": "Menandai musuh, serangan berikut x3 damage",
-        "emoji": "💉",
+        "hp": 125, "max_hp": 125, "mp": 90,  "max_mp": 90,
+        "atk": 40, "def": 8, "spd": 32, "crit": 35,
+        "skill": "🩸 Shadow Execution",
+        "skill_desc": "Kill pertama: +25% HP, next atk x3 DMG. CRIT selalu proc Bleed.",
+        "emoji": "🗡️",
         "gender_m": "Pembunuh Bayaran", "gender_f": "Pembunuh Bayaran Wanita",
-        "lore": "Pembunuh terlatih yang mengakhiri target dalam sekejap"
+        "lore": "Pembunuh terlatih yang menyerang dari kegelapan — cepat, akurat, mematikan.",
+        "special": "🩸 Shadow Execution — Kill pertama restore 25% HP + next attack x3 DMG + CRIT proc Bleed",
+        "special_effect": {"first_kill_heal_pct": 0.25, "next_dmg_mult": 3.0, "crit_bleed": True, "bleed_dmg": 15, "bleed_turns": 3}
     },
-    "necromancer": {
+    "reaper": {
         "hp": 115, "max_hp": 115, "mp": 180, "max_mp": 180,
-        "atk": 28, "def": 7, "spd": 9, "crit": 14,
-        "skill": "💜 Soul Drain",
-        "skill_desc": "Menghisap jiwa musuh, memulihkan HP",
-        "emoji": "💀",
-        "gender_m": "Pemanggil Arwah", "gender_f": "Penyihir Gelap",
-        "lore": "Penguasa kematian yang membangkitkan arwah sebagai senjata"
+        "atk": 32, "def": 8, "spd": 12, "crit": 18,
+        "skill": "☠️ Soul Reap",
+        "skill_desc": "Tiap kill timbun Soul (max 5). 5 Soul → Harvest: -50% HP semua musuh.",
+        "emoji": "☠️",
+        "gender_m": "Death Reaper", "gender_f": "Dark Reaper",
+        "lore": "Penguasa kematian yang mengayunkan sabit maut untuk memanen jiwa musuh",
+        "special": "☠️ Soul Reap — Tiap kill timbun Soul (max 5). 5 Soul → Harvest: semua musuh -50% HP + heal 15%",
+        "special_effect": {"on_kill_heal_pct": 0.15, "soul_stack": True, "max_souls": 5}
     },
 }
 
@@ -260,9 +293,14 @@ def create_player(user_id: int, name: str, char_class: str,
         "dungeon_clears":0,
         "wins":          0,
         "losses":        0,
+        # PVP stats (disimpan permanen)
+        "pvp_stats": {"wins": 0, "losses": 0, "streak": 0, "best_streak": 0},
         # Inventory & equipment
         "inventory":  {"health_potion": 2, "mana_potion": 1},
         "equipment":  {"weapon": None, "armor": None},
+        "pet":        None,
+        "pet_tier":   0,
+        "class_tier": 1,
         # VIP
         "vip": {"active": False, "tier": None, "expires": 0},
         # Time & misc
@@ -356,7 +394,8 @@ def save_market(data: dict):
     _save(data, MKT_PATH)
 
 def add_market_listing(seller_id: int, seller_name: str,
-                       item_id: str, item_data: dict, price: int) -> str:
+                       item_id: str, item_data: dict, price: int,
+                       currency: str = "gold", item_source: str = "equip") -> str:
     market     = get_market()
     listing_id = f"{seller_id}_{item_id}_{int(time.time())}"
     market[listing_id] = {
@@ -365,6 +404,8 @@ def add_market_listing(seller_id: int, seller_name: str,
         "item_id":     item_id,
         "item_data":   item_data,
         "price":       price,
+        "currency":    currency,       # "gold" atau "diamond"
+        "item_source": item_source,    # "equip","skill","pet","inv"
         "listed_at":   time.time(),
     }
     save_market(market)
