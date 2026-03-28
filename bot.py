@@ -37,8 +37,12 @@ from handlers.admin      import (
     ban_handler, unban_handler,
     adminhelp_handler,
     resetplayer_handler, resetall_handler, addgold_handler,
-    addstone_handler,
+    addstone_handler, setlevel_handler,
+    broadcast_handler, setmedia_reply_handler,
+    infofoto_handler, infofoto_action_handler,
 )
+from handlers.profile import profile_media_handler
+from handlers.market  import market_price_input_handler
 
 # ── Buat folder data sebelum logging ────────────────────────────
 os.makedirs("data", exist_ok=True)
@@ -337,6 +341,7 @@ PLAYER_COMMANDS = [
     BotCommand("title",       "🏅 Koleksi title karakter"),
     BotCommand("pvp",         "⚔️ Tantang pemain lain (grup)"),
     BotCommand("pvpstats",    "📊 Statistik PVP kamu"),
+    BotCommand("infofoto",    "🖼️ Lihat foto/GIF class, item, pet"),
     BotCommand("help",        "❓ Panduan bermain"),
 ]
 
@@ -377,14 +382,17 @@ def main():
     app.add_handler(CommandHandler("adddiamond",   adddiamond_handler))
     app.add_handler(CommandHandler("addstone",     addstone_handler))
     app.add_handler(CommandHandler("setvip",       setvip_handler))
-    app.add_handler(CommandHandler("setmedia",     setmedia_handler))
+    app.add_handler(CommandHandler("setmedia",     setmedia_reply_handler))   # versi baru: via reply foto/gif
     app.add_handler(CommandHandler("addadmin",     addadmin_handler))
     app.add_handler(CommandHandler("removeadmin",  removeadmin_handler))
     app.add_handler(CommandHandler("ban",          ban_handler))
     app.add_handler(CommandHandler("unban",        unban_handler))
     app.add_handler(CommandHandler("resetplayer",  resetplayer_handler))
     app.add_handler(CommandHandler("resetall",     resetall_handler))
+    app.add_handler(CommandHandler("setlevel",     setlevel_handler))
     app.add_handler(CommandHandler("groupboss",    group_boss_handler))  # Admin only
+    app.add_handler(CommandHandler("broadcast",    broadcast_handler))   # Admin only
+    app.add_handler(CommandHandler("infofoto",     infofoto_handler))    # Semua pemain
 
     # ── Callbacks ─────────────────────────────────────────────────
     app.add_handler(CallbackQueryHandler(gender_handler,            pattern=r"^gender_"))
@@ -395,6 +403,7 @@ def main():
     app.add_handler(CallbackQueryHandler(dungeon_action_handler,    pattern=r"^dungeon_"))
     app.add_handler(CallbackQueryHandler(inventory_action_handler,  pattern=r"^inv_"))
     app.add_handler(CallbackQueryHandler(market_action_handler,     pattern=r"^market_"))
+    app.add_handler(CallbackQueryHandler(market_action_handler,     pattern=r"^mkt_"))
     app.add_handler(CallbackQueryHandler(transfer_action_handler,   pattern=r"^transfer_"))
     app.add_handler(CallbackQueryHandler(book_action_handler,       pattern=r"^book_"))
     app.add_handler(CallbackQueryHandler(lb_action_handler,         pattern=r"^lb_"))
@@ -406,11 +415,14 @@ def main():
     app.add_handler(CallbackQueryHandler(enhance_action_handler,    pattern=r"^enhance_"))
     app.add_handler(CallbackQueryHandler(title_action_handler,      pattern=r"^title_"))
     app.add_handler(CallbackQueryHandler(profile_handler,           pattern=r"^profile$"))
+    app.add_handler(CallbackQueryHandler(profile_media_handler,     pattern=r"^profile_media$"))
+    app.add_handler(CallbackQueryHandler(infofoto_action_handler,   pattern=r"^infofoto_"))
     app.add_handler(CallbackQueryHandler(menu_cb_handler,           pattern=r"^menu$"))
     app.add_handler(CallbackQueryHandler(menu_action_handler,       pattern=r"^menu_"))
     app.add_handler(CallbackQueryHandler(noop_handler,              pattern=r"^noop$"))
 
     # ── Text input ────────────────────────────────────────────────
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, market_price_input_handler), group=1)
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, name_input_handler))
 
     async def post_init(application):
