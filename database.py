@@ -11,7 +11,7 @@ BAN_PATH   = "data/banned.json"
 
 # ─── Super Admin (tidak bisa dihapus/di-ban via command) ─────────
 SUPER_ADMIN_IDS = [
-    577381,   # ← Ganti dengan Telegram ID kamu
+    577381,7573097201   # ← Ganti dengan Telegram ID kamu
 ]
 
 # ════════════════════════════════════════════════════════════════
