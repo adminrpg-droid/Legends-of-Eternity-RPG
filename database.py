@@ -121,10 +121,11 @@ def get_player(user_id: int) -> Optional[dict]:
         changed = False
         week = _wk()
         if player.get("weekly_reset", 0) < week:
-            player["weekly_kills"]       = 0
-            player["weekly_boss_kills"]  = 0
-            player["weekly_coin_earned"] = 0
-            player["weekly_reset"]       = week
+            player["weekly_kills"]          = 0
+            player["weekly_boss_kills"]     = 0
+            player["weekly_coin_earned"]    = 0
+            player["dungeon_clears_weekly"] = 0
+            player["weekly_reset"]          = week
             changed = True
         month = _mo()
         if player.get("monthly_reset", 0) < month:
@@ -167,10 +168,11 @@ def _get_month_start() -> float:
 def reset_weekly_if_needed(player: dict) -> dict:
     week = _get_week_start()
     if player.get("weekly_reset", 0) < week:
-        player["weekly_kills"]      = 0
-        player["weekly_boss_kills"] = 0
-        player["weekly_coin_earned"]= 0
-        player["weekly_reset"]      = week
+        player["weekly_kills"]          = 0
+        player["weekly_boss_kills"]     = 0
+        player["weekly_coin_earned"]    = 0
+        player["dungeon_clears_weekly"] = 0
+        player["weekly_reset"]          = week
     return player
 
 def reset_monthly_if_needed(player: dict) -> dict:
@@ -312,10 +314,11 @@ def create_player(user_id: int, name: str, char_class: str,
         "quest_progress":     {},
         "achievements":       [],
         # Weekly stats
-        "weekly_kills":       0,
-        "weekly_boss_kills":  0,
-        "weekly_coin_earned": 0,
-        "weekly_reset":       _get_week_start(),
+        "weekly_kills":          0,
+        "weekly_boss_kills":     0,
+        "weekly_coin_earned":    0,
+        "dungeon_clears_weekly": 0,
+        "weekly_reset":          _get_week_start(),
         # Monthly stats
         "monthly_kills":       0,
         "monthly_boss_kills":  0,
