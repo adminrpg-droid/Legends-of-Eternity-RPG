@@ -53,14 +53,22 @@ def format_profile(player: dict, telegram_id: int = None, viewer_id: int = None)
         if r == "legendary":return " ⭐⭐⭐⭐⭐"
         return ""
 
-    weapon_str = (wpn_item.get("name","─ Kosong") + _rarity_badge(wpn_item)) if wpn_item else "─ Kosong"
-    armor_str  = (arm_item.get("name","─ Kosong") + _rarity_badge(arm_item)) if arm_item else "─ Kosong"
+    # Enhance levels
+    enh_levels  = player.get("enhance_levels", {})
+    wpn_enh_lv  = enh_levels.get("weapon", 0)
+    arm_enh_lv  = enh_levels.get("armor", 0)
+    skl_enh_lv  = enh_levels.get("skill", 0)
+    _enh_emoji  = ["","⬆️","✨","💫","🌟","⚡","🔥","💥","🌈","👑","🔱"]
+    def _enh_tag(lv): return f" {_enh_emoji[lv]}+{lv}" if lv > 0 else ""
+
+    weapon_str = (wpn_item.get("name","─ Kosong") + _rarity_badge(wpn_item) + _enh_tag(wpn_enh_lv)) if wpn_item else "─ Kosong"
+    armor_str  = (arm_item.get("name","─ Kosong") + _rarity_badge(arm_item) + _enh_tag(arm_enh_lv)) if arm_item else "─ Kosong"
 
     # Active skill badge
     from items import SHOP_SKILLS, PREMIUM_SKILLS, GOD_SSSR_SKILLS
     skill_item = SHOP_SKILLS.get(skill_id) or PREMIUM_SKILLS.get(skill_id) or GOD_SSSR_SKILLS.get(skill_id) if skill_id else None
     skill_badge = _rarity_badge(skill_item) if skill_item else ""
-    skill_name  = (skill_item.get("name","") + skill_badge) if skill_item else "─ Default"
+    skill_name  = (skill_item.get("name","") + skill_badge + _enh_tag(skl_enh_lv)) if skill_item else "─ Default"
 
     # Pet badge
     from items import PET_SHOP, GOD_SSSR_PETS
