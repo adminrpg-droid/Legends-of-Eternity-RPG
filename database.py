@@ -11,7 +11,7 @@ BAN_PATH   = "data/banned.json"
 
 # ─── Super Admin (tidak bisa dihapus/di-ban via command) ─────────
 SUPER_ADMIN_IDS = [
-    577381,7573097201   # ← Ganti dengan Telegram ID kamu
+    577381, 7573097201  # ← Ganti dengan Telegram ID kamu
 ]
 
 # ════════════════════════════════════════════════════════════════
@@ -21,13 +21,33 @@ def _load(path: str = DB_PATH) -> dict:
     os.makedirs("data", exist_ok=True)
     if not os.path.exists(path):
         return {}
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (json.JSONDecodeError, ValueError):
+        # File corrupt — try to restore from backup
+        backup = path + ".bak"
+        if os.path.exists(backup):
+            try:
+                with open(backup, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception:
+                pass
+        return {}
 
 def _save(data: dict, path: str = DB_PATH):
     os.makedirs("data", exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
+    # Backup file lama sebelum replace (untuk recovery jika crash)
+    if os.path.exists(path):
+        try:
+            import shutil
+            shutil.copy2(path, path + ".bak")
+        except Exception:
+            pass
+    os.replace(tmp, path)  # atomic rename — prevents corrupt JSON on crash
 
 
 # ════════════════════════════════════════════════════════════════
@@ -106,10 +126,10 @@ def get_ban_info(user_id: int) -> Optional[dict]:
 #  PLAYER CRUD
 # ════════════════════════════════════════════════════════════════
 def get_player(user_id: int) -> Optional[dict]:
-    player = _load().get(str(user_id))
+    # FIX BUG #7: simpan referensi data agar tidak double _load() saat save period reset
+    data   = _load()
+    player = data.get(str(user_id))
     if player is not None:
-        # BUG FIX: reset weekly/monthly stats otomatis setiap kali player diambil
-        # Inline reset agar tidak ada forward reference ke refresh_periods
         import datetime as _dt, time as _time
         def _wk():
             today = _dt.date.today()
@@ -135,7 +155,7 @@ def get_player(user_id: int) -> Optional[dict]:
             player["monthly_reset"]       = month
             changed = True
         if changed:
-            data = _load()
+            # gunakan data yang sudah diload di atas — tidak perlu _load() lagi
             data[str(user_id)] = player
             _save(data)
     return player
@@ -339,10 +359,16 @@ def level_up(player: dict) -> tuple:
         player["level"]      += 1
         player["exp_needed"]  = int(player["exp_needed"] * 1.35)
         levels_gained         += 1
-        player["max_hp"] += 8
-        player["max_mp"] += 5
-        player["atk"]    += 2
-        player["def"]    += 1
+
+        # HP & MP scale progressively: semakin tinggi level, semakin besar kenaikan
+        lv = player["level"]
+        hp_gain = 10 + int(lv * 1.5)   # Level 1→~11, Level 50→~85, Level 100→~160
+        mp_gain =  6 + int(lv * 0.8)   # Level 1→~6,  Level 50→~46, Level 100→~86
+
+        player["max_hp"] += hp_gain
+        player["max_mp"] += mp_gain
+        player["atk"]    += 2 + max(0, (lv - 1) // 10)   # bonus ATK tiap 10 level
+        player["def"]    += 1 + max(0, (lv - 1) // 15)   # bonus DEF tiap 15 level
         player["spd"]    += 1
         player["hp"]  = player["max_hp"]
         player["mp"]  = player["max_mp"]
@@ -400,7 +426,12 @@ def add_market_listing(seller_id: int, seller_name: str,
                        item_id: str, item_data: dict, price: int,
                        currency: str = "gold", item_source: str = "equip") -> str:
     market     = get_market()
-    listing_id = f"{seller_id}_{item_id}_{int(time.time())}"
+    # BUG FIX: short listing_id keeps callback_data under Telegram 64-byte limit
+    # Format: "m{uid6}_{item16}_{ts8}" → max 33 chars, so "market_cancel_"+33 = 47 ≤ 64
+    short_uid  = str(seller_id)[-6:]
+    short_item = item_id[:16].rstrip("_")
+    short_ts   = str(int(time.time()))[-8:]
+    listing_id = f"m{short_uid}_{short_item}_{short_ts}"
     market[listing_id] = {
         "seller_id":   seller_id,
         "seller_name": seller_name,
