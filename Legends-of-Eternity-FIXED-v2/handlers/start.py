@@ -7,8 +7,8 @@ CHOOSING_GENDER = 1
 CHOOSING_CLASS  = 2
 ENTERING_NAME   = 3
 
-OFFICIAL_GROUP   = "https://t.me/loerpgg"    # Ganti dengan link grup
-OFFICIAL_CHANNEL = "https://t.me/loerpg"  # Ganti dengan link channel
+OFFICIAL_GROUP   = "https://t.me/loerpgo"    # Ganti dengan link grup
+OFFICIAL_CHANNEL = "https://t.me/loerpgof"  # Ganti dengan link channel
 
 
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
