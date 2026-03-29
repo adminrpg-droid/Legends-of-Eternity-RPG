@@ -217,8 +217,8 @@ def get_random_monster(player_level: int) -> dict:
     m = pool[name].copy()
     m["name"] = name
 
-    # Scaling 0.15 per level — LEBIH BRUTAL
-    scale = 1 + (player_level - 1) * 0.15
+    # Scaling 0.07 per level — lebih mudah dibunuh
+    scale = 1 + (player_level - 1) * 0.07
     m["hp"]  = int(m["hp"] * scale)
     m["atk"] = int(m["atk"] * scale)
     m["def"] = int(m["def"] * scale)
@@ -238,9 +238,9 @@ def get_dungeon_monsters(dungeon_id: int, player_level: int, floor: int = 1) -> 
     m = pool[name].copy()
     m["name"] = name
 
-    # Base scaling per level + floor scaling (+10% per floor)
-    level_scale = 1 + (player_level - 1) * 0.18
-    floor_scale = 1 + (floor - 1) * 0.10
+    # Base scaling per level + floor scaling (+5% per floor)
+    level_scale = 1 + (player_level - 1) * 0.09
+    floor_scale = 1 + (floor - 1) * 0.05
     scale = level_scale * floor_scale
 
     m["hp"]  = int(m["hp"]  * scale)
@@ -256,8 +256,8 @@ def get_boss(boss_id: str, scale_level: int = 1, floor: int = None) -> dict:
     boss = BOSSES.get(boss_id, BOSSES["goblin_king"]).copy()
     boss["boss_id"] = boss_id
 
-    level_scale = 1 + (scale_level - 1) * 0.20
-    floor_scale = 1 + (floor - 1) * 0.15 if floor is not None else 1.0
+    level_scale = 1 + (scale_level - 1) * 0.10
+    floor_scale = 1 + (floor - 1) * 0.08 if floor is not None else 1.0
     scale = level_scale * floor_scale
 
     boss["hp"]  = int(boss["hp"]  * scale)
