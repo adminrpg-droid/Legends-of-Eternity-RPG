@@ -352,6 +352,30 @@ def create_player(user_id: int, name: str, char_class: str,
 # ════════════════════════════════════════════════════════════════
 #  LEVEL UP
 # ════════════════════════════════════════════════════════════════
+def _level_stat_gains(lv: int) -> dict:
+    """
+    Hitung kenaikan stat per level naik ke level `lv`.
+    Semakin tinggi level, semakin besar kenaikan (progressif + eksponensial ringan).
+    """
+    # HP: naik eksponensial — level rendah kecil, level tinggi besar
+    hp_gain  = 12 + int(lv * 2.0) + int((lv / 10) ** 2)
+    # MP: naik lebih moderat
+    mp_gain  =  7 + int(lv * 1.0) + int((lv / 15) ** 2)
+    # ATK: naik tiap level, bonus tambahan tiap 10 level
+    atk_gain =  2 + int(lv * 0.15) + max(0, (lv - 1) // 10)
+    # DEF: naik lebih pelan
+    def_gain =  1 + int(lv * 0.08) + max(0, (lv - 1) // 15)
+    # SPD: naik stabil + bonus tiap 20 level
+    spd_gain =  1 + max(0, (lv - 1) // 20)
+    # CRIT: naik tiap 5 level setelah level 10
+    crit_gain = 1 if (lv >= 10 and lv % 5 == 0) else 0
+    return {
+        "hp": hp_gain, "mp": mp_gain,
+        "atk": atk_gain, "def": def_gain,
+        "spd": spd_gain, "crit": crit_gain,
+    }
+
+
 def level_up(player: dict) -> tuple:
     leveled, levels_gained = False, 0
     while player["exp"] >= player["exp_needed"]:
@@ -360,18 +384,18 @@ def level_up(player: dict) -> tuple:
         player["exp_needed"]  = int(player["exp_needed"] * 1.35)
         levels_gained         += 1
 
-        # HP & MP scale progressively: semakin tinggi level, semakin besar kenaikan
-        lv = player["level"]
-        hp_gain = 10 + int(lv * 1.5)   # Level 1→~11, Level 50→~85, Level 100→~160
-        mp_gain =  6 + int(lv * 0.8)   # Level 1→~6,  Level 50→~46, Level 100→~86
+        lv   = player["level"]
+        gain = _level_stat_gains(lv)
 
-        player["max_hp"] += hp_gain
-        player["max_mp"] += mp_gain
-        player["atk"]    += 2 + max(0, (lv - 1) // 10)   # bonus ATK tiap 10 level
-        player["def"]    += 1 + max(0, (lv - 1) // 15)   # bonus DEF tiap 15 level
-        player["spd"]    += 1
-        player["hp"]  = player["max_hp"]
-        player["mp"]  = player["max_mp"]
+        player["max_hp"] += gain["hp"]
+        player["max_mp"] += gain["mp"]
+        player["atk"]    += gain["atk"]
+        player["def"]    += gain["def"]
+        player["spd"]    += gain["spd"]
+        player["crit"]    = player.get("crit", 5) + gain["crit"]
+        player["hp"]      = player["max_hp"]
+        player["mp"]      = player["max_mp"]
+
         if player["level"] % 3 == 0:
             player["skill_points"] = player.get("skill_points", 0) + 1
         leveled = True
