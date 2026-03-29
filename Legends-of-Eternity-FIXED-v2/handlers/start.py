@@ -31,7 +31,7 @@ async def show_welcome(update, context):
     text = (
         "╔══════════════════════════════════╗\n"
         "║  ⚔️  *LEGENDS OF ETERNITY*  ⚔️   ║\n"
-        "║      — Telegram RPG Game —       ║\n"
+        "║          —  RPG Game —       ║\n"
         "╚══════════════════════════════════╝\n\n"
         f"🌟 Selamat datang, *{user.first_name}*!\n\n"
         "Dunia Eternity menantimu...\n"
@@ -213,7 +213,7 @@ async def show_main_menu(update_or_query, context):
     mp_bar_ = "█" * (mp_pct//10) + "░" * (10 - mp_pct//10)
     text = (
         f"╔══════════════════════════════════╗\n"
-        f"║  🏰 *LEGENDS OF ETERNITY v11*  🏰 ║\n"
+        f"║  🏰 *LEGENDS OF ETERNITY *  🏰 ║\n"
         f"╠══════════════════════════════════╣\n"
         f"║  {player['emoji']} *{player['name']}* {g_icon} Lv.{player['level']}{vip_str}\n"
         f"║  ❤️ `{hp_bar_}` {player['hp']}/{player['max_hp']}\n"
