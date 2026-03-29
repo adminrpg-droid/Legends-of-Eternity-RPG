@@ -40,8 +40,9 @@ from handlers.admin      import (
     addstone_handler, setlevel_handler,
     broadcast_handler, setmedia_reply_handler,
     infofoto_handler, infofoto_action_handler,
+    giveallgold_handler, givealldiamond_handler,
 )
-from handlers.profile import profile_media_handler
+from handlers.profile import profile_media_handler, profile_rename_handler, profile_rename_cancel_handler, rename_input_handler
 from handlers.market  import market_price_input_handler
 
 # ── Buat folder data sebelum logging ────────────────────────────
@@ -391,7 +392,9 @@ def main():
     app.add_handler(CommandHandler("resetplayer",  resetplayer_handler))
     app.add_handler(CommandHandler("resetall",     resetall_handler))
     app.add_handler(CommandHandler("setlevel",     setlevel_handler))
-    app.add_handler(CommandHandler("groupboss",    group_boss_handler))  # Admin only
+    app.add_handler(CommandHandler("giveallgold",     giveallgold_handler))     # Admin only
+    app.add_handler(CommandHandler("givealldiamond",  givealldiamond_handler))  # Admin only
+    app.add_handler(CommandHandler("groupboss",    group_boss_handler))  # Semua pemain (di grup)
     app.add_handler(CommandHandler("broadcast",    broadcast_handler))   # Admin only
     app.add_handler(CommandHandler("infofoto",     infofoto_handler))    # Semua pemain
 
@@ -417,6 +420,8 @@ def main():
     app.add_handler(CallbackQueryHandler(title_action_handler,      pattern=r"^title_"))
     app.add_handler(CallbackQueryHandler(profile_handler,           pattern=r"^profile$"))
     app.add_handler(CallbackQueryHandler(profile_media_handler,     pattern=r"^profile_media$"))
+    app.add_handler(CallbackQueryHandler(profile_rename_handler,    pattern=r"^profile_rename$"))
+    app.add_handler(CallbackQueryHandler(profile_rename_cancel_handler, pattern=r"^profile_rename_cancel$"))
     app.add_handler(CallbackQueryHandler(infofoto_action_handler,   pattern=r"^infofoto_"))
     app.add_handler(CallbackQueryHandler(menu_cb_handler,           pattern=r"^menu$"))
     app.add_handler(CallbackQueryHandler(menu_action_handler,       pattern=r"^menu_"))
@@ -426,6 +431,7 @@ def main():
     # market_price_input_handler di group 0 agar diperiksa lebih dulu
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, market_price_input_handler), group=0)
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, name_input_handler), group=1)
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, rename_input_handler), group=2)
 
     async def post_init(application):
         await application.bot.set_my_commands(PLAYER_COMMANDS)
