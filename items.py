@@ -3,7 +3,7 @@ CONSUMABLES = {
     "health_potion": {
         "name": "⚕️ Health Potion",
         "desc": "Pulihkan 60 HP",
-        "price": 3000,
+        "price": 10000,
         "diamond_price": None,
         "type": "consumable",
         "effect": {"hp": 60},
@@ -12,7 +12,7 @@ CONSUMABLES = {
     "mana_potion": {
         "name": "🔵 Mana Potion",
         "desc": "Pulihkan 50 MP",
-        "price": 3000,
+        "price": 10000,
         "diamond_price": None,
         "type": "consumable",
         "effect": {"mp": 50},
@@ -21,7 +21,7 @@ CONSUMABLES = {
     "elixir": {
         "name": "⚗️ Grand Elixir",
         "desc": "Pulihkan 150 HP & 120 MP",
-        "price": 10000,
+        "price": 20000,
         "diamond_price": None,
         "type": "consumable",
         "effect": {"hp": 150, "mp": 120},
@@ -30,7 +30,7 @@ CONSUMABLES = {
     "revive_crystal": {
         "name": "💠 Revive Crystal",
         "desc": "Bangkit dengan 50% HP saat mati",
-        "price": 20000,
+        "price": 35000,
         "diamond_price": None,
         "type": "consumable",
         "effect": {},
@@ -39,7 +39,7 @@ CONSUMABLES = {
     "mega_potion": {
         "name": "🌟 Mega Potion",
         "desc": "Pulihkan penuh HP",
-        "price": 15000,
+        "price": 20000,
         "diamond_price": 3,
         "type": "consumable",
         "effect": {"hp": 9999},
