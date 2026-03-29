@@ -3,7 +3,7 @@ CONSUMABLES = {
     "health_potion": {
         "name": "⚕️ Health Potion",
         "desc": "Pulihkan 60 HP",
-        "price": 15000,
+        "price": 3000,
         "diamond_price": None,
         "type": "consumable",
         "effect": {"hp": 60},
@@ -12,7 +12,7 @@ CONSUMABLES = {
     "mana_potion": {
         "name": "🔵 Mana Potion",
         "desc": "Pulihkan 50 MP",
-        "price": 15000,
+        "price": 3000,
         "diamond_price": None,
         "type": "consumable",
         "effect": {"mp": 50},
@@ -21,7 +21,7 @@ CONSUMABLES = {
     "elixir": {
         "name": "⚗️ Grand Elixir",
         "desc": "Pulihkan 150 HP & 120 MP",
-        "price": 50000,
+        "price": 10000,
         "diamond_price": None,
         "type": "consumable",
         "effect": {"hp": 150, "mp": 120},
@@ -30,7 +30,7 @@ CONSUMABLES = {
     "revive_crystal": {
         "name": "💠 Revive Crystal",
         "desc": "Bangkit dengan 50% HP saat mati",
-        "price": 100000,
+        "price": 20000,
         "diamond_price": None,
         "type": "consumable",
         "effect": {},
@@ -39,8 +39,8 @@ CONSUMABLES = {
     "mega_potion": {
         "name": "🌟 Mega Potion",
         "desc": "Pulihkan penuh HP",
-        "price": 80000,
-        "diamond_price": 5,
+        "price": 15000,
+        "diamond_price": 3,
         "type": "consumable",
         "effect": {"hp": 9999},
         "class": None
@@ -1339,8 +1339,8 @@ PREMIUM_WEAPONS = {
         "desc": "+80 ATK, +40 DEF, +60 HP | Burn 3 ronde saat serang",
         "diamond_price": 80,
         "type": "weapon", "class": "warrior", "rarity": "SSR", "req_level": 25,
-        "stats": {"atk": 80, "def": 40, "max_hp": 60},
-        "special_effect": {"on_attack": "burn", "burn_dmg": 15, "burn_turns": 3},
+        "stats": {"atk": 144, "def": 72, "max_hp": 108},
+        "special_effect": {"on_attack": "burn", "burn_dmg": 24, "burn_turns": 4},
         "sellable": False
     },
     "ur_warrior_axe": {
@@ -1348,7 +1348,7 @@ PREMIUM_WEAPONS = {
         "desc": "+120 ATK, +60 DEF, +100 HP | Ignore 30% DEF musuh",
         "diamond_price": 180,
         "type": "weapon", "class": "warrior", "rarity": "UR", "req_level": 35,
-        "stats": {"atk": 120, "def": 60, "max_hp": 100},
+        "stats": {"atk": 264, "def": 132, "max_hp": 220},
         "special_effect": {"def_pierce_pct": 0.30, "on_crit": "bleed"},
         "sellable": False
     },
@@ -1357,8 +1357,8 @@ PREMIUM_WEAPONS = {
         "desc": "+180 ATK, +90 DEF, +150 HP | Setiap 3 serangan Stun musuh",
         "diamond_price": 500,
         "type": "weapon", "class": "warrior", "rarity": "GOD", "req_level": 50,
-        "stats": {"atk": 180, "def": 90, "max_hp": 150},
-        "special_effect": {"every_3_atk_stun": True, "stun_turns": 2, "passive_regen": 10},
+        "stats": {"atk": 503, "def": 251, "max_hp": 420},
+        "special_effect": {"every_3_atk_stun": True, "stun_turns": 5, "passive_regen": 25},
         "sellable": False
     },
     # ── MAGE SSR/UR/GOD ──────────────────────────────────────────
@@ -1367,7 +1367,7 @@ PREMIUM_WEAPONS = {
         "desc": "+85 ATK, +200 MP | Skill cost -30% MP",
         "diamond_price": 80,
         "type": "weapon", "class": "mage", "rarity": "SSR", "req_level": 25,
-        "stats": {"atk": 85, "max_mp": 200},
+        "stats": {"atk": 153, "max_mp": 360},
         "special_effect": {"mp_cost_reduce": 0.30, "on_skill": "freeze"},
         "sellable": False
     },
@@ -1376,8 +1376,8 @@ PREMIUM_WEAPONS = {
         "desc": "+130 ATK, +300 MP, +20 CRIT | Skill DMG +50%",
         "diamond_price": 180,
         "type": "weapon", "class": "mage", "rarity": "UR", "req_level": 35,
-        "stats": {"atk": 130, "max_mp": 300, "crit": 20},
-        "special_effect": {"skill_dmg_bonus": 0.50, "on_skill": "burn", "burn_turns": 3},
+        "stats": {"atk": 286, "max_mp": 660, "crit": 44},
+        "special_effect": {"skill_dmg_bonus": 0.50, "on_skill": "burn", "burn_turns": 6},
         "sellable": False
     },
     "god_mage_scepter": {
@@ -1385,8 +1385,8 @@ PREMIUM_WEAPONS = {
         "desc": "+200 ATK, +500 MP, +30 CRIT | Chain Lightning otomatis tiap 2 ronde",
         "diamond_price": 500,
         "type": "weapon", "class": "mage", "rarity": "GOD", "req_level": 50,
-        "stats": {"atk": 200, "max_mp": 500, "crit": 30},
-        "special_effect": {"auto_chain_every": 2, "chain_dmg_mult": 1.8, "on_kill": "arcane_charged"},
+        "stats": {"atk": 560, "max_mp": 1400, "crit": 84},
+        "special_effect": {"auto_chain_every": 2, "chain_dmg_mult": 4.5, "on_kill": "arcane_charged"},
         "sellable": False
     },
     # ── ARCHER SSR/UR/GOD ────────────────────────────────────────
@@ -1395,8 +1395,8 @@ PREMIUM_WEAPONS = {
         "desc": "+75 ATK, +50 SPD, +25 CRIT | CRIT Poison 3 ronde",
         "diamond_price": 80,
         "type": "weapon", "class": "archer", "rarity": "SSR", "req_level": 25,
-        "stats": {"atk": 75, "spd": 50, "crit": 25},
-        "special_effect": {"on_crit": "poison", "poison_dmg": 18, "poison_turns": 3},
+        "stats": {"atk": 135, "spd": 90, "crit": 45},
+        "special_effect": {"on_crit": "poison", "poison_dmg": 28, "poison_turns": 4},
         "sellable": False
     },
     "ur_archer_crossbow": {
@@ -1404,7 +1404,7 @@ PREMIUM_WEAPONS = {
         "desc": "+115 ATK, +70 SPD, +35 CRIT | Double shot 30% chance",
         "diamond_price": 180,
         "type": "weapon", "class": "archer", "rarity": "UR", "req_level": 35,
-        "stats": {"atk": 115, "spd": 70, "crit": 35},
+        "stats": {"atk": 253, "spd": 154, "crit": 77},
         "special_effect": {"double_shot_chance": 0.30, "on_crit": "stun"},
         "sellable": False
     },
@@ -1413,7 +1413,7 @@ PREMIUM_WEAPONS = {
         "desc": "+175 ATK, +100 SPD, +50 CRIT | Infinite CRIT = Full DMG",
         "diamond_price": 500,
         "type": "weapon", "class": "archer", "rarity": "GOD", "req_level": 50,
-        "stats": {"atk": 175, "spd": 100, "crit": 50},
+        "stats": {"atk": 489, "spd": 280, "crit": 140},
         "special_effect": {"crit_always": True, "crit_dmg_mult": 3.0, "on_kill": "eagle_eye"},
         "sellable": False
     },
@@ -1423,7 +1423,7 @@ PREMIUM_WEAPONS = {
         "desc": "+78 ATK, +45 SPD | Dodge +20%, Counter DMG x1.5",
         "diamond_price": 80,
         "type": "weapon", "class": "rogue", "rarity": "SSR", "req_level": 25,
-        "stats": {"atk": 78, "spd": 45},
+        "stats": {"atk": 140, "spd": 81},
         "special_effect": {"dodge_bonus": 20, "counter_mult": 1.5, "on_dodge": "bleed"},
         "sellable": False
     },
@@ -1432,7 +1432,7 @@ PREMIUM_WEAPONS = {
         "desc": "+118 ATK, +65 SPD | Triple strike 25% chance + Curse",
         "diamond_price": 180,
         "type": "weapon", "class": "rogue", "rarity": "UR", "req_level": 35,
-        "stats": {"atk": 118, "spd": 65},
+        "stats": {"atk": 259, "spd": 143},
         "special_effect": {"triple_strike_chance": 0.25, "on_skill": "curse"},
         "sellable": False
     },
@@ -1441,7 +1441,7 @@ PREMIUM_WEAPONS = {
         "desc": "+178 ATK, +90 SPD | Invisible 1 ronde tiap 4 serangan",
         "diamond_price": 500,
         "type": "weapon", "class": "rogue", "rarity": "GOD", "req_level": 50,
-        "stats": {"atk": 178, "spd": 90},
+        "stats": {"atk": 498, "spd": 251},
         "special_effect": {"every_4_atk_invisible": True, "invisible_dmg_mult": 4.0, "on_crit": "bleed"},
         "sellable": False
     },
@@ -1451,7 +1451,7 @@ PREMIUM_WEAPONS = {
         "desc": "+82 ATK, +48 SPD | Life steal 15% dari tiap serangan",
         "diamond_price": 80,
         "type": "weapon", "class": "assassin", "rarity": "SSR", "req_level": 25,
-        "stats": {"atk": 82, "spd": 48},
+        "stats": {"atk": 147, "spd": 86},
         "special_effect": {"lifesteal_pct": 0.15, "on_kill": "death_marked"},
         "sellable": False
     },
@@ -1460,7 +1460,7 @@ PREMIUM_WEAPONS = {
         "desc": "+125 ATK, +68 SPD | Execute <40% HP = instant kill 25%",
         "diamond_price": 180,
         "type": "weapon", "class": "assassin", "rarity": "UR", "req_level": 35,
-        "stats": {"atk": 125, "spd": 68},
+        "stats": {"atk": 275, "spd": 149},
         "special_effect": {"execute_chance": 0.25, "execute_threshold": 0.40, "on_execute": "lifesteal"},
         "sellable": False
     },
@@ -1469,7 +1469,7 @@ PREMIUM_WEAPONS = {
         "desc": "+185 ATK, +95 SPD | Kills heal 30% HP + next atk 5x DMG",
         "diamond_price": 500,
         "type": "weapon", "class": "assassin", "rarity": "GOD", "req_level": 50,
-        "stats": {"atk": 185, "spd": 95},
+        "stats": {"atk": 518, "spd": 266},
         "special_effect": {"kill_heal_pct": 0.30, "kill_next_dmg": 5.0, "on_kill": "soul_charging"},
         "sellable": False
     },
@@ -1479,7 +1479,7 @@ PREMIUM_WEAPONS = {
         "desc": "+80 ATK, +220 MP | Soul stack 2x lebih cepat",
         "diamond_price": 80,
         "type": "weapon", "class": "reaper", "rarity": "SSR", "req_level": 25,
-        "stats": {"atk": 80, "max_mp": 220},
+        "stats": {"atk": 144, "max_mp": 396},
         "special_effect": {"soul_per_kill": 2, "on_skill": "curse", "curse_turns": 3},
         "sellable": False
     },
@@ -1488,7 +1488,7 @@ PREMIUM_WEAPONS = {
         "desc": "+125 ATK, +350 MP | Harvest DMG 75% + Drain HP musuh",
         "diamond_price": 180,
         "type": "weapon", "class": "reaper", "rarity": "UR", "req_level": 35,
-        "stats": {"atk": 125, "max_mp": 350},
+        "stats": {"atk": 275, "max_mp": 770},
         "special_effect": {"harvest_dmg_pct": 0.75, "soul_drain_pct": 0.20, "on_kill": "soul_charging"},
         "sellable": False
     },
@@ -1497,7 +1497,7 @@ PREMIUM_WEAPONS = {
         "desc": "+200 ATK, +600 MP | Harvest tiap 3 kill + invincible 1 ronde",
         "diamond_price": 500,
         "type": "weapon", "class": "reaper", "rarity": "GOD", "req_level": 50,
-        "stats": {"atk": 200, "max_mp": 600},
+        "stats": {"atk": 560, "max_mp": 1680},
         "special_effect": {"harvest_every_3_kills": True, "invincible_on_harvest": True, "soul_per_kill": 3},
         "sellable": False
     },
@@ -1512,7 +1512,7 @@ PREMIUM_ARMORS = {
         "desc": "+70 DEF, +200 HP | Reflect 10% DMG ke musuh",
         "diamond_price": 80,
         "type": "armor", "class": "warrior", "rarity": "SSR", "req_level": 25,
-        "stats": {"def": 70, "max_hp": 200},
+        "stats": {"def": 126, "max_hp": 360},
         "special_effect": {"dmg_reflect_pct": 0.10},
         "sellable": False
     },
@@ -1521,7 +1521,7 @@ PREMIUM_ARMORS = {
         "desc": "+110 DEF, +350 HP | Auto Shield saat HP < 50%",
         "diamond_price": 180,
         "type": "armor", "class": "warrior", "rarity": "UR", "req_level": 35,
-        "stats": {"def": 110, "max_hp": 350},
+        "stats": {"def": 242, "max_hp": 770},
         "special_effect": {"auto_shield_below": 0.50, "shield_turns": 2},
         "sellable": False
     },
@@ -1530,7 +1530,7 @@ PREMIUM_ARMORS = {
         "desc": "+170 DEF, +500 HP | Immune 1x per battle + HP regen 20/ronde",
         "diamond_price": 500,
         "type": "armor", "class": "warrior", "rarity": "GOD", "req_level": 50,
-        "stats": {"def": 170, "max_hp": 500},
+        "stats": {"def": 475, "max_hp": 1400},
         "special_effect": {"one_time_immune": True, "hp_regen_per_turn": 20},
         "sellable": False
     },
@@ -1539,7 +1539,7 @@ PREMIUM_ARMORS = {
         "desc": "+45 DEF, +250 MP | MP regen 15/ronde",
         "diamond_price": 80,
         "type": "armor", "class": "mage", "rarity": "SSR", "req_level": 25,
-        "stats": {"def": 45, "max_mp": 250},
+        "stats": {"def": 81, "max_mp": 450},
         "special_effect": {"mp_regen_per_turn": 15},
         "sellable": False
     },
@@ -1548,7 +1548,7 @@ PREMIUM_ARMORS = {
         "desc": "+70 DEF, +400 MP | Skill Cooldown -2",
         "diamond_price": 180,
         "type": "armor", "class": "mage", "rarity": "UR", "req_level": 35,
-        "stats": {"def": 70, "max_mp": 400},
+        "stats": {"def": 154, "max_mp": 880},
         "special_effect": {"cooldown_reduce": 2, "mp_regen_per_turn": 25},
         "sellable": False
     },
@@ -1557,7 +1557,7 @@ PREMIUM_ARMORS = {
         "desc": "+100 DEF, +700 MP | Skill gratis 1x per battle",
         "diamond_price": 500,
         "type": "armor", "class": "mage", "rarity": "GOD", "req_level": 50,
-        "stats": {"def": 100, "max_mp": 700},
+        "stats": {"def": 280, "max_mp": 1959},
         "special_effect": {"free_skill_once": True, "cooldown_reduce": 3, "mp_regen_per_turn": 40},
         "sellable": False
     },
@@ -1566,7 +1566,7 @@ PREMIUM_ARMORS = {
         "desc": "+55 DEF, +60 SPD | Dodge +15%",
         "diamond_price": 80,
         "type": "armor", "class": "archer", "rarity": "SSR", "req_level": 25,
-        "stats": {"def": 55, "spd": 60},
+        "stats": {"def": 99, "spd": 108},
         "special_effect": {"dodge_bonus": 15},
         "sellable": False
     },
@@ -1575,7 +1575,7 @@ PREMIUM_ARMORS = {
         "desc": "+85 DEF, +90 SPD | First strike tiap battle",
         "diamond_price": 180,
         "type": "armor", "class": "archer", "rarity": "UR", "req_level": 35,
-        "stats": {"def": 85, "spd": 90},
+        "stats": {"def": 187, "spd": 198},
         "special_effect": {"first_strike": True, "dodge_bonus": 25},
         "sellable": False
     },
@@ -1584,7 +1584,7 @@ PREMIUM_ARMORS = {
         "desc": "+130 DEF, +130 SPD | Dodge reflect: counter 2x DMG",
         "diamond_price": 500,
         "type": "armor", "class": "archer", "rarity": "GOD", "req_level": 50,
-        "stats": {"def": 130, "spd": 130},
+        "stats": {"def": 364, "spd": 364},
         "special_effect": {"dodge_counter_mult": 2.0, "dodge_bonus": 40},
         "sellable": False
     },
@@ -1593,7 +1593,7 @@ PREMIUM_ARMORS = {
         "desc": "+52 DEF, +55 SPD | Serang dari shadow +25% DMG",
         "diamond_price": 80,
         "type": "armor", "class": "rogue", "rarity": "SSR", "req_level": 25,
-        "stats": {"def": 52, "spd": 55},
+        "stats": {"def": 93, "spd": 99},
         "special_effect": {"shadow_attack_bonus": 0.25, "dodge_bonus": 15},
         "sellable": False
     },
@@ -1602,7 +1602,7 @@ PREMIUM_ARMORS = {
         "desc": "+82 DEF, +82 SPD | Phase shift: immune 1 serangan tiap 3 ronde",
         "diamond_price": 180,
         "type": "armor", "class": "rogue", "rarity": "UR", "req_level": 35,
-        "stats": {"def": 82, "spd": 82},
+        "stats": {"def": 180, "spd": 180},
         "special_effect": {"phase_immune_every": 3},
         "sellable": False
     },
@@ -1611,7 +1611,7 @@ PREMIUM_ARMORS = {
         "desc": "+125 DEF, +120 SPD | Permanent shadow mode saat HP < 50%",
         "diamond_price": 500,
         "type": "armor", "class": "rogue", "rarity": "GOD", "req_level": 50,
-        "stats": {"def": 125, "spd": 120},
+        "stats": {"def": 350, "spd": 336},
         "special_effect": {"shadow_mode_below": 0.50, "shadow_dodge": 60, "counter_mult": 2.0},
         "sellable": False
     },
@@ -1620,7 +1620,7 @@ PREMIUM_ARMORS = {
         "desc": "+58 DEF, +58 SPD | +20% DMG saat musuh debuffed",
         "diamond_price": 80,
         "type": "armor", "class": "assassin", "rarity": "SSR", "req_level": 25,
-        "stats": {"def": 58, "spd": 58},
+        "stats": {"def": 104, "spd": 104},
         "special_effect": {"bonus_vs_debuffed": 0.20, "lifesteal_pct": 0.10},
         "sellable": False
     },
@@ -1629,7 +1629,7 @@ PREMIUM_ARMORS = {
         "desc": "+90 DEF, +88 SPD | Life steal 20% + Immune poison/bleed",
         "diamond_price": 180,
         "type": "armor", "class": "assassin", "rarity": "UR", "req_level": 35,
-        "stats": {"def": 90, "spd": 88},
+        "stats": {"def": 198, "spd": 193},
         "special_effect": {"lifesteal_pct": 0.20, "immune_dot": True},
         "sellable": False
     },
@@ -1638,7 +1638,7 @@ PREMIUM_ARMORS = {
         "desc": "+140 DEF, +135 SPD | Setelah kill: invisible + atk 4x next turn",
         "diamond_price": 500,
         "type": "armor", "class": "assassin", "rarity": "GOD", "req_level": 50,
-        "stats": {"def": 140, "spd": 135},
+        "stats": {"def": 392, "spd": 378},
         "special_effect": {"kill_invisible": True, "kill_next_atk_mult": 4.0, "lifesteal_pct": 0.25},
         "sellable": False
     },
@@ -1647,7 +1647,7 @@ PREMIUM_ARMORS = {
         "desc": "+50 DEF, +280 MP | Soul gained +1 dari tiap serangan",
         "diamond_price": 80,
         "type": "armor", "class": "reaper", "rarity": "SSR", "req_level": 25,
-        "stats": {"def": 50, "max_mp": 280},
+        "stats": {"def": 90, "max_mp": 504},
         "special_effect": {"soul_on_attack": 0.5, "mp_regen_per_turn": 20},
         "sellable": False
     },
@@ -1656,7 +1656,7 @@ PREMIUM_ARMORS = {
         "desc": "+80 DEF, +450 MP | Saat Harvest, heal 40% HP",
         "diamond_price": 180,
         "type": "armor", "class": "reaper", "rarity": "UR", "req_level": 35,
-        "stats": {"def": 80, "max_mp": 450},
+        "stats": {"def": 176, "max_mp": 990},
         "special_effect": {"harvest_heal_pct": 0.40, "soul_per_kill": 2},
         "sellable": False
     },
@@ -1665,7 +1665,7 @@ PREMIUM_ARMORS = {
         "desc": "+120 DEF, +750 MP | Immortal 1x per battle (HP = 1 bukan mati)",
         "diamond_price": 500,
         "type": "armor", "class": "reaper", "rarity": "GOD", "req_level": 50,
-        "stats": {"def": 120, "max_mp": 750},
+        "stats": {"def": 336, "max_mp": 2100},
         "special_effect": {"immortal_once": True, "harvest_heal_pct": 0.50, "mp_regen_per_turn": 50},
         "sellable": False
     },
@@ -1680,114 +1680,114 @@ PREMIUM_SKILLS = {
         "name": "🌋✨ Volcanic Rage [SSR]",
         "desc": "4.5x DMG + Burn 4 ronde + ATK +30% selama 2 ronde",
         "class": "warrior", "diamond_price": 100, "rarity": "SSR", "req_level": 25,
-        "effect": {"dmg_mult": 4.5, "burn": True, "burn_turns": 4, "atk_boost": 0.30, "duration": 2, "mp_cost": 60, "cooldown": 6},
+        "effect": {"dmg_mult": 7.2, "burn": True, "burn_turns": 6, "atk_boost": 0.30, "duration": 2, "mp_cost": 60, "cooldown": 6},
     },
     "ur_warrior_skill": {
         "name": "🔱💜 Titan's Judgment [UR]",
         "desc": "6x DMG + Stun 3 ronde + Immune damage 1 ronde",
         "class": "warrior", "diamond_price": 220, "rarity": "UR", "req_level": 35,
-        "effect": {"dmg_mult": 6.0, "stun_turns": 3, "immune_turns": 1, "mp_cost": 90, "cooldown": 8},
+        "effect": {"dmg_mult": 12.0, "stun_turns": 6, "immune_turns": 1, "mp_cost": 90, "cooldown": 8},
     },
     "god_warrior_skill": {
         "name": "⚡🌟 Divine Thunder Smash [GOD]",
         "desc": "10x DMG + Stun 3 ronde + Semua stat +100% 3 ronde",
         "class": "warrior", "diamond_price": 600, "rarity": "GOD", "req_level": 50,
-        "effect": {"dmg_mult": 10.0, "stun_turns": 3, "stat_boost": 1.0, "boost_duration": 3, "mp_cost": 130, "cooldown": 10},
+        "effect": {"dmg_mult": 25.0, "stun_turns": 7, "stat_boost": 1.0, "boost_duration": 3, "mp_cost": 130, "cooldown": 10},
     },
     # ── MAGE ─────────────────────────────────────────────────────
     "ssr_mage_skill": {
         "name": "🌌✨ Galaxy Burst [SSR]",
         "desc": "5x DMG + Chain Freeze 2 ronde + MP recover 50",
         "class": "mage", "diamond_price": 100, "rarity": "SSR", "req_level": 25,
-        "effect": {"dmg_mult": 5.0, "freeze_turns": 2, "mp_recover": 50, "mp_cost": 70, "cooldown": 6},
+        "effect": {"dmg_mult": 8.0, "freeze_turns": 2, "mp_recover": 50, "mp_cost": 70, "cooldown": 6},
     },
     "ur_mage_skill": {
         "name": "☄️💜 Supernova [UR]",
         "desc": "8x DMG + Burn 4 ronde + Skill CD reset",
         "class": "mage", "diamond_price": 220, "rarity": "UR", "req_level": 35,
-        "effect": {"dmg_mult": 8.0, "burn_turns": 4, "reset_cd": True, "mp_cost": 110, "cooldown": 9},
+        "effect": {"dmg_mult": 16.0, "burn_turns": 8, "reset_cd": True, "mp_cost": 110, "cooldown": 9},
     },
     "god_mage_skill": {
         "name": "🌟 Infinite Cosmos [GOD]",
         "desc": "15x DMG + All debuff + Serap 30% DMG dealt sebagai HP",
         "class": "mage", "diamond_price": 600, "rarity": "GOD", "req_level": 50,
-        "effect": {"dmg_mult": 15.0, "all_debuff": True, "lifesteal": 0.30, "mp_cost": 160, "cooldown": 12},
+        "effect": {"dmg_mult": 37.5, "all_debuff": True, "lifesteal": 0.75, "mp_cost": 160, "cooldown": 12},
     },
     # ── ARCHER ───────────────────────────────────────────────────
     "ssr_archer_skill": {
         "name": "🎯✨ Thousand Arrows [SSR]",
         "desc": "5x DMG x2 tembak + Poison 3 ronde + CRIT +40%",
         "class": "archer", "diamond_price": 100, "rarity": "SSR", "req_level": 25,
-        "effect": {"dmg_mult": 5.0, "hits": 2, "poison_turns": 3, "crit_bonus": 40, "mp_cost": 65, "cooldown": 6},
+        "effect": {"dmg_mult": 8.0, "hits": 2, "poison_turns": 4, "crit_bonus": 40, "mp_cost": 65, "cooldown": 6},
     },
     "ur_archer_skill": {
         "name": "⚡💜 Storm Barrage [UR]",
         "desc": "6x DMG x3 + Stun + SPD +50% 3 ronde",
         "class": "archer", "diamond_price": 220, "rarity": "UR", "req_level": 35,
-        "effect": {"dmg_mult": 6.0, "hits": 3, "stun_turns": 1, "spd_boost": 0.50, "duration": 3, "mp_cost": 95, "cooldown": 8},
+        "effect": {"dmg_mult": 12.0, "hits": 3, "stun_turns": 2, "spd_boost": 0.50, "duration": 3, "mp_cost": 95, "cooldown": 8},
     },
     "god_archer_skill": {
         "name": "🌟 Divine Arrow of Eternity [GOD]",
         "desc": "12x DMG + Ignore DEF + CRIT 100% + Slow 4 ronde",
         "class": "archer", "diamond_price": 600, "rarity": "GOD", "req_level": 50,
-        "effect": {"dmg_mult": 12.0, "def_pierce": True, "crit_always": True, "slow_turns": 4, "mp_cost": 140, "cooldown": 11},
+        "effect": {"dmg_mult": 30.0, "def_pierce": True, "crit_always": True, "slow_turns": 10, "mp_cost": 140, "cooldown": 11},
     },
     # ── ROGUE ────────────────────────────────────────────────────
     "ssr_rogue_skill": {
         "name": "🌑✨ Phantom Blitz [SSR]",
         "desc": "5x DMG + Dodge +60% 2 ronde + Bleed 3 ronde",
         "class": "rogue", "diamond_price": 100, "rarity": "SSR", "req_level": 25,
-        "effect": {"dmg_mult": 5.0, "dodge_bonus": 60, "duration": 2, "bleed_turns": 3, "mp_cost": 65, "cooldown": 6},
+        "effect": {"dmg_mult": 8.0, "dodge_bonus": 60, "duration": 2, "bleed_turns": 4, "mp_cost": 65, "cooldown": 6},
     },
     "ur_rogue_skill": {
         "name": "👻💜 Void Assassination [UR]",
         "desc": "7x DMG + invisible 2 ronde + Curse musuh",
         "class": "rogue", "diamond_price": 220, "rarity": "UR", "req_level": 35,
-        "effect": {"dmg_mult": 7.0, "invisible_turns": 2, "curse_turns": 3, "mp_cost": 100, "cooldown": 9},
+        "effect": {"dmg_mult": 14.0, "invisible_turns": 2, "curse_turns": 3, "mp_cost": 100, "cooldown": 9},
     },
     "god_rogue_skill": {
         "name": "🌀🌟 Shadow Realm Execution [GOD]",
         "desc": "13x DMG + Execute <60% HP + Regen HP 15% per ronde 3 ronde",
         "class": "rogue", "diamond_price": 600, "rarity": "GOD", "req_level": 50,
-        "effect": {"dmg_mult": 13.0, "execute_threshold": 0.60, "hp_regen_pct": 0.15, "regen_turns": 3, "mp_cost": 145, "cooldown": 11},
+        "effect": {"dmg_mult": 32.5, "execute_threshold": 0.60, "hp_regen_pct": 0.15, "regen_turns": 3, "mp_cost": 145, "cooldown": 11},
     },
     # ── ASSASSIN ─────────────────────────────────────────────────
     "ssr_assassin_skill": {
         "name": "💀✨ Soul Shatter [SSR]",
         "desc": "5.5x DMG + Life steal 25% + Death Mark stack",
         "class": "assassin", "diamond_price": 100, "rarity": "SSR", "req_level": 25,
-        "effect": {"dmg_mult": 5.5, "lifesteal": 0.25, "death_mark": True, "mp_cost": 70, "cooldown": 6},
+        "effect": {"dmg_mult": 8.8, "lifesteal": 0.4, "death_mark": True, "mp_cost": 70, "cooldown": 6},
     },
     "ur_assassin_skill": {
         "name": "☠️💜 Reaper's Judgment [UR]",
         "desc": "8x DMG + Life steal 35% + Curse + Bleed",
         "class": "assassin", "diamond_price": 220, "rarity": "UR", "req_level": 35,
-        "effect": {"dmg_mult": 8.0, "lifesteal": 0.35, "curse_turns": 3, "bleed_turns": 3, "mp_cost": 105, "cooldown": 9},
+        "effect": {"dmg_mult": 16.0, "lifesteal": 0.7, "curse_turns": 3, "bleed_turns": 6, "mp_cost": 105, "cooldown": 9},
     },
     "god_assassin_skill": {
         "name": "🌑🌟 Absolute Death [GOD]",
         "desc": "15x DMG + Instant kill <50% HP + Heal 50% max HP",
         "class": "assassin", "diamond_price": 600, "rarity": "GOD", "req_level": 50,
-        "effect": {"dmg_mult": 15.0, "execute_threshold": 0.50, "execute_heal_pct": 0.50, "mp_cost": 150, "cooldown": 12},
+        "effect": {"dmg_mult": 37.5, "execute_threshold": 0.50, "execute_heal_pct": 0.50, "mp_cost": 150, "cooldown": 12},
     },
     # ── DEATH SCYTHE ─────────────────────────────────────────────
     "ssr_death_scythe_skill": {
         "name": "☠️✨ Harvest Storm [SSR]",
         "desc": "5x DMG + Soul x3 + Drain 20% HP musuh",
         "class": "reaper", "diamond_price": 100, "rarity": "SSR", "req_level": 25,
-        "effect": {"dmg_mult": 5.0, "soul_bonus": 3, "drain_pct": 0.20, "mp_cost": 75, "cooldown": 6},
+        "effect": {"dmg_mult": 8.0, "soul_bonus": 3, "drain_pct": 0.20, "mp_cost": 75, "cooldown": 6},
     },
     "ur_death_scythe_skill": {
         "name": "🌑💜 Death's Embrace [UR]",
         "desc": "8x DMG + Instant Harvest + Heal 30% HP + Curse",
         "class": "reaper", "diamond_price": 220, "rarity": "UR", "req_level": 35,
-        "effect": {"dmg_mult": 8.0, "instant_harvest": True, "heal_pct": 0.30, "curse_turns": 3, "mp_cost": 110, "cooldown": 9},
+        "effect": {"dmg_mult": 16.0, "instant_harvest": True, "heal_pct": 0.6, "curse_turns": 3, "mp_cost": 110, "cooldown": 9},
     },
     "god_death_scythe_skill": {
         "name": "🌟 Void Reaper Absolute [GOD]",
         "desc": "15x DMG + Harvest ALL souls + Semua musuh -60% HP + Immortal 1 ronde",
         "class": "reaper", "diamond_price": 600, "rarity": "GOD", "req_level": 50,
-        "effect": {"dmg_mult": 15.0, "mass_harvest": True, "mass_drain_pct": 0.60, "immortal_turns": 1, "mp_cost": 160, "cooldown": 12},
+        "effect": {"dmg_mult": 37.5, "mass_harvest": True, "mass_drain_pct": 0.60, "immortal_turns": 1, "mp_cost": 160, "cooldown": 12},
     },
 }
 
@@ -1866,7 +1866,7 @@ PET_SHOP = {
         "desc": "+40 ATK, +30 SPD, +15 CRIT | Howl: +20% DMG 2 ronde tiap 4 serangan",
         "rarity": "SSR", "price": None, "diamond_price": 150,
         "tier": 5,
-        "effect": {"atk_bonus": 40, "spd_bonus": 30, "crit_bonus": 15},
+        "effect": {"atk_bonus": 64, "spd_bonus": 30, "crit_bonus": 15},
         "passive": "Moon Howl: Setiap 4 serangan, +20% DMG selama 2 ronde"
     },
     "pet_phoenix": {
@@ -1874,7 +1874,7 @@ PET_SHOP = {
         "desc": "+35 ATK, +80 HP, Burn 30% tiap atk | Rebirth: 1x per battle +30% HP",
         "rarity": "SSR", "price": None, "diamond_price": 150,
         "tier": 5,
-        "effect": {"atk_bonus": 35, "hp_bonus": 80, "burn_chance": 0.30},
+        "effect": {"atk_bonus": 56, "hp_bonus": 80, "burn_chance": 0.30},
         "passive": "Rebirth: 1x per battle saat HP < 20%, pulihkan 30% HP"
     },
     "pet_storm_dragon": {
@@ -1882,7 +1882,7 @@ PET_SHOP = {
         "desc": "+45 ATK, +30 DEF, +20 SPD | Lightning Breath tiap 3 ronde 1.8x DMG",
         "rarity": "SSR", "price": None, "diamond_price": 150,
         "tier": 5,
-        "effect": {"atk_bonus": 45, "def_bonus": 30, "spd_bonus": 20},
+        "effect": {"atk_bonus": 72, "def_bonus": 48, "spd_bonus": 20},
         "passive": "Lightning Breath: Tiap 3 ronde, 1.8x DMG otomatis + Stun"
     },
     # ── UR (Diamond) ──────────────────────────────────────────────
@@ -1891,7 +1891,7 @@ PET_SHOP = {
         "desc": "+60 ATK, +60 DEF, +40 SPD | Heal 10% HP tiap ronde + Bless +20% DMG",
         "rarity": "UR", "price": None, "diamond_price": 350,
         "tier": 6,
-        "effect": {"atk_bonus": 60, "def_bonus": 60, "spd_bonus": 40},
+        "effect": {"atk_bonus": 120, "def_bonus": 120, "spd_bonus": 40},
         "passive": "Sacred Aura: Heal 10% HP tiap ronde + Semua stat +20%"
     },
     "pet_shadow_leviathan": {
@@ -1899,7 +1899,7 @@ PET_SHOP = {
         "desc": "+70 ATK, +50 DEF, +100 HP | Tentacle: 2 serangan tambahan 1.5x DMG",
         "rarity": "UR", "price": None, "diamond_price": 350,
         "tier": 6,
-        "effect": {"atk_bonus": 70, "def_bonus": 50, "hp_bonus": 100},
+        "effect": {"atk_bonus": 140, "def_bonus": 100, "hp_bonus": 100},
         "passive": "Abyss Tide: 2 serangan otomatis 1.5x DMG tiap ronde monster serang"
     },
     "pet_chaos_hydra": {
@@ -1907,7 +1907,7 @@ PET_SHOP = {
         "desc": "+80 ATK, +40 DEF, Poison+Burn+Bleed tiap serang",
         "rarity": "UR", "price": None, "diamond_price": 350,
         "tier": 6,
-        "effect": {"atk_bonus": 80, "def_bonus": 40, "multi_dot": True},
+        "effect": {"atk_bonus": 160, "def_bonus": 80, "multi_dot": True},
         "passive": "Triple Venom: Tiap serangan apply Poison+Burn+Bleed sekaligus"
     },
     # ── GOD (Diamond) ─────────────────────────────────────────────
@@ -1916,7 +1916,7 @@ PET_SHOP = {
         "desc": "+120 ATK, +80 DEF, +60 SPD | War Cry: +50% DMG + Immune 1 ronde tiap 5 serangan",
         "rarity": "GOD", "price": None, "diamond_price": 999,
         "tier": 7,
-        "effect": {"atk_bonus": 120, "def_bonus": 80, "spd_bonus": 60},
+        "effect": {"atk_bonus": 300, "def_bonus": 200, "spd_bonus": 60},
         "passive": "Eternal War Cry: Tiap 5 serangan, +50% DMG + Immune 1 ronde"
     },
     "pet_void_dragon_god": {
@@ -1924,7 +1924,7 @@ PET_SHOP = {
         "desc": "+150 ATK, +100 DEF, +200 HP | Void Breath: 3x DMG tiap 3 ronde + Drain HP",
         "rarity": "GOD", "price": None, "diamond_price": 999,
         "tier": 7,
-        "effect": {"atk_bonus": 150, "def_bonus": 100, "hp_bonus": 200},
+        "effect": {"atk_bonus": 375, "def_bonus": 250, "hp_bonus": 200},
         "passive": "Void Breath: Tiap 3 ronde, 3x DMG + Drain 20% HP musuh"
     },
     "pet_eternal_phoenix_god": {
@@ -1932,7 +1932,7 @@ PET_SHOP = {
         "desc": "+130 ATK, +90 DEF, +150 HP | Immortal: Bangkit 3x per battle dengan 50% HP",
         "rarity": "GOD", "price": None, "diamond_price": 999,
         "tier": 7,
-        "effect": {"atk_bonus": 130, "def_bonus": 90, "hp_bonus": 150},
+        "effect": {"atk_bonus": 325, "def_bonus": 225, "hp_bonus": 150},
         "passive": "Eternal Rebirth: Bangkit 3x per battle dengan 50% HP, next atk 4x DMG"
     },
 }
@@ -1998,7 +1998,7 @@ GOD_SSSR_WEAPONS = {
         "desc": "Pedang dewa tertinggi. Hanya sang terpilih yang layak memegangnya.",
         "type": "weapon", "class": "warrior", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"atk": 999, "crit": 30, "spd": 20},
+        "stats": {"atk": 3496, "crit": 105, "spd": 70},
     },
     # ── MAGE ─────────────────────────────────────────────────────
     "god_sssr_mage_weapon": {
@@ -2006,7 +2006,7 @@ GOD_SSSR_WEAPONS = {
         "desc": "Kitab sihir purba yang mengandung seluruh hukum alam semesta.",
         "type": "weapon", "class": "mage", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"atk": 1100, "max_mp": 500, "crit": 25},
+        "stats": {"atk": 3850, "max_mp": 1750, "crit": 87},
     },
     # ── ARCHER ───────────────────────────────────────────────────
     "god_sssr_archer_weapon": {
@@ -2014,7 +2014,7 @@ GOD_SSSR_WEAPONS = {
         "desc": "Busur yang menembus dimensi. Panahnya tak pernah meleset.",
         "type": "weapon", "class": "archer", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"atk": 950, "crit": 40, "spd": 40},
+        "stats": {"atk": 3325, "crit": 140, "spd": 140},
     },
     # ── ROGUE ────────────────────────────────────────────────────
     "god_sssr_rogue_weapon": {
@@ -2022,7 +2022,7 @@ GOD_SSSR_WEAPONS = {
         "desc": "Pisau bayangan sang dewa malam. Tak terlihat, tak terhindar.",
         "type": "weapon", "class": "rogue", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"atk": 1050, "crit": 50, "spd": 35},
+        "stats": {"atk": 3675, "crit": 175, "spd": 122},
     },
     # ── ASSASSIN ─────────────────────────────────────────────────
     "god_sssr_assassin_weapon": {
@@ -2030,7 +2030,7 @@ GOD_SSSR_WEAPONS = {
         "desc": "Sabit pencabut nyawa para dewa. Satu tebasan = kematian abadi.",
         "type": "weapon", "class": "assassin", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"atk": 1200, "crit": 45, "spd": 30},
+        "stats": {"atk": 4200, "crit": 157, "spd": 105},
     },
     # ── DEATH SCYTHE ─────────────────────────────────────────────
     "god_sssr_death_scythe_weapon": {
@@ -2038,7 +2038,7 @@ GOD_SSSR_WEAPONS = {
         "desc": "Staf neraka dari kegelapan absolut. Meluruhkan jiwa siapapun.",
         "type": "weapon", "class": "reaper", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"atk": 1000, "max_mp": 600, "crit": 35},
+        "stats": {"atk": 3500, "max_mp": 2100, "crit": 122},
     },
 }
 
@@ -2049,7 +2049,7 @@ GOD_SSSR_ARMORS = {
         "desc": "Zirah dewa perang. Tidak ada senjata yang bisa menembusnya.",
         "type": "armor", "class": "warrior", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"def": 800, "max_hp": 2000, "spd": 10},
+        "stats": {"def": 2800, "max_hp": 7000, "spd": 35},
     },
     # ── MAGE ─────────────────────────────────────────────────────
     "god_sssr_mage_armor": {
@@ -2057,7 +2057,7 @@ GOD_SSSR_ARMORS = {
         "desc": "Jubah yang ditenun dari bintang-bintang. MP tak pernah habis.",
         "type": "armor", "class": "mage", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"def": 500, "max_hp": 1200, "max_mp": 800},
+        "stats": {"def": 1750, "max_hp": 4200, "max_mp": 2800},
     },
     # ── ARCHER ───────────────────────────────────────────────────
     "god_sssr_archer_armor": {
@@ -2065,7 +2065,7 @@ GOD_SSSR_ARMORS = {
         "desc": "Rompi secepat kilat. Bergerak lebih cepat dari cahaya.",
         "type": "armor", "class": "archer", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"def": 550, "max_hp": 1500, "spd": 80},
+        "stats": {"def": 1925, "max_hp": 5250, "spd": 280},
     },
     # ── ROGUE ────────────────────────────────────────────────────
     "god_sssr_rogue_armor": {
@@ -2073,7 +2073,7 @@ GOD_SSSR_ARMORS = {
         "desc": "Jubah yang membuat pemakainya menjadi bayangan murni.",
         "type": "armor", "class": "rogue", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"def": 600, "max_hp": 1400, "spd": 60},
+        "stats": {"def": 2100, "max_hp": 4900, "spd": 210},
     },
     # ── ASSASSIN ─────────────────────────────────────────────────
     "god_sssr_assassin_armor": {
@@ -2081,7 +2081,7 @@ GOD_SSSR_ARMORS = {
         "desc": "Jubah sang dewa kematian. Membuat musuh gemetar ketakutan.",
         "type": "armor", "class": "assassin", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"def": 650, "max_hp": 1300, "spd": 50},
+        "stats": {"def": 2275, "max_hp": 4550, "spd": 175},
     },
     # ── DEATH SCYTHE ─────────────────────────────────────────────
     "god_sssr_death_scythe_armor": {
@@ -2089,7 +2089,7 @@ GOD_SSSR_ARMORS = {
         "desc": "Perisai jiwa dari raja lich tertinggi. Abadi dan tak tergoyahkan.",
         "type": "armor", "class": "reaper", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"def": 700, "max_hp": 1100, "max_mp": 1000},
+        "stats": {"def": 2450, "max_hp": 3850, "max_mp": 3500},
     },
 }
 
@@ -2098,37 +2098,37 @@ GOD_SSSR_SKILLS = {
         "name": "🔱💥 Apocalypse Slash [GOD SSSR]",
         "desc": "25x DMG + Semua musuh terhancurkan + HP recover 50% + Invincible 5 ronde",
         "class": "warrior", "diamond_price": None, "rarity": "GOD SSSR", "req_level": 1,
-        "effect": {"dmg_mult": 25.0, "heal_pct": 0.5, "immune_turns": 5, "mp_cost": 200, "cooldown": 15},
+        "effect": {"dmg_mult": 75.0, "heal_pct": 1.5, "immune_turns": 5, "mp_cost": 200, "cooldown": 15},
     },
     "god_sssr_mage_skill": {
         "name": "🌌💫 Big Bang [GOD SSSR]",
         "desc": "30x DMG + Hapus semua buff musuh + Absorb 50% DMG sebagai HP",
         "class": "mage", "diamond_price": None, "rarity": "GOD SSSR", "req_level": 1,
-        "effect": {"dmg_mult": 30.0, "all_debuff": True, "lifesteal": 0.5, "mp_cost": 250, "cooldown": 18},
+        "effect": {"dmg_mult": 90.0, "all_debuff": True, "lifesteal": 1.5, "mp_cost": 250, "cooldown": 18},
     },
     "god_sssr_archer_skill": {
         "name": "⚡🏹 Void Snipe [GOD SSSR]",
         "desc": "20x DMG x5 peluru + Crit selalu 100% + Ignore DEF + Slow 10 ronde",
         "class": "archer", "diamond_price": None, "rarity": "GOD SSSR", "req_level": 1,
-        "effect": {"dmg_mult": 20.0, "hits": 5, "crit_always": True, "def_pierce": True, "slow_turns": 10, "mp_cost": 220, "cooldown": 16},
+        "effect": {"dmg_mult": 60.0, "hits": 5, "crit_always": True, "def_pierce": True, "slow_turns": 30, "mp_cost": 220, "cooldown": 16},
     },
     "god_sssr_rogue_skill": {
         "name": "🌑☠️ Shadow God's Domain [GOD SSSR]",
         "desc": "22x DMG + Dodge 100% 5 ronde + Poison 10 ronde",
         "class": "rogue", "diamond_price": None, "rarity": "GOD SSSR", "req_level": 1,
-        "effect": {"dmg_mult": 22.0, "dodge_turns": 5, "poison_turns": 10, "mp_cost": 200, "cooldown": 15},
+        "effect": {"dmg_mult": 66.0, "dodge_turns": 5, "poison_turns": 30, "mp_cost": 200, "cooldown": 15},
     },
     "god_sssr_assassin_skill": {
         "name": "💀🔱 Divine Death Mark [GOD SSSR]",
         "desc": "28x DMG + Instant KO chance 30% + Next 3 serangan x5 DMG",
         "class": "assassin", "diamond_price": None, "rarity": "GOD SSSR", "req_level": 1,
-        "effect": {"dmg_mult": 28.0, "instant_ko_chance": 0.3, "next_atk_mult": 5.0, "next_atk_count": 3, "mp_cost": 230, "cooldown": 17},
+        "effect": {"dmg_mult": 84.0, "instant_ko_chance": 0.9, "next_atk_mult": 15.0, "next_atk_count": 3, "mp_cost": 230, "cooldown": 17},
     },
     "god_sssr_death_scythe_skill": {
         "name": "🌑🔮 Void Apocalypse Ritual [GOD SSSR]",
         "desc": "35x DMG + Drain semua HP musuh 10% per ronde + Resurrect sekali",
         "class": "reaper", "diamond_price": None, "rarity": "GOD SSSR", "req_level": 1,
-        "effect": {"dmg_mult": 35.0, "hp_drain_pct": 0.10, "resurrect": True, "mp_cost": 280, "cooldown": 20},
+        "effect": {"dmg_mult": 105.0, "hp_drain_pct": 0.3, "resurrect": True, "mp_cost": 280, "cooldown": 20},
     },
 }
 
@@ -2138,7 +2138,7 @@ GOD_SSSR_PETS = {
         "desc": "Naga abadi yang menjaga batas waktu dan ruang. ATK +500, DEF +300, semua stat +50%",
         "rarity": "GOD SSSR", "price": None, "diamond_price": None,
         "tier": 10,
-        "effect": {"atk_bonus": 500, "def_bonus": 300, "all_stat_pct": 0.5},
+        "effect": {"atk_bonus": 1500, "def_bonus": 900, "all_stat_pct": 1.5},
         "passive": "Eternal Roar: Setiap 3 ronde, serangan otomatis 5x DMG ke semua musuh"
     },
     "pet_god_sssr_void_phoenix": {
@@ -2146,7 +2146,7 @@ GOD_SSSR_PETS = {
         "desc": "Phoenix dari kekosongan absolut. Bangkit kembali jika mati, restore HP penuh.",
         "rarity": "GOD SSSR", "price": None, "diamond_price": None,
         "tier": 10,
-        "effect": {"atk_bonus": 400, "max_hp_bonus": 2000, "resurrect": True},
+        "effect": {"atk_bonus": 1200, "max_hp_bonus": 6000, "resurrect": True},
         "passive": "Void Rebirth: Bangkit dengan HP penuh sekali per battle"
     },
 }
@@ -2189,7 +2189,7 @@ GOD_SSSR_SPECIALS = {
         "desc": "Kill pertama restore HP penuh, next 5 serangan x10 DMG, Instant KO chance 20%",
         "trigger": "first_kill",
         "rarity": "GOD SSSR",
-        "effect": {"heal_full": True, "next_dmg_mult": 10.0, "next_atk_count": 5, "instant_ko_chance": 0.2},
+        "effect": {"heal_full": True, "next_dmg_mult": 30.0, "next_atk_count": 5, "instant_ko_chance": 0.6},
         "status": "death_sentence"
     },
     "reaper": {
@@ -2197,7 +2197,7 @@ GOD_SSSR_SPECIALS = {
         "desc": "Tiap kill tambah Soul tak terbatas, Harvest: musuh -80% HP + heal 50% HP",
         "trigger": "on_kill",
         "rarity": "GOD SSSR",
-        "effect": {"soul_per_kill": 2, "max_souls": 999, "harvest_dmg_pct": 0.8, "heal_pct": 0.5},
+        "effect": {"soul_per_kill": 2, "max_souls": 999, "harvest_dmg_pct": 0.8, "heal_pct": 1.5},
         "status": "void_soul_reap"
     },
 }
