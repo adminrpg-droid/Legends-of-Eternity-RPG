@@ -57,7 +57,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN","8656505461:AAGwzpxBdkzpquDA3Pz4aRExxVpOu9vBNYo")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
 if not BOT_TOKEN:
     logger.critical("❌ BOT_TOKEN belum diset! Set environment variable BOT_TOKEN.")
     sys.exit(1)
@@ -231,6 +231,7 @@ async def menu_action_handler(update: Update, context: ContextTypes.DEFAULT_TYPE
         class _FakeUpdate:
             effective_user = user
             message        = query.message
+            effective_chat = query.message.chat
         await daily_handler(_FakeUpdate(), context)
         return
 
@@ -422,8 +423,9 @@ def main():
     app.add_handler(CallbackQueryHandler(noop_handler,              pattern=r"^noop$"))
 
     # ── Text input ────────────────────────────────────────────────
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, market_price_input_handler), group=1)
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, name_input_handler))
+    # market_price_input_handler di group 0 agar diperiksa lebih dulu
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, market_price_input_handler), group=0)
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, name_input_handler), group=1)
 
     async def post_init(application):
         await application.bot.set_my_commands(PLAYER_COMMANDS)
