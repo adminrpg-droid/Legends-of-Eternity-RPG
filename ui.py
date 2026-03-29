@@ -178,9 +178,18 @@ def format_item_card(item_id: str, item: dict) -> str:
         f"+{v} {k.upper().replace('MAX_','MAX ')}"
         for k, v in item.get("stats", {}).items()
     )
+    # BUG FIX: price bisa None (item premium/diamond-only) — jangan format :, langsung
+    price = item.get("price")
+    dp    = item.get("diamond_price")
+    if price is not None:
+        price_str = f"🪙 {price:,} Gold"
+    elif dp is not None:
+        price_str = f"💎 {dp} Diamond"
+    else:
+        price_str = "🎁 Drop/Event Only"
     return (
         f"*{item['name']}*  {stars}\n"
         f"_{item.get('desc','')}_\n"
         f"📊 {stats_str or 'Konsumable'}\n"
-        f"🪙 Harga: {item.get('price','?'):,} Gold"
+        f"💰 Harga: {price_str}"
     )
