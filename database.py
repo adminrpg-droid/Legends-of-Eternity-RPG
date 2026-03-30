@@ -355,18 +355,18 @@ def create_player(user_id: int, name: str, char_class: str,
 def _level_stat_gains(lv: int) -> dict:
     """
     Hitung kenaikan stat per level naik ke level `lv`.
-    Semakin tinggi level, semakin besar kenaikan (progressif + eksponensial ringan).
+    [FIX] Stat naik secara bertahap dan normal, tidak terlalu cepat membesar.
     """
-    # HP: naik eksponensial — level rendah kecil, level tinggi besar
-    hp_gain  = 12 + int(lv * 2.0) + int((lv / 10) ** 2)
-    # MP: naik lebih moderat
-    mp_gain  =  7 + int(lv * 1.0) + int((lv / 15) ** 2)
-    # ATK: naik tiap level, bonus tambahan tiap 10 level
-    atk_gain =  2 + int(lv * 0.15) + max(0, (lv - 1) // 10)
-    # DEF: naik lebih pelan
-    def_gain =  1 + int(lv * 0.08) + max(0, (lv - 1) // 15)
-    # SPD: naik stabil + bonus tiap 20 level
-    spd_gain =  1 + max(0, (lv - 1) // 20)
+    # HP: naik bertahap, linear dengan sedikit bonus tiap 10 level
+    hp_gain  = 8 + int(lv * 0.8) + max(0, (lv - 1) // 10) * 2
+    # MP: naik moderat dan stabil
+    mp_gain  = 5 + int(lv * 0.4) + max(0, (lv - 1) // 15)
+    # ATK: naik pelan dan stabil
+    atk_gain = 1 + int(lv * 0.06) + max(0, (lv - 1) // 20)
+    # DEF: naik paling pelan
+    def_gain = 1 + int(lv * 0.04) + max(0, (lv - 1) // 25)
+    # SPD: naik sangat pelan
+    spd_gain = 1 if lv % 10 == 0 else 0
     # CRIT: naik tiap 5 level setelah level 10
     crit_gain = 1 if (lv >= 10 and lv % 5 == 0) else 0
     return {
@@ -381,7 +381,11 @@ def level_up(player: dict) -> tuple:
     while player["exp"] >= player["exp_needed"]:
         player["exp"]        -= player["exp_needed"]
         player["level"]      += 1
-        player["exp_needed"]  = int(player["exp_needed"] * 1.35)
+        # [FIX] Level 50+: XP yang dibutuhkan dikunci di 50.000
+        if player["level"] >= 50:
+            player["exp_needed"] = 50000
+        else:
+            player["exp_needed"]  = int(player["exp_needed"] * 1.35)
         levels_gained         += 1
 
         lv   = player["level"]
