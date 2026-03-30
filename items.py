@@ -1801,7 +1801,7 @@ PET_SHOP = {
         "desc": "Pet dasar, +5 ATK saat battle",
         "rarity": "common", "price": 50000, "diamond_price": None,
         "tier": 1,
-        "effect": {"atk_bonus": 5},
+        "effect": {"atk_bonus": 7},
         "passive": "Slime Bounce: 5% chance miss serangan musuh"
     },
     "pet_wolf_pup": {
@@ -1809,7 +1809,7 @@ PET_SHOP = {
         "desc": "+8 ATK, +5 SPD saat battle",
         "rarity": "common", "price": 80000, "diamond_price": None,
         "tier": 1,
-        "effect": {"atk_bonus": 8, "spd_bonus": 5},
+        "effect": {"atk_bonus": 11, "spd_bonus": 7},
         "passive": "Pack Instinct: +3% CRIT"
     },
     "pet_fire_cat": {
@@ -1817,7 +1817,7 @@ PET_SHOP = {
         "desc": "+10 ATK + Burn 10% chance saat serang",
         "rarity": "uncommon", "price": 150000, "diamond_price": None,
         "tier": 2,
-        "effect": {"atk_bonus": 10, "on_attack_burn_chance": 0.10},
+        "effect": {"atk_bonus": 14, "on_attack_burn_chance": 0.10},
         "passive": "Flame Aura: +2 DMG tiap ronde dari api"
     },
     "pet_stone_golem": {
@@ -1825,7 +1825,7 @@ PET_SHOP = {
         "desc": "+15 DEF, +50 HP saat battle",
         "rarity": "uncommon", "price": 180000, "diamond_price": None,
         "tier": 2,
-        "effect": {"def_bonus": 15, "hp_bonus": 50},
+        "effect": {"def_bonus": 21, "hp_bonus": 70},
         "passive": "Stone Skin: Reduce DMG received by 8%"
     },
     "pet_thunder_hawk": {
@@ -1833,7 +1833,7 @@ PET_SHOP = {
         "desc": "+15 ATK, +10 SPD, +10% CRIT",
         "rarity": "rare", "price": 300000, "diamond_price": None,
         "tier": 3,
-        "effect": {"atk_bonus": 15, "spd_bonus": 10, "crit_bonus": 10},
+        "effect": {"atk_bonus": 21, "spd_bonus": 14, "crit_bonus": 14},
         "passive": "Thunder Strike: Tiap 3 serangan, petir otomatis 1.2x DMG"
     },
     "pet_poison_serpent": {
@@ -1841,7 +1841,7 @@ PET_SHOP = {
         "desc": "+12 ATK + Poison 20% tiap serangan (3 ronde)",
         "rarity": "rare", "price": 320000, "diamond_price": None,
         "tier": 3,
-        "effect": {"atk_bonus": 12, "poison_chance": 0.20, "poison_turns": 3},
+        "effect": {"atk_bonus": 17, "poison_chance": 0.20, "poison_turns": 3},
         "passive": "Venom Aura: Musuh -5 DEF saat battle"
     },
     "pet_shadow_fox": {
@@ -1849,7 +1849,7 @@ PET_SHOP = {
         "desc": "+18 ATK, +15 SPD, Dodge +10%",
         "rarity": "epic", "price": 600000, "diamond_price": None,
         "tier": 4,
-        "effect": {"atk_bonus": 18, "spd_bonus": 15, "dodge_bonus": 10},
+        "effect": {"atk_bonus": 25, "spd_bonus": 21, "dodge_bonus": 10},
         "passive": "Shadow Dance: Setelah dodge, next atk +50% DMG"
     },
     "pet_ice_dragon": {
@@ -1857,7 +1857,7 @@ PET_SHOP = {
         "desc": "+22 ATK, +20 DEF, Freeze 15% tiap serangan",
         "rarity": "epic", "price": 700000, "diamond_price": None,
         "tier": 4,
-        "effect": {"atk_bonus": 22, "def_bonus": 20, "freeze_chance": 0.15},
+        "effect": {"atk_bonus": 31, "def_bonus": 28, "freeze_chance": 0.15},
         "passive": "Frost Breath: -10 SPD musuh permanen saat battle"
     },
     # ── SSR (Diamond) ─────────────────────────────────────────────
@@ -1866,7 +1866,7 @@ PET_SHOP = {
         "desc": "+40 ATK, +30 SPD, +15 CRIT | Howl: +20% DMG 2 ronde tiap 4 serangan",
         "rarity": "SSR", "price": None, "diamond_price": 150,
         "tier": 5,
-        "effect": {"atk_bonus": 64, "spd_bonus": 30, "crit_bonus": 15},
+        "effect": {"atk_bonus": 90, "spd_bonus": 42, "crit_bonus": 21},
         "passive": "Moon Howl: Setiap 4 serangan, +20% DMG selama 2 ronde"
     },
     "pet_phoenix": {
@@ -1874,7 +1874,7 @@ PET_SHOP = {
         "desc": "+35 ATK, +80 HP, Burn 30% tiap atk | Rebirth: 1x per battle +30% HP",
         "rarity": "SSR", "price": None, "diamond_price": 150,
         "tier": 5,
-        "effect": {"atk_bonus": 56, "hp_bonus": 80, "burn_chance": 0.30},
+        "effect": {"atk_bonus": 78, "hp_bonus": 112, "burn_chance": 0.30},
         "passive": "Rebirth: 1x per battle saat HP < 20%, pulihkan 30% HP"
     },
     "pet_storm_dragon": {
@@ -1882,7 +1882,7 @@ PET_SHOP = {
         "desc": "+45 ATK, +30 DEF, +20 SPD | Lightning Breath tiap 3 ronde 1.8x DMG",
         "rarity": "SSR", "price": None, "diamond_price": 150,
         "tier": 5,
-        "effect": {"atk_bonus": 72, "def_bonus": 48, "spd_bonus": 20},
+        "effect": {"atk_bonus": 101, "def_bonus": 67, "spd_bonus": 28},
         "passive": "Lightning Breath: Tiap 3 ronde, 1.8x DMG otomatis + Stun"
     },
     # ── UR (Diamond) ──────────────────────────────────────────────
@@ -1891,7 +1891,7 @@ PET_SHOP = {
         "desc": "+60 ATK, +60 DEF, +40 SPD | Heal 10% HP tiap ronde + Bless +20% DMG",
         "rarity": "UR", "price": None, "diamond_price": 350,
         "tier": 6,
-        "effect": {"atk_bonus": 120, "def_bonus": 120, "spd_bonus": 40},
+        "effect": {"atk_bonus": 168, "def_bonus": 168, "spd_bonus": 56},
         "passive": "Sacred Aura: Heal 10% HP tiap ronde + Semua stat +20%"
     },
     "pet_shadow_leviathan": {
@@ -1899,7 +1899,7 @@ PET_SHOP = {
         "desc": "+70 ATK, +50 DEF, +100 HP | Tentacle: 2 serangan tambahan 1.5x DMG",
         "rarity": "UR", "price": None, "diamond_price": 350,
         "tier": 6,
-        "effect": {"atk_bonus": 140, "def_bonus": 100, "hp_bonus": 100},
+        "effect": {"atk_bonus": 196, "def_bonus": 140, "hp_bonus": 140},
         "passive": "Abyss Tide: 2 serangan otomatis 1.5x DMG tiap ronde monster serang"
     },
     "pet_chaos_hydra": {
@@ -1907,7 +1907,7 @@ PET_SHOP = {
         "desc": "+80 ATK, +40 DEF, Poison+Burn+Bleed tiap serang",
         "rarity": "UR", "price": None, "diamond_price": 350,
         "tier": 6,
-        "effect": {"atk_bonus": 160, "def_bonus": 80, "multi_dot": True},
+        "effect": {"atk_bonus": 224, "def_bonus": 112, "multi_dot": True},
         "passive": "Triple Venom: Tiap serangan apply Poison+Burn+Bleed sekaligus"
     },
     # ── GOD (Diamond) ─────────────────────────────────────────────
@@ -1916,7 +1916,7 @@ PET_SHOP = {
         "desc": "+120 ATK, +80 DEF, +60 SPD | War Cry: +50% DMG + Immune 1 ronde tiap 5 serangan",
         "rarity": "GOD", "price": None, "diamond_price": 999,
         "tier": 7,
-        "effect": {"atk_bonus": 300, "def_bonus": 200, "spd_bonus": 60},
+        "effect": {"atk_bonus": 420, "def_bonus": 280, "spd_bonus": 84},
         "passive": "Eternal War Cry: Tiap 5 serangan, +50% DMG + Immune 1 ronde"
     },
     "pet_void_dragon_god": {
@@ -1924,7 +1924,7 @@ PET_SHOP = {
         "desc": "+150 ATK, +100 DEF, +200 HP | Void Breath: 3x DMG tiap 3 ronde + Drain HP",
         "rarity": "GOD", "price": None, "diamond_price": 999,
         "tier": 7,
-        "effect": {"atk_bonus": 375, "def_bonus": 250, "hp_bonus": 200},
+        "effect": {"atk_bonus": 525, "def_bonus": 350, "hp_bonus": 280},
         "passive": "Void Breath: Tiap 3 ronde, 3x DMG + Drain 20% HP musuh"
     },
     "pet_eternal_phoenix_god": {
@@ -1932,7 +1932,7 @@ PET_SHOP = {
         "desc": "+130 ATK, +90 DEF, +150 HP | Immortal: Bangkit 3x per battle dengan 50% HP",
         "rarity": "GOD", "price": None, "diamond_price": 999,
         "tier": 7,
-        "effect": {"atk_bonus": 325, "def_bonus": 225, "hp_bonus": 150},
+        "effect": {"atk_bonus": 455, "def_bonus": 315, "hp_bonus": 210},
         "passive": "Eternal Rebirth: Bangkit 3x per battle dengan 50% HP, next atk 4x DMG"
     },
 }
@@ -1954,16 +1954,17 @@ EVOLUTION_TIERS = {
 }
 
 PET_EVOLUTION_TIERS = {
+    # [FIX] Evolution stat_mult dinaikkan agar lebih impactful
     1:  {"name": "Baby",         "emoji": "🥚", "stat_mult": 1.0,  "evolution_stone_needed": 0},
-    2:  {"name": "Juvenile",     "emoji": "🐣", "stat_mult": 1.15, "evolution_stone_needed": 1},
-    3:  {"name": "Young",        "emoji": "🐤", "stat_mult": 1.30, "evolution_stone_needed": 2},
-    4:  {"name": "Grown",        "emoji": "🌱", "stat_mult": 1.50, "evolution_stone_needed": 3},
-    5:  {"name": "Matured",      "emoji": "🌿", "stat_mult": 1.75, "evolution_stone_needed": 5},
-    6:  {"name": "Champion",     "emoji": "⚔️", "stat_mult": 2.0,  "evolution_stone_needed": 8},
-    7:  {"name": "Elite",        "emoji": "💫", "stat_mult": 2.3,  "evolution_stone_needed": 12},
-    8:  {"name": "Ancient",      "emoji": "🏆", "stat_mult": 2.7,  "evolution_stone_needed": 20},
-    9:  {"name": "Divine",       "emoji": "💎", "stat_mult": 3.2,  "evolution_stone_needed": 30},
-    10: {"name": "LEGENDARY",    "emoji": "🌟", "stat_mult": 4.0,  "evolution_stone_needed": 50},
+    2:  {"name": "Juvenile",     "emoji": "🐣", "stat_mult": 1.25, "evolution_stone_needed": 1},
+    3:  {"name": "Young",        "emoji": "🐤", "stat_mult": 1.55, "evolution_stone_needed": 2},
+    4:  {"name": "Grown",        "emoji": "🌱", "stat_mult": 1.90, "evolution_stone_needed": 3},
+    5:  {"name": "Matured",      "emoji": "🌿", "stat_mult": 2.30, "evolution_stone_needed": 5},
+    6:  {"name": "Champion",     "emoji": "⚔️", "stat_mult": 2.75, "evolution_stone_needed": 8},
+    7:  {"name": "Elite",        "emoji": "💫", "stat_mult": 3.25, "evolution_stone_needed": 12},
+    8:  {"name": "Ancient",      "emoji": "🏆", "stat_mult": 3.85, "evolution_stone_needed": 20},
+    9:  {"name": "Divine",       "emoji": "💎", "stat_mult": 4.60, "evolution_stone_needed": 30},
+    10: {"name": "LEGENDARY",    "emoji": "🌟", "stat_mult": 5.50, "evolution_stone_needed": 50},
 }
 
 # Evolution Stone - boss drop rarity 0.1%
