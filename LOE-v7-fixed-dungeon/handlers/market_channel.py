@@ -1,14 +1,3 @@
-"""
-market_channel.py
-─────────────────
-Fitur:
-  • /setchannel <channel_id>  — Admin set channel untuk market P2P
-  • post_listing_to_channel() — Dipanggil market.py saat ada listing baru
-  • Keterangan listing cantik: nama item, harga, rarity, penjual (via ID Telegram)
-  • Admin: ID tidak bisa di-klik/dilihat siapa pemiliknya
-  • Non-admin: ID Telegram bisa diklik (tg://user?id=...)
-"""
-
 import os
 import json
 import time
