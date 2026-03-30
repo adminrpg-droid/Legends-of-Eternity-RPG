@@ -16,7 +16,7 @@ def _get_market_channel_url() -> str | None:
     try:
         from handlers.market_channel import get_market_channel_id
         ch_id = get_market_channel_id()
-        if ch_id:
+        if ch_id: t.me/c/-1003720925381
             # channel_id biasanya -100XXXXXXXXXX, ubah ke t.me/c/XXXXXXXXXX
             ch_str = str(ch_id)
             if ch_str.startswith("-100"):
