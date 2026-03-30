@@ -24,11 +24,19 @@ from handlers.book       import book_handler, book_action_handler
 from handlers.daily      import daily_handler
 from handlers.leaderboard import leaderboard_handler, lb_action_handler
 from handlers.rest       import rest_handler, rest_action_handler
-from handlers.group_boss import group_boss_handler, group_boss_action_handler
+from handlers.group_boss import group_boss_handler, group_boss_action_handler, reset_group_boss_handler
 from handlers.pvp       import pvp_handler, pvp_action_handler, pvpstats_handler
 from handlers.quest   import quest_handler, quest_action_handler
 from handlers.enhance import enhance_handler, enhance_action_handler
+from handlers.battle  import reset_battle_handler
+from handlers.market_channel import setchannel_handler
 from handlers.title   import title_handler, title_action_handler
+from handlers.war     import (
+    war_handler, war_menu_handler, war_declare_handler,
+    war_vote_handler, war_vote_status_handler,
+    war_info_handler, war_history_handler, war_status_handler,
+    warstats_handler, setkerajaan_handler,
+)
 from handlers.admin      import (
     admin_handler, admin_action_handler,
     addcoin_handler, adddiamond_handler,
@@ -87,7 +95,19 @@ async def help_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "📌 *SISTEM BATTLE*\n"
         "Cooldown 5 detik mencari monster.\n"
         "Cooldown 3 detik setiap aksi battle.\n"
-        "Membunuh monster/boss mendapat Gold & EXP.\n\n"
+        "Membunuh monster/boss mendapat Gold & EXP.\n"
+        "⚠️ Kalah tidak mengurangi Gold!\n"
+        "🔄 Battle stuck? Ketik /resetbattle untuk reset.\n\n"
+        "📌 *GROUP BOSS RAID*\n"
+        "Ketik /groupboss atau /grub di grup untuk mulai Boss Raid.\n"
+        "Ajak teman join raid dan kalahkan boss bersama!\n"
+        "Stat boss otomatis scale sesuai jumlah pemain.\n"
+        "Semua peserta bisa dapat drop item (10% biasa, 0.1% GOD SSSR)!\n"
+        "Killer mendapat bonus Gold x2.\n\n"
+        "📌 *MARKET P2P*\n"
+        "Jual & beli item antar pemain via /market.\n"
+        "Listing baru otomatis dipost ke channel market.\n"
+        "Penjual tampil sebagai ID yang bisa diklik.\n\n"
         "📌 *LEADERBOARD*\n"
         "Tab Semua Waktu, Mingguan, Bulanan.\n"
         "Diurutkan: Level, Kills, Boss Kills.\n\n"
@@ -148,6 +168,7 @@ async def menu_action_handler(update: Update, context: ContextTypes.DEFAULT_TYPE
     user = query.from_user
 
     from database import get_player
+    from handlers.war import war_menu_handler
     player = get_player(user.id)
     if not player:
         await query.message.reply_text("❌ Ketik /start dulu!")
@@ -262,6 +283,11 @@ async def menu_action_handler(update: Update, context: ContextTypes.DEFAULT_TYPE
         await _show_evolution_info(_FakeQuery(), player)
         return
 
+    if action == "menu_war":
+        # Redirect ke war_menu_handler
+        await war_menu_handler(update, context)
+        return
+
     await query.message.reply_text("Gunakan command yang sesuai.")
 
 
@@ -343,7 +369,10 @@ PLAYER_COMMANDS = [
     BotCommand("title",       "🏅 Koleksi title karakter"),
     BotCommand("pvp",         "⚔️ Tantang pemain lain (grup)"),
     BotCommand("pvpstats",    "📊 Statistik PVP kamu"),
+    BotCommand("war",         "⚔️ Menu war kerajaan"),
+    BotCommand("warstats",    "📊 Statistik perang kerajaan"),
     BotCommand("infofoto",    "🖼️ Lihat foto/GIF class, item, pet"),
+    BotCommand("resetbattle", "🔄 Reset battle jika stuck"),
     BotCommand("help",        "❓ Panduan bermain"),
 ]
 
@@ -375,6 +404,10 @@ def main():
     app.add_handler(CommandHandler("title",        title_handler))
     app.add_handler(CommandHandler("pvp",          pvp_handler))
     app.add_handler(CommandHandler("pvpstats",     pvpstats_handler))
+    app.add_handler(CommandHandler("resetbattle",  reset_battle_handler))   # Fix battle stuck
+    app.add_handler(CommandHandler("war",          war_handler))
+    app.add_handler(CommandHandler("warstats",     warstats_handler))
+    app.add_handler(CommandHandler("setkerajaan",  setkerajaan_handler))
 
     # ── Admin Commands ────────────────────────────────────────────
     app.add_handler(CommandHandler("admin",        admin_handler))
@@ -384,7 +417,7 @@ def main():
     app.add_handler(CommandHandler("adddiamond",   adddiamond_handler))
     app.add_handler(CommandHandler("addstone",     addstone_handler))
     app.add_handler(CommandHandler("setvip",       setvip_handler))
-    app.add_handler(CommandHandler("setmedia",     setmedia_reply_handler))   # versi baru: via reply foto/gif
+    app.add_handler(CommandHandler("setmedia",     setmedia_reply_handler))
     app.add_handler(CommandHandler("addadmin",     addadmin_handler))
     app.add_handler(CommandHandler("removeadmin",  removeadmin_handler))
     app.add_handler(CommandHandler("ban",          ban_handler))
@@ -392,11 +425,14 @@ def main():
     app.add_handler(CommandHandler("resetplayer",  resetplayer_handler))
     app.add_handler(CommandHandler("resetall",     resetall_handler))
     app.add_handler(CommandHandler("setlevel",     setlevel_handler))
-    app.add_handler(CommandHandler("giveallgold",     giveallgold_handler))     # Admin only
-    app.add_handler(CommandHandler("givealldiamond",  givealldiamond_handler))  # Admin only
-    app.add_handler(CommandHandler("groupboss",    group_boss_handler))  # Semua pemain (di grup)
-    app.add_handler(CommandHandler("broadcast",    broadcast_handler))   # Admin only
-    app.add_handler(CommandHandler("infofoto",     infofoto_handler))    # Semua pemain
+    app.add_handler(CommandHandler("giveallgold",     giveallgold_handler))
+    app.add_handler(CommandHandler("givealldiamond",  givealldiamond_handler))
+    app.add_handler(CommandHandler("groupboss",    group_boss_handler))
+    app.add_handler(CommandHandler("grub",         group_boss_handler))
+    app.add_handler(CommandHandler("resetgroupboss", reset_group_boss_handler))  # Admin: reset stuck group boss
+    app.add_handler(CommandHandler("setchannel",   setchannel_handler))          # Admin: set market channel
+    app.add_handler(CommandHandler("broadcast",    broadcast_handler))
+    app.add_handler(CommandHandler("infofoto",     infofoto_handler))
 
     # ── Callbacks ─────────────────────────────────────────────────
     app.add_handler(CallbackQueryHandler(gender_handler,            pattern=r"^gender_"))
@@ -426,6 +462,16 @@ def main():
     app.add_handler(CallbackQueryHandler(menu_cb_handler,           pattern=r"^menu$"))
     app.add_handler(CallbackQueryHandler(menu_action_handler,       pattern=r"^menu_"))
     app.add_handler(CallbackQueryHandler(noop_handler,              pattern=r"^noop$"))
+
+    # ── War Callbacks ─────────────────────────────────────────────
+    app.add_handler(CallbackQueryHandler(war_menu_handler,          pattern=r"^war_menu$"))
+    app.add_handler(CallbackQueryHandler(war_declare_handler,       pattern=r"^war_declare$"))
+    app.add_handler(CallbackQueryHandler(war_vote_handler,          pattern=r"^war_vote_yes$"))
+    app.add_handler(CallbackQueryHandler(war_vote_handler,          pattern=r"^war_vote_no$"))
+    app.add_handler(CallbackQueryHandler(war_vote_status_handler,   pattern=r"^war_vote_status$"))
+    app.add_handler(CallbackQueryHandler(war_status_handler,        pattern=r"^war_status$"))
+    app.add_handler(CallbackQueryHandler(war_info_handler,          pattern=r"^war_info$"))
+    app.add_handler(CallbackQueryHandler(war_history_handler,       pattern=r"^war_history$"))
 
     # ── Text input ────────────────────────────────────────────────
     # market_price_input_handler di group 0 agar diperiksa lebih dulu
