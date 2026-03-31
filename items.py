@@ -1364,140 +1364,140 @@ PREMIUM_WEAPONS = {
     # ── MAGE SSR/UR/GOD ──────────────────────────────────────────
     "ssr_mage_staff": {
         "name": "🪄✨ Arcane Infinity [SSR]",
-        "desc": "+85 ATK, +200 MP | Skill cost -30% MP",
+        "desc": "+85 ATK, +200 MP, +50 HP | Skill cost -30% MP",
         "diamond_price": 80,
         "type": "weapon", "class": "mage", "rarity": "SSR", "req_level": 25,
-        "stats": {"atk": 153, "max_mp": 360},
+        "stats": {"atk": 153, "max_mp": 360, "max_hp": 50},
         "special_effect": {"mp_cost_reduce": 0.30, "on_skill": "freeze"},
         "sellable": False
     },
     "ur_mage_tome": {
         "name": "📖💜 Grimoire of Doom [UR]",
-        "desc": "+130 ATK, +300 MP, +20 CRIT | Skill DMG +50%",
+        "desc": "+130 ATK, +300 MP, +20 CRIT, +100 HP | Skill DMG +50%",
         "diamond_price": 180,
         "type": "weapon", "class": "mage", "rarity": "UR", "req_level": 35,
-        "stats": {"atk": 286, "max_mp": 660, "crit": 44},
+        "stats": {"atk": 286, "max_mp": 660, "crit": 44, "max_hp": 100},
         "special_effect": {"skill_dmg_bonus": 0.50, "on_skill": "burn", "burn_turns": 6},
         "sellable": False
     },
     "god_mage_scepter": {
         "name": "💎🌟 Cosmos Scepter [GOD]",
-        "desc": "+200 ATK, +500 MP, +30 CRIT | Chain Lightning otomatis tiap 2 ronde",
+        "desc": "+200 ATK, +500 MP, +30 CRIT, +200 HP | Chain Lightning otomatis tiap 2 ronde",
         "diamond_price": 500,
         "type": "weapon", "class": "mage", "rarity": "GOD", "req_level": 50,
-        "stats": {"atk": 560, "max_mp": 1400, "crit": 84},
+        "stats": {"atk": 560, "max_mp": 1400, "crit": 84, "max_hp": 200},
         "special_effect": {"auto_chain_every": 2, "chain_dmg_mult": 4.5, "on_kill": "arcane_charged"},
         "sellable": False
     },
     # ── ARCHER SSR/UR/GOD ────────────────────────────────────────
     "ssr_archer_bow": {
         "name": "🏹✨ Starfall Bow [SSR]",
-        "desc": "+75 ATK, +50 SPD, +25 CRIT | CRIT Poison 3 ronde",
+        "desc": "+75 ATK, +50 SPD, +25 CRIT, +60 HP | CRIT Poison 3 ronde",
         "diamond_price": 80,
         "type": "weapon", "class": "archer", "rarity": "SSR", "req_level": 25,
-        "stats": {"atk": 135, "spd": 90, "crit": 45},
+        "stats": {"atk": 135, "spd": 90, "crit": 45, "max_hp": 60},
         "special_effect": {"on_crit": "poison", "poison_dmg": 28, "poison_turns": 4},
         "sellable": False
     },
     "ur_archer_crossbow": {
         "name": "⚡💜 Thunder Piercer [UR]",
-        "desc": "+115 ATK, +70 SPD, +35 CRIT | Double shot 30% chance",
+        "desc": "+115 ATK, +70 SPD, +35 CRIT, +120 HP | Double shot 30% chance",
         "diamond_price": 180,
         "type": "weapon", "class": "archer", "rarity": "UR", "req_level": 35,
-        "stats": {"atk": 253, "spd": 154, "crit": 77},
+        "stats": {"atk": 253, "spd": 154, "crit": 77, "max_hp": 120},
         "special_effect": {"double_shot_chance": 0.30, "on_crit": "stun"},
         "sellable": False
     },
     "god_archer_bow": {
         "name": "🌟✨ Celestial Longbow [GOD]",
-        "desc": "+175 ATK, +100 SPD, +50 CRIT | Infinite CRIT = Full DMG",
+        "desc": "+175 ATK, +100 SPD, +50 CRIT, +250 HP | Infinite CRIT = Full DMG",
         "diamond_price": 500,
         "type": "weapon", "class": "archer", "rarity": "GOD", "req_level": 50,
-        "stats": {"atk": 489, "spd": 280, "crit": 140},
+        "stats": {"atk": 489, "spd": 280, "crit": 140, "max_hp": 250},
         "special_effect": {"crit_always": True, "crit_dmg_mult": 3.0, "on_kill": "eagle_eye"},
         "sellable": False
     },
     # ── ROGUE SSR/UR/GOD ─────────────────────────────────────────
     "ssr_rogue_blade": {
         "name": "🔪✨ Phantom Edge [SSR]",
-        "desc": "+78 ATK, +45 SPD | Dodge +20%, Counter DMG x1.5",
+        "desc": "+78 ATK, +45 SPD, +60 HP, +30 MP | Dodge +20%, Counter DMG x1.5",
         "diamond_price": 80,
         "type": "weapon", "class": "rogue", "rarity": "SSR", "req_level": 25,
-        "stats": {"atk": 140, "spd": 81},
+        "stats": {"atk": 140, "spd": 81, "max_hp": 60, "max_mp": 30},
         "special_effect": {"dodge_bonus": 20, "counter_mult": 1.5, "on_dodge": "bleed"},
         "sellable": False
     },
     "ur_rogue_knives": {
         "name": "🌀💜 Void Ripper [UR]",
-        "desc": "+118 ATK, +65 SPD | Triple strike 25% chance + Curse",
+        "desc": "+118 ATK, +65 SPD, +120 HP, +60 MP | Triple strike 25% chance + Curse",
         "diamond_price": 180,
         "type": "weapon", "class": "rogue", "rarity": "UR", "req_level": 35,
-        "stats": {"atk": 259, "spd": 143},
+        "stats": {"atk": 259, "spd": 143, "max_hp": 120, "max_mp": 60},
         "special_effect": {"triple_strike_chance": 0.25, "on_skill": "curse"},
         "sellable": False
     },
     "god_rogue_shadow": {
         "name": "👻🌟 Shadow Sovereign Blade [GOD]",
-        "desc": "+178 ATK, +90 SPD | Invisible 1 ronde tiap 4 serangan",
+        "desc": "+178 ATK, +90 SPD, +250 HP, +120 MP | Invisible 1 ronde tiap 4 serangan",
         "diamond_price": 500,
         "type": "weapon", "class": "rogue", "rarity": "GOD", "req_level": 50,
-        "stats": {"atk": 498, "spd": 251},
+        "stats": {"atk": 498, "spd": 251, "max_hp": 250, "max_mp": 120},
         "special_effect": {"every_4_atk_invisible": True, "invisible_dmg_mult": 4.0, "on_crit": "bleed"},
         "sellable": False
     },
     # ── ASSASSIN SSR/UR/GOD ──────────────────────────────────────
     "ssr_assassin_blade": {
         "name": "💀✨ Soul Carver [SSR]",
-        "desc": "+82 ATK, +48 SPD | Life steal 15% dari tiap serangan",
+        "desc": "+82 ATK, +48 SPD, +60 HP, +40 MP | Life steal 15% dari tiap serangan",
         "diamond_price": 80,
         "type": "weapon", "class": "assassin", "rarity": "SSR", "req_level": 25,
-        "stats": {"atk": 147, "spd": 86},
+        "stats": {"atk": 147, "spd": 86, "max_hp": 60, "max_mp": 40},
         "special_effect": {"lifesteal_pct": 0.15, "on_kill": "death_marked"},
         "sellable": False
     },
     "ur_assassin_scythe": {
         "name": "☠️💜 Deathbringer [UR]",
-        "desc": "+125 ATK, +68 SPD | Execute <40% HP = instant kill 25%",
+        "desc": "+125 ATK, +68 SPD, +120 HP, +80 MP | Execute <40% HP = instant kill 25%",
         "diamond_price": 180,
         "type": "weapon", "class": "assassin", "rarity": "UR", "req_level": 35,
-        "stats": {"atk": 275, "spd": 149},
+        "stats": {"atk": 275, "spd": 149, "max_hp": 120, "max_mp": 80},
         "special_effect": {"execute_chance": 0.25, "execute_threshold": 0.40, "on_execute": "lifesteal"},
         "sellable": False
     },
     "god_assassin_reaper": {
         "name": "🌑🌟 Reaper of Souls [GOD]",
-        "desc": "+185 ATK, +95 SPD | Kills heal 30% HP + next atk 5x DMG",
+        "desc": "+185 ATK, +95 SPD, +250 HP, +160 MP | Kills heal 30% HP + next atk 5x DMG",
         "diamond_price": 500,
         "type": "weapon", "class": "assassin", "rarity": "GOD", "req_level": 50,
-        "stats": {"atk": 518, "spd": 266},
+        "stats": {"atk": 518, "spd": 266, "max_hp": 250, "max_mp": 160},
         "special_effect": {"kill_heal_pct": 0.30, "kill_next_dmg": 5.0, "on_kill": "soul_charging"},
         "sellable": False
     },
     # ── DEATH SCYTHE SSR/UR/GOD ──────────────────────────────────
     "ssr_death_scythe_scythe": {
         "name": "☠️✨ Cursed Reaper [SSR]",
-        "desc": "+80 ATK, +220 MP | Soul stack 2x lebih cepat",
+        "desc": "+80 ATK, +220 MP, +50 HP | Soul stack 2x lebih cepat",
         "diamond_price": 80,
         "type": "weapon", "class": "reaper", "rarity": "SSR", "req_level": 25,
-        "stats": {"atk": 144, "max_mp": 396},
+        "stats": {"atk": 144, "max_mp": 396, "max_hp": 50},
         "special_effect": {"soul_per_kill": 2, "on_skill": "curse", "curse_turns": 3},
         "sellable": False
     },
     "ur_death_scythe_grimoire": {
         "name": "📕💜 Tome of Eternal Death [UR]",
-        "desc": "+125 ATK, +350 MP | Harvest DMG 75% + Drain HP musuh",
+        "desc": "+125 ATK, +350 MP, +100 HP | Harvest DMG 75% + Drain HP musuh",
         "diamond_price": 180,
         "type": "weapon", "class": "reaper", "rarity": "UR", "req_level": 35,
-        "stats": {"atk": 275, "max_mp": 770},
+        "stats": {"atk": 275, "max_mp": 770, "max_hp": 100},
         "special_effect": {"harvest_dmg_pct": 0.75, "soul_drain_pct": 0.20, "on_kill": "soul_charging"},
         "sellable": False
     },
     "god_death_scythe_void": {
         "name": "🌑🌟 Void Reaper Absolute [GOD]",
-        "desc": "+200 ATK, +600 MP | Harvest tiap 3 kill + invincible 1 ronde",
+        "desc": "+200 ATK, +600 MP, +200 HP | Harvest tiap 3 kill + invincible 1 ronde",
         "diamond_price": 500,
         "type": "weapon", "class": "reaper", "rarity": "GOD", "req_level": 50,
-        "stats": {"atk": 560, "max_mp": 1680},
+        "stats": {"atk": 560, "max_mp": 1680, "max_hp": 200},
         "special_effect": {"harvest_every_3_kills": True, "invincible_on_harvest": True, "soul_per_kill": 3},
         "sellable": False
     },
@@ -1863,77 +1863,77 @@ PET_SHOP = {
     # ── SSR (Diamond) ─────────────────────────────────────────────
     "pet_celestial_wolf": {
         "name": "🐺✨ Celestial Wolf [SSR]",
-        "desc": "+40 ATK, +30 SPD, +15 CRIT | Howl: +20% DMG 2 ronde tiap 4 serangan",
+        "desc": "+500 ATK, +300 SPD, +150 CRIT | Howl: +50% DMG 3 ronde tiap 3 serangan",
         "rarity": "SSR", "price": None, "diamond_price": 150,
         "tier": 5,
-        "effect": {"atk_bonus": 90, "spd_bonus": 42, "crit_bonus": 21},
-        "passive": "Moon Howl: Setiap 4 serangan, +20% DMG selama 2 ronde"
+        "effect": {"atk_bonus": 500, "spd_bonus": 300, "crit_bonus": 150},
+        "passive": "Moon Howl: Setiap 3 serangan, +50% DMG selama 3 ronde + Crit +30%"
     },
     "pet_phoenix": {
         "name": "🔥✨ Phoenix [SSR]",
-        "desc": "+35 ATK, +80 HP, Burn 30% tiap atk | Rebirth: 1x per battle +30% HP",
+        "desc": "+450 ATK, +2000 HP, Burn 50% tiap atk | Rebirth: 2x per battle +50% HP",
         "rarity": "SSR", "price": None, "diamond_price": 150,
         "tier": 5,
-        "effect": {"atk_bonus": 78, "hp_bonus": 112, "burn_chance": 0.30},
-        "passive": "Rebirth: 1x per battle saat HP < 20%, pulihkan 30% HP"
+        "effect": {"atk_bonus": 450, "hp_bonus": 2000, "burn_chance": 0.50},
+        "passive": "Rebirth: 2x per battle saat HP < 30%, pulihkan 50% HP + ATK +30%"
     },
     "pet_storm_dragon": {
         "name": "🐲⚡ Storm Dragon [SSR]",
-        "desc": "+45 ATK, +30 DEF, +20 SPD | Lightning Breath tiap 3 ronde 1.8x DMG",
+        "desc": "+600 ATK, +400 DEF, +250 SPD | Lightning Breath tiap 2 ronde 3x DMG",
         "rarity": "SSR", "price": None, "diamond_price": 150,
         "tier": 5,
-        "effect": {"atk_bonus": 101, "def_bonus": 67, "spd_bonus": 28},
-        "passive": "Lightning Breath: Tiap 3 ronde, 1.8x DMG otomatis + Stun"
+        "effect": {"atk_bonus": 600, "def_bonus": 400, "spd_bonus": 250},
+        "passive": "Lightning Breath: Tiap 2 ronde, 3x DMG otomatis + Stun 2 ronde"
     },
     # ── UR (Diamond) ──────────────────────────────────────────────
     "pet_divine_unicorn": {
         "name": "🦄💜 Divine Unicorn [UR]",
-        "desc": "+60 ATK, +60 DEF, +40 SPD | Heal 10% HP tiap ronde + Bless +20% DMG",
+        "desc": "+1200 ATK, +1000 DEF, +500 SPD | Heal 20% HP tiap ronde + Bless +50% DMG",
         "rarity": "UR", "price": None, "diamond_price": 350,
         "tier": 6,
-        "effect": {"atk_bonus": 168, "def_bonus": 168, "spd_bonus": 56},
-        "passive": "Sacred Aura: Heal 10% HP tiap ronde + Semua stat +20%"
+        "effect": {"atk_bonus": 1200, "def_bonus": 1000, "spd_bonus": 500},
+        "passive": "Sacred Aura: Heal 20% HP tiap ronde + Semua stat +50% + Immune debuff"
     },
     "pet_shadow_leviathan": {
         "name": "🌊💜 Shadow Leviathan [UR]",
-        "desc": "+70 ATK, +50 DEF, +100 HP | Tentacle: 2 serangan tambahan 1.5x DMG",
+        "desc": "+1400 ATK, +900 DEF, +5000 HP | Tentacle: 3 serangan tambahan 2x DMG",
         "rarity": "UR", "price": None, "diamond_price": 350,
         "tier": 6,
-        "effect": {"atk_bonus": 196, "def_bonus": 140, "hp_bonus": 140},
-        "passive": "Abyss Tide: 2 serangan otomatis 1.5x DMG tiap ronde monster serang"
+        "effect": {"atk_bonus": 1400, "def_bonus": 900, "hp_bonus": 5000},
+        "passive": "Abyss Tide: 3 serangan otomatis 2x DMG tiap ronde monster serang + Drain HP"
     },
     "pet_chaos_hydra": {
         "name": "🐉💜 Chaos Hydra [UR]",
-        "desc": "+80 ATK, +40 DEF, Poison+Burn+Bleed tiap serang",
+        "desc": "+1600 ATK, +800 DEF, Poison+Burn+Bleed+Curse tiap serang",
         "rarity": "UR", "price": None, "diamond_price": 350,
         "tier": 6,
-        "effect": {"atk_bonus": 224, "def_bonus": 112, "multi_dot": True},
-        "passive": "Triple Venom: Tiap serangan apply Poison+Burn+Bleed sekaligus"
+        "effect": {"atk_bonus": 1600, "def_bonus": 800, "multi_dot": True},
+        "passive": "Triple Venom: Tiap serangan apply Poison+Burn+Bleed+Curse + DEF musuh -70%"
     },
     # ── GOD (Diamond) ─────────────────────────────────────────────
     "pet_god_of_war": {
         "name": "⚔️🌟 God of War Beast [GOD]",
-        "desc": "+120 ATK, +80 DEF, +60 SPD | War Cry: +50% DMG + Immune 1 ronde tiap 5 serangan",
+        "desc": "+5000 ATK, +3000 DEF, +2000 SPD | War Cry: +200% DMG + Immune 3 ronde tiap 3 serangan",
         "rarity": "GOD", "price": None, "diamond_price": 999,
         "tier": 7,
-        "effect": {"atk_bonus": 420, "def_bonus": 280, "spd_bonus": 84},
-        "passive": "Eternal War Cry: Tiap 5 serangan, +50% DMG + Immune 1 ronde"
+        "effect": {"atk_bonus": 5000, "def_bonus": 3000, "spd_bonus": 2000},
+        "passive": "Eternal War Cry: Tiap 3 serangan, +200% DMG + Immune 3 ronde + HP regen 15%"
     },
     "pet_void_dragon_god": {
         "name": "🌌🌟 Void Dragon God [GOD]",
-        "desc": "+150 ATK, +100 DEF, +200 HP | Void Breath: 3x DMG tiap 3 ronde + Drain HP",
+        "desc": "+7000 ATK, +5000 DEF, +20000 HP | Void Breath: 5x DMG tiap 2 ronde + Drain HP",
         "rarity": "GOD", "price": None, "diamond_price": 999,
         "tier": 7,
-        "effect": {"atk_bonus": 525, "def_bonus": 350, "hp_bonus": 280},
-        "passive": "Void Breath: Tiap 3 ronde, 3x DMG + Drain 20% HP musuh"
+        "effect": {"atk_bonus": 7000, "def_bonus": 5000, "hp_bonus": 20000},
+        "passive": "Void Breath: Tiap 2 ronde, 5x DMG + Drain 40% HP musuh + Stun 2 ronde"
     },
     "pet_eternal_phoenix_god": {
         "name": "🔥🌟 Eternal Phoenix God [GOD]",
-        "desc": "+130 ATK, +90 DEF, +150 HP | Immortal: Bangkit 3x per battle dengan 50% HP",
+        "desc": "+6000 ATK, +4000 DEF, +15000 HP | Immortal: Bangkit 5x per battle dengan 80% HP",
         "rarity": "GOD", "price": None, "diamond_price": 999,
         "tier": 7,
-        "effect": {"atk_bonus": 455, "def_bonus": 315, "hp_bonus": 210},
-        "passive": "Eternal Rebirth: Bangkit 3x per battle dengan 50% HP, next atk 4x DMG"
+        "effect": {"atk_bonus": 6000, "def_bonus": 4000, "hp_bonus": 15000},
+        "passive": "Eternal Rebirth: Bangkit 5x per battle dengan 80% HP, next atk 10x DMG"
     },
 }
 
@@ -1999,7 +1999,7 @@ GOD_SSSR_WEAPONS = {
         "desc": "Pedang dewa tertinggi. Hanya sang terpilih yang layak memegangnya.",
         "type": "weapon", "class": "warrior", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"atk": 3496, "crit": 105, "spd": 70},
+        "stats": {"atk": 99999, "crit": 5000, "spd": 3000, "max_hp": 500000, "max_mp": 100000},
     },
     # ── MAGE ─────────────────────────────────────────────────────
     "god_sssr_mage_weapon": {
@@ -2007,7 +2007,7 @@ GOD_SSSR_WEAPONS = {
         "desc": "Kitab sihir purba yang mengandung seluruh hukum alam semesta.",
         "type": "weapon", "class": "mage", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"atk": 3850, "max_mp": 1750, "crit": 87},
+        "stats": {"atk": 110000, "max_mp": 200000, "crit": 4500, "max_hp": 300000},
     },
     # ── ARCHER ───────────────────────────────────────────────────
     "god_sssr_archer_weapon": {
@@ -2015,7 +2015,7 @@ GOD_SSSR_WEAPONS = {
         "desc": "Busur yang menembus dimensi. Panahnya tak pernah meleset.",
         "type": "weapon", "class": "archer", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"atk": 3325, "crit": 140, "spd": 140},
+        "stats": {"atk": 95000, "crit": 8000, "spd": 7000, "max_hp": 400000, "max_mp": 80000},
     },
     # ── ROGUE ────────────────────────────────────────────────────
     "god_sssr_rogue_weapon": {
@@ -2023,7 +2023,7 @@ GOD_SSSR_WEAPONS = {
         "desc": "Pisau bayangan sang dewa malam. Tak terlihat, tak terhindar.",
         "type": "weapon", "class": "rogue", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"atk": 3675, "crit": 175, "spd": 122},
+        "stats": {"atk": 105000, "crit": 9000, "spd": 6000, "max_hp": 450000, "max_mp": 90000},
     },
     # ── ASSASSIN ─────────────────────────────────────────────────
     "god_sssr_assassin_weapon": {
@@ -2031,7 +2031,7 @@ GOD_SSSR_WEAPONS = {
         "desc": "Sabit pencabut nyawa para dewa. Satu tebasan = kematian abadi.",
         "type": "weapon", "class": "assassin", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"atk": 4200, "crit": 157, "spd": 105},
+        "stats": {"atk": 120000, "crit": 10000, "spd": 5000, "max_hp": 400000, "max_mp": 95000},
     },
     # ── DEATH SCYTHE ─────────────────────────────────────────────
     "god_sssr_death_scythe_weapon": {
@@ -2039,7 +2039,7 @@ GOD_SSSR_WEAPONS = {
         "desc": "Staf neraka dari kegelapan absolut. Meluruhkan jiwa siapapun.",
         "type": "weapon", "class": "reaper", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"atk": 3500, "max_mp": 2100, "crit": 122},
+        "stats": {"atk": 100000, "max_mp": 250000, "crit": 6000, "max_hp": 350000},
     },
 }
 
@@ -2050,7 +2050,7 @@ GOD_SSSR_ARMORS = {
         "desc": "Zirah dewa perang. Tidak ada senjata yang bisa menembusnya.",
         "type": "armor", "class": "warrior", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"def": 2800, "max_hp": 7000, "spd": 35},
+        "stats": {"def": 80000, "max_hp": 1000000, "spd": 2000},
     },
     # ── MAGE ─────────────────────────────────────────────────────
     "god_sssr_mage_armor": {
@@ -2058,7 +2058,7 @@ GOD_SSSR_ARMORS = {
         "desc": "Jubah yang ditenun dari bintang-bintang. MP tak pernah habis.",
         "type": "armor", "class": "mage", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"def": 1750, "max_hp": 4200, "max_mp": 2800},
+        "stats": {"def": 50000, "max_hp": 700000, "max_mp": 500000},
     },
     # ── ARCHER ───────────────────────────────────────────────────
     "god_sssr_archer_armor": {
@@ -2066,7 +2066,7 @@ GOD_SSSR_ARMORS = {
         "desc": "Rompi secepat kilat. Bergerak lebih cepat dari cahaya.",
         "type": "armor", "class": "archer", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"def": 1925, "max_hp": 5250, "spd": 280},
+        "stats": {"def": 55000, "max_hp": 800000, "spd": 15000},
     },
     # ── ROGUE ────────────────────────────────────────────────────
     "god_sssr_rogue_armor": {
@@ -2074,7 +2074,7 @@ GOD_SSSR_ARMORS = {
         "desc": "Jubah yang membuat pemakainya menjadi bayangan murni.",
         "type": "armor", "class": "rogue", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"def": 2100, "max_hp": 4900, "spd": 210},
+        "stats": {"def": 60000, "max_hp": 850000, "spd": 12000},
     },
     # ── ASSASSIN ─────────────────────────────────────────────────
     "god_sssr_assassin_armor": {
@@ -2082,7 +2082,7 @@ GOD_SSSR_ARMORS = {
         "desc": "Jubah sang dewa kematian. Membuat musuh gemetar ketakutan.",
         "type": "armor", "class": "assassin", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"def": 2275, "max_hp": 4550, "spd": 175},
+        "stats": {"def": 65000, "max_hp": 900000, "spd": 10000},
     },
     # ── DEATH SCYTHE ─────────────────────────────────────────────
     "god_sssr_death_scythe_armor": {
@@ -2090,7 +2090,7 @@ GOD_SSSR_ARMORS = {
         "desc": "Perisai jiwa dari raja lich tertinggi. Abadi dan tak tergoyahkan.",
         "type": "armor", "class": "reaper", "rarity": "GOD SSSR",
         "req_level": 1, "price": None, "diamond_price": None, "sellable": True,
-        "stats": {"def": 2450, "max_hp": 3850, "max_mp": 3500},
+        "stats": {"def": 70000, "max_hp": 750000, "max_mp": 600000},
     },
 }
 
