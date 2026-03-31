@@ -355,16 +355,17 @@ def create_player(user_id: int, name: str, char_class: str,
 def _level_stat_gains(lv: int) -> dict:
     """
     Hitung kenaikan stat per level naik ke level `lv`.
-    [FIX] Stat naik secara bertahap dan normal, tidak terlalu cepat membesar.
+    [FIX v8] ATK gain dinaikkan agar terasa progresif dan signifikan.
     """
     # HP: naik bertahap, linear dengan sedikit bonus tiap 10 level
     hp_gain  = 8 + int(lv * 0.8) + max(0, (lv - 1) // 10) * 2
     # MP: naik moderat dan stabil
     mp_gain  = 5 + int(lv * 0.4) + max(0, (lv - 1) // 15)
-    # ATK: naik pelan dan stabil
-    atk_gain = 1 + int(lv * 0.06) + max(0, (lv - 1) // 20)
-    # DEF: naik paling pelan
-    def_gain = 1 + int(lv * 0.04) + max(0, (lv - 1) // 25)
+    # ATK: [FIX v8] dinaikkan — naik lebih terasa tiap level
+    # Formula baru: base 2 + skala 0.18 per level + bonus tiap 10 level
+    atk_gain = 2 + int(lv * 0.18) + max(0, (lv - 1) // 10)
+    # DEF: naik perlahan tapi konsisten
+    def_gain = 1 + int(lv * 0.06) + max(0, (lv - 1) // 25)
     # SPD: naik sangat pelan
     spd_gain = 1 if lv % 10 == 0 else 0
     # CRIT: naik tiap 5 level setelah level 10
