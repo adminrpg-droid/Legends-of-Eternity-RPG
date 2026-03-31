@@ -49,6 +49,7 @@ from handlers.admin      import (
     broadcast_handler, setmedia_reply_handler,
     infofoto_handler, infofoto_action_handler,
     giveallgold_handler, givealldiamond_handler,
+    giveitem_handler,
 )
 from handlers.profile import profile_media_handler, profile_rename_handler, profile_rename_cancel_handler, rename_input_handler
 from handlers.market  import market_price_input_handler
@@ -66,7 +67,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN","8656505461:AAGwzpxBdkzpquDA3Pz4aRExxVpOu9vBNYo")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
 if not BOT_TOKEN:
     logger.critical("❌ BOT_TOKEN belum diset! Set environment variable BOT_TOKEN.")
     sys.exit(1)
@@ -102,7 +103,7 @@ async def help_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Ketik /groupboss atau /grub di grup untuk mulai Boss Raid.\n"
         "Ajak teman join raid dan kalahkan boss bersama!\n"
         "Stat boss otomatis scale sesuai jumlah pemain.\n"
-        "Semua peserta bisa dapat drop item (10% biasa, 0.1% GOD SSSR)!\n"
+        "Drop: 💠 Evolution Stone (0.1%) & 🔱 GOD SSSR (0.1%) untuk semua peserta!\n"
         "Killer mendapat bonus Gold x2.\n\n"
         "📌 *MARKET P2P*\n"
         "Jual & beli item antar pemain via /market.\n"
@@ -118,13 +119,13 @@ async def help_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "📌 *TIPS BERMAIN*\n"
         "Klaim Daily setiap hari untuk streak bonus.\n"
         "Weapon, Armor & Skill butuh level tertentu.\n"
-        "Boss dungeon drop item langka acak.\n"
-        "Item dari boss TIDAK hilang jika tidak dipakai.\n"
+        "Boss dungeon drop: 💠 Evolution Stone & 🔱 GOD SSSR item.\n"
+        "Item drop masuk inventory otomatis, tidak langsung dipakai.\n"
         "Istirahat saat HP/MP rendah.\n\n"
         "📌 *EVOLUTION SYSTEM*\n"
         "Class & Pet punya 10 Tier evolusi.\n"
         "Naik tier butuh Evolution Stone (sangat langka!).\n"
-        "Evolution Stone drop dari Boss rate 0.1%.\n"
+        "Evolution Stone drop dari Boss/Dungeon Boss/Group Boss rate 0.1%.\n"
         "Tier GOD = multiplier stat x3.0!\n\n"
         "📌 *CLASS SPECIAL & STATUS EFFECTS*\n"
         "Tiap class punya Special ability unik.\n"
@@ -427,6 +428,7 @@ def main():
     app.add_handler(CommandHandler("setlevel",     setlevel_handler))
     app.add_handler(CommandHandler("giveallgold",     giveallgold_handler))
     app.add_handler(CommandHandler("givealldiamond",  givealldiamond_handler))
+    app.add_handler(CommandHandler("giveitem",        giveitem_handler))
     app.add_handler(CommandHandler("groupboss",    group_boss_handler))
     app.add_handler(CommandHandler("grub",         group_boss_handler))
     app.add_handler(CommandHandler("resetgroupboss", reset_group_boss_handler))  # Admin: reset stuck group boss
@@ -485,7 +487,7 @@ def main():
 
     app.post_init = post_init
 
-    logger.info("⚔️  Legends of Eternity v6.0 — READY!")
+    logger.info("⚔️  Legends of Eternity v9.0 — READY!")
     app.run_polling(allowed_updates=Update.ALL_TYPES, drop_pending_updates=True)
 
 
