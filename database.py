@@ -136,8 +136,9 @@ def get_player(user_id: int) -> Optional[dict]:
             mon = today - _dt.timedelta(days=today.weekday())
             return float(_dt.datetime(mon.year, mon.month, mon.day).timestamp())
         def _mo():
-            t = _time.gmtime()
-            return _time.mktime(_time.struct_time((t.tm_year, t.tm_mon, 1, 0, 0, 0, 0, 0, -1)))
+            # BUG FIX #4: konsisten gunakan datetime agar tidak ada timezone drift
+            today = _dt.date.today()
+            return float(_dt.datetime(today.year, today.month, 1, 0, 0, 0).timestamp())
         changed = False
         week = _wk()
         if player.get("weekly_reset", 0) < week:
@@ -182,8 +183,10 @@ def _get_week_start() -> float:
     return float(datetime.datetime(monday.year, monday.month, monday.day, 0, 0, 0).timestamp())
 
 def _get_month_start() -> float:
-    t = time.gmtime()
-    return time.mktime(time.struct_time((t.tm_year, t.tm_mon, 1, 0, 0, 0, 0, 0, -1)))
+    # BUG FIX #4: gunakan localtime (bukan gmtime) agar mktime tidak timezone mismatch
+    import datetime
+    today = datetime.date.today()
+    return float(datetime.datetime(today.year, today.month, 1, 0, 0, 0).timestamp())
 
 def reset_weekly_if_needed(player: dict) -> dict:
     week = _get_week_start()
@@ -322,6 +325,8 @@ def create_player(user_id: int, name: str, char_class: str,
         "equipment":  {"weapon": None, "armor": None},
         "pet":        None,
         "pet_tier":   0,
+        "pet_tiers":  {},   # track tier per pet_id agar evolusi tiap pet tersimpan terpisah
+        "owned_pets": [],   # BUG FIX: daftar semua pet yang dimiliki (untuk switch pet)
         "class_tier": 1,
         # VIP
         "vip": {"active": False, "tier": None, "expires": 0},
