@@ -67,7 +67,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN","8656505461:AAGwzpxBdkzpquDA3Pz4aRExxVpOu9vBNYo")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "")  # Set via environment variable, jangan hardcode!
 if not BOT_TOKEN:
     logger.critical("❌ BOT_TOKEN belum diset! Set environment variable BOT_TOKEN.")
     sys.exit(1)
@@ -87,7 +87,7 @@ async def help_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "📌 *SISTEM ISTIRAHAT*\n"
         "Regen +15 HP & +12 MP setiap 10 detik.\n"
         "Tekan Batal untuk lanjut bermain.\n"
-        "Cooldown 60 detik setelah berhenti.\n"
+        "Cooldown 30 detik setelah berhenti.\n"
         "Maks durasi: 5 menit per sesi.\n\n"
         "📌 *SKILL SHOP*\n"
         "5 skill eksklusif per kelas.\n"
@@ -250,12 +250,14 @@ async def menu_action_handler(update: Update, context: ContextTypes.DEFAULT_TYPE
 
     if action == "menu_daily":
         from handlers.daily import daily_handler
-        # Buat Update tiruan agar daily_handler bisa dipanggil dari callback
+        # BUG FIX: gunakan instance attributes (bukan class-level) agar tidak
+        # terjadi shared state antar user yang memanggil menu_daily bersamaan
         class _FakeUpdate:
-            effective_user = user
-            message        = query.message
-            effective_chat = query.message.chat
-        await daily_handler(_FakeUpdate(), context)
+            def __init__(self, _user, _msg, _chat):
+                self.effective_user = _user
+                self.message        = _msg
+                self.effective_chat = _chat
+        await daily_handler(_FakeUpdate(user, query.message, query.message.chat), context)
         return
 
     if action == "menu_book":
@@ -285,8 +287,10 @@ async def menu_action_handler(update: Update, context: ContextTypes.DEFAULT_TYPE
         return
 
     if action == "menu_war":
-        # Redirect ke war_menu_handler
-        await war_menu_handler(update, context)
+        # BUG FIX #3: war_menu_handler memerlukan update dengan callback_query valid
+        # Langsung tampilkan war menu tanpa melewati war_menu_handler
+        from handlers.war import _show_war_menu
+        await _show_war_menu(query.message, player, user.id, is_msg=True)
         return
 
     await query.message.reply_text("Gunakan command yang sesuai.")
