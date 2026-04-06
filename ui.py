@@ -109,7 +109,10 @@ def format_profile(player: dict, telegram_id: int = None, viewer_id: int = None)
     pet_line = ""
     if pet_id:
         pet      = PET_SHOP.get(pet_id, {}) or GOD_SSSR_PETS.get(pet_id, {})
-        pet_tier = player.get("pet_tier", 1)
+        # BUG FIX: gunakan pet_tiers dict untuk tier yang benar per pet_id
+        pet_tiers = player.get("pet_tiers", {})
+        pet_tier  = pet_tiers.get(pet_id, player.get("pet_tier", 1))
+        pet_tier  = max(1, pet_tier)
         ptinfo   = PET_EVOLUTION_TIERS.get(pet_tier, PET_EVOLUTION_TIERS[1])
         pet_r    = pet.get("rarity","")
         if pet_r == "GOD SSSR": pet_badge2 = " 🔱[GOD SSSR]"
