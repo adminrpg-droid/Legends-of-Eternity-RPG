@@ -167,62 +167,62 @@ MONSTERS = {
 BOSSES = {
     "goblin_king": {
         "name": "Goblin King", "emoji": "👺",
-        "hp": 500,  "atk": 35, "def": 18,
+        "hp": 15000,  "atk": 120, "def": 400,
         "exp": 200, "gold": (80, 160),
         "desc": "Raja para goblin yang kejam dan rakus harta.",
-        "special": "Memanggil 3 goblin tambahan setiap 5 ronde.",
-        "regen_pct": 0.02,
-        "berserk_threshold": 0.40,
-        "berserk_atk_mult": 2.0,
-        "counter_pct": 0.20,
+        "special": "Memanggil 5 goblin tambahan setiap 3 ronde + Berserk Mode aktif sejak awal.",
+        "regen_pct": 0.06,
+        "berserk_threshold": 0.70,
+        "berserk_atk_mult": 3.5,
+        "counter_pct": 0.45,
         "world_boss": False,
     },
     "forest_witch": {
         "name": "Forest Witch", "emoji": "🧙",
-        "hp": 800,  "atk": 55, "def": 22,
+        "hp": 35000,  "atk": 185, "def": 700,
         "exp": 350, "gold": (130, 260),
         "desc": "Penyihir tua yang menguasai sihir hutan gelap.",
-        "special": "Poison Storm — racun area yang menguras HP setiap ronde.",
-        "regen_pct": 0.025,
-        "berserk_threshold": 0.35,
-        "berserk_atk_mult": 2.2,
-        "counter_pct": 0.25,
+        "special": "Poison Storm — racun area yang menguras HP setiap ronde + Curse yang melemahkan ATK player.",
+        "regen_pct": 0.07,
+        "berserk_threshold": 0.65,
+        "berserk_atk_mult": 3.8,
+        "counter_pct": 0.50,
         "world_boss": False,
     },
     "dark_lord": {
         "name": "Dark Lord", "emoji": "😈",
-        "hp": 1400, "atk": 85, "def": 40,
+        "hp": 80000, "atk": 280, "def": 1200,
         "exp": 650, "gold": (240, 480),
         "desc": "Penguasa kegelapan yang telah berkuasa selama ribuan tahun.",
-        "special": "Dark Pulse — serangan gelap yang menembus armor.",
-        "regen_pct": 0.03,
-        "berserk_threshold": 0.45,
-        "berserk_atk_mult": 2.5,
-        "counter_pct": 0.35,
+        "special": "Dark Pulse — serangan gelap menembus armor + Soul Drain yang mencuri HP setiap ronde.",
+        "regen_pct": 0.08,
+        "berserk_threshold": 0.70,
+        "berserk_atk_mult": 4.0,
+        "counter_pct": 0.55,
         "world_boss": False,
     },
     "labyrinth_guardian": {
         "name": "Labyrinth Guardian", "emoji": "🐂",
-        "hp": 2200, "atk": 110, "def": 60,
+        "hp": 180000, "atk": 380, "def": 2500,
         "exp": 1000, "gold": (380, 760),
         "desc": "Penjaga labirin bawah tanah yang tak pernah tidur.",
-        "special": "Charge — men突破 pertahanan musuh, DEF diabaikan 50%.",
-        "regen_pct": 0.03,
-        "berserk_threshold": 0.50,
-        "berserk_atk_mult": 2.8,
-        "counter_pct": 0.40,
+        "special": "Charge — menembus pertahanan musuh, DEF diabaikan 80% + Stomp yang men-stun player.",
+        "regen_pct": 0.09,
+        "berserk_threshold": 0.75,
+        "berserk_atk_mult": 4.5,
+        "counter_pct": 0.60,
         "world_boss": False,
     },
     "fire_dragon": {
         "name": "Fire Dragon", "emoji": "🐲",
-        "hp": 3500, "atk": 150, "def": 80,
+        "hp": 500000, "atk": 550, "def": 5000,
         "exp": 1800, "gold": (650, 1300),
         "desc": "Naga api purba dari Gunung Api Abadi, penjaga puncak terkuat.",
-        "special": "Dragon Breath — nafas api dahsyat yang membakar semua musuh.",
-        "regen_pct": 0.04,
-        "berserk_threshold": 0.55,
-        "berserk_atk_mult": 3.0,
-        "counter_pct": 0.45,
+        "special": "Dragon Breath — nafas api dahsyat membakar semua musuh + Lava Eruption menghancurkan armor.",
+        "regen_pct": 0.10,
+        "berserk_threshold": 0.80,
+        "berserk_atk_mult": 5.0,
+        "counter_pct": 0.65,
         "world_boss": True,
     },
 }
@@ -350,17 +350,17 @@ def get_boss(boss_id: str, scale_level: int = 1, floor: int = 1) -> dict:
 
     # Scale berdasarkan level pemain
     if scale_level > 1:
-        factor = 1.0 + (scale_level - 1) * 0.12
+        factor = 1.0 + (scale_level - 1) * 0.25  # was 0.12 — jauh lebih cepat scale
         boss["hp"]  = int(boss["hp"]  * factor)
-        boss["atk"] = int(boss["atk"] * max(1.0, factor * 0.75))
-        boss["def"] = int(boss["def"] * max(1.0, factor * 0.6))
+        boss["atk"] = int(boss["atk"] * max(1.0, factor * 0.90))  # was 0.75
+        boss["def"] = int(boss["def"] * max(1.0, factor * 0.80))  # was 0.60
         boss["exp"] = int(boss["exp"] * factor)
         g_min, g_max = boss["gold"]
         boss["gold"] = (int(g_min * factor), int(g_max * factor))
 
-    # Bonus scaling per lantai dungeon (setiap lantai +5% stats)
+    # Bonus scaling per lantai dungeon (setiap lantai +12% stats, was 5%)
     if floor > 1:
-        floor_factor = 1.0 + (floor - 1) * 0.05
+        floor_factor = 1.0 + (floor - 1) * 0.12
         boss["hp"]  = int(boss["hp"]  * floor_factor)
         boss["atk"] = int(boss["atk"] * floor_factor)
 
