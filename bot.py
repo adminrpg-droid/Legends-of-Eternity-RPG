@@ -40,7 +40,7 @@ from handlers.war     import (
 from handlers.admin      import (
     admin_handler, admin_action_handler,
     addcoin_handler, adddiamond_handler,
-    setvip_handler, setmedia_handler,
+    setvip_handler,
     addadmin_handler, removeadmin_handler,
     ban_handler, unban_handler,
     adminhelp_handler,
@@ -490,9 +490,31 @@ def main():
         logger.info("✅ Bot commands registered.")
 
     app.post_init = post_init
+    app.add_error_handler(error_handler)
 
     logger.info("⚔️  Legends of Eternity v9.0 — READY!")
     app.run_polling(allowed_updates=Update.ALL_TYPES, drop_pending_updates=True)
+
+
+# ════════════════════════════════════════════════════════════════
+#  Global Error Handler
+# ════════════════════════════════════════════════════════════════
+async def error_handler(update: object, context) -> None:
+    import traceback
+    logger.error("Exception saat handle update:", exc_info=context.error)
+    tb_str = "".join(traceback.format_exception(None, context.error, context.error.__traceback__))
+    logger.error(f"Traceback:\n{tb_str}")
+    # Jika ada query, kirim notifikasi error ke user
+    if update and hasattr(update, "callback_query") and update.callback_query:
+        try:
+            await update.callback_query.answer("❌ Terjadi kesalahan internal. Coba lagi.", show_alert=True)
+        except Exception:
+            pass
+    elif update and hasattr(update, "message") and update.message:
+        try:
+            await update.message.reply_text("❌ Terjadi kesalahan internal. Coba beberapa saat lagi.")
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":
