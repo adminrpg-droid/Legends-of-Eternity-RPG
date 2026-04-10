@@ -2136,18 +2136,18 @@ GOD_SSSR_SKILLS = {
 GOD_SSSR_PETS = {
     "pet_god_sssr_eternity_dragon": {
         "name": "🔱🐉 Eternity Dragon [GOD SSSR]",
-        "desc": "Naga abadi yang menjaga batas waktu dan ruang. ATK +500, DEF +300, semua stat +50%",
+        "desc": "Naga abadi yang menjaga batas waktu dan ruang. ATK +300, DEF +200, semua stat +25%",
         "rarity": "GOD SSSR", "price": None, "diamond_price": None,
         "tier": 10,
-        "effect": {"atk_bonus": 1500, "def_bonus": 900, "all_stat_pct": 1.5},
-        "passive": "Eternal Roar: Setiap 3 ronde, serangan otomatis 5x DMG ke semua musuh"
+        "effect": {"atk_bonus": 800, "def_bonus": 500, "all_stat_pct": 0.8},
+        "passive": "Eternal Roar: Setiap 3 ronde, serangan otomatis 3x DMG ke semua musuh"
     },
     "pet_god_sssr_void_phoenix": {
         "name": "🌌🦅 Void Phoenix [GOD SSSR]",
-        "desc": "Phoenix dari kekosongan absolut. Bangkit kembali jika mati, restore HP penuh.",
+        "desc": "Phoenix dari kekosongan absolut. Bangkit kembali jika mati, restore HP sebagian.",
         "rarity": "GOD SSSR", "price": None, "diamond_price": None,
         "tier": 10,
-        "effect": {"atk_bonus": 1200, "max_hp_bonus": 6000, "resurrect": True},
+        "effect": {"atk_bonus": 600, "max_hp_bonus": 3000, "resurrect": True},
         "passive": "Void Rebirth: Bangkit dengan HP penuh sekali per battle"
     },
 }
@@ -2219,6 +2219,10 @@ ALL_ITEMS.update(PREMIUM_ARMORS)
 ALL_ITEMS.update(EVOLUTION_STONE)
 ALL_ITEMS.update(GOD_SSSR_WEAPONS)
 ALL_ITEMS.update(GOD_SSSR_ARMORS)
+
+# FIX: Tambahkan GOD_SSSR_PETS ke PET_SHOP agar bisa digunakan & tampil di equipment
+PET_SHOP.update(GOD_SSSR_PETS)
+ALL_ITEMS.update(GOD_SSSR_PETS)
 
 
 def get_premium_weapons(char_class: str) -> dict:
